@@ -4,7 +4,7 @@
   <title><![CDATA[Hualet Blog]]></title>
   <link href="http://hualet.org/atom.xml" rel="self"/>
   <link href="http://hualet.org/"/>
-  <updated>2014-07-09T23:01:59+08:00</updated>
+  <updated>2014-11-26T21:56:25+08:00</updated>
   <id>http://hualet.org/</id>
   <author>
     <name><![CDATA[Hualet Wang]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[读MacTalk人生元编程]]></title>
+    <link href="http://hualet.org/blog/2014/11/26/du-mactalkren-sheng-yuan-bian-cheng/"/>
+    <updated>2014-11-26T21:25:04+08:00</updated>
+    <id>http://hualet.org/blog/2014/11/26/du-mactalkren-sheng-yuan-bian-cheng</id>
+    <content type="html"><![CDATA[<p>第一次知道这本书，估计就是在我刚买Mac不久，13年末的时候，当时看名字起得太土——小小元编程就想参透人生？</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[NFS配置小记]]></title>
