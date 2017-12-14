@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Think in Hualet</title>
-    <link>http://hualet.org/post/</link>
+    <link>http://hualet.github.io/post/</link>
     <description>Recent content in Posts on Think in Hualet</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 14 Dec 2017 21:26:48 +0800</lastBuildDate>
     
-	<atom:link href="http://hualet.org/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://hualet.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>First</title>
-      <link>http://hualet.org/post/first/</link>
+      <link>http://hualet.github.io/post/first/</link>
       <pubDate>Thu, 14 Dec 2017 21:26:48 +0800</pubDate>
       
-      <guid>http://hualet.org/post/first/</guid>
+      <guid>http://hualet.github.io/post/first/</guid>
       <description>test post</description>
     </item>
     
