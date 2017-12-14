@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Think in Hualet</title>
+    <link>http://hualet.org/</link>
+    <description>Recent content on Think in Hualet</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 14 Dec 2017 21:26:48 +0800</lastBuildDate>
+    
+	<atom:link href="http://hualet.org/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>First</title>
+      <link>http://hualet.org/post/first/</link>
+      <pubDate>Thu, 14 Dec 2017 21:26:48 +0800</pubDate>
+      
+      <guid>http://hualet.org/post/first/</guid>
+      <description>test post</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>http://hualet.org/about/</link>
+      <pubDate>Thu, 14 Dec 2017 21:26:12 +0800</pubDate>
+      
+      <guid>http://hualet.org/about/</guid>
+      <description>about test</description>
+    </item>
+    
+  </channel>
+</rss>
