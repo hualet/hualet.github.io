@@ -1,5 +1,0 @@
-baseURL = "http://hualet.org/"
-languageCode = "zh-cn"
-title = "Think in Hualet"
-
-theme = "hyde-x"
