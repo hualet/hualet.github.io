@@ -9,23 +9,23 @@ date: 2016-12-05T21:26:48+08:00
 
 半小时后，终于可以进店享用美食，我俩食量不大，所以只点了四份菜（好像也不完全叫菜，不好称呼），
 因为是第一次来，所以菜都是根据感觉来点的，但是我感觉确实刚好凑出了一个比较好的搭配：
-<img src="http://hualet.github.io/static/img/2016/12/IMG_1871-225x300.jpg" alt="img_1871" width="225" height="300" class="aligncenter size-medium wp-image-31" />
+<img src="http://hualet.github.io/img/2016/12/IMG_1871-225x300.jpg" alt="img_1871" width="225" height="300" class="aligncenter size-medium wp-image-31" />
 
 第一个上来的是酸奶哈密瓜：
-<img src="http://hualet.github.io/static/img/2016/12/IMG_1865-225x300.jpg" alt="img_1865" width="225" height="300" class="aligncenter size-medium wp-image-32" />
+<img src="http://hualet.github.io/img/2016/12/IMG_1865-225x300.jpg" alt="img_1865" width="225" height="300" class="aligncenter size-medium wp-image-32" />
 可能是因为用餐环境比较热或者其他的缘故，酸爽的酸奶搭配香甜的哈密瓜，让人的味觉神经突然就活跃起来，人也精神多了；喝了两口小崔急忙制止：“烤羊排肥，吃了肉再喝酸奶，就不会觉得腻”。果然美食家呀，我心悦诚服，放下勺子。
 
 很快，便等到今天的主角大漠烤羊排：
-<img src="http://hualet.github.io/static/img/2016/12/IMG_1867-225x300.jpg" alt="img_1867" width="225" height="300" class="aligncenter size-medium wp-image-33" />
+<img src="http://hualet.github.io/img/2016/12/IMG_1867-225x300.jpg" alt="img_1867" width="225" height="300" class="aligncenter size-medium wp-image-33" />
 名字听了只让人联想到楼兰古国覆灭后的一片大漠，自古多少英雄战死的地方，想着略悲情，只能吃口烤羊排排解。话说这羊排真不错，外焦里嫩，不管是配酱汁还是佐料，都能让人食欲大开（跟着小崔吃了不少韩国烤肉，完全是两种风格）。吃了两块，大呼过瘾但是也略觉肥腻，这时候吃两口酸奶……写得我现在口水直流……
 
 楼兰肉囊和牛肉汤揪面差不多是同时上的：
-<img src="http://hualet.github.io/static/img/2016/12/IMG_1868-225x300.jpg" alt="img_1868" width="225" height="300" class="aligncenter size-medium wp-image-34" />
+<img src="http://hualet.github.io/img/2016/12/IMG_1868-225x300.jpg" alt="img_1868" width="225" height="300" class="aligncenter size-medium wp-image-34" />
 
-<img src="http://hualet.github.io/static/img/2016/12/IMG_1869-225x300.jpg" alt="img_1869" width="225" height="300" class="aligncenter size-medium wp-image-35" />
+<img src="http://hualet.github.io/img/2016/12/IMG_1869-225x300.jpg" alt="img_1869" width="225" height="300" class="aligncenter size-medium wp-image-35" />
 可能是本能上觉得饼和汤搭配吧，就像羊肉泡馍的汤和饼搭配一样，我们点这两样的时候相当默契。事实证明，小崔非常具有美食家的风范，饼是牛肉馅的，配有洋葱，虽然一点都不腻，但是搭配酸爽的牛肉汤，有更上一层楼的美感，肉馕和汤在嘴里相遇的那一刻，真有一种一辈子就这样罢的感觉。实话说，汤的配图有点失败，其实里面有面片一样的面和牛肉片，配有各种蔬菜丁，如果单卖的话我估计可以喝两碗 。
 
 中间小崔也是乐的不得了，原来除了韩国烤肉，还有这么好吃的东西叻，我就顺势盗了她的一张“全餐图”：
-<img src="http://hualet.github.io/static/img/2016/12/IMG_1875-300x300.jpg" alt="img_1875" width="300" height="300" class="aligncenter size-medium wp-image-36" />
+<img src="http://hualet.github.io/img/2016/12/IMG_1875-300x300.jpg" alt="img_1875" width="300" height="300" class="aligncenter size-medium wp-image-36" />
 
 食毕，买单走人！
