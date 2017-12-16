@@ -7,6 +7,9 @@ theme = "hyde-x"
 [author]
 	name = "Hualet Wang"
 
+[permalinks]
+    post = "/blog/:year/:month/:day/:title/"
+
 [params]
 
     hideReadingTime = true
