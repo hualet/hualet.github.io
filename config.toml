@@ -4,15 +4,22 @@ title = "Think in Hualet"
 
 theme = "hyde-x"
 
+[author]
+	name = "Hualet Wang"
+
 [params]
 
-gravatarHash = "d07d3626f19b0a5c353eff86d03d0e8f"
-
-tagline = "Think in Hualet"
-
-# sidebar 
-github = "https://github.com/hualet"
-twitter = "https://twitter.com/Hualet"
-googleplus = "https://plus.google.com/+%E8%80%80%E5%8D%8E%E7%8E%8B"
-
-rss = true
+    hideReadingTime = true
+    
+    highlight = "sunburst"
+    
+    gravatarHash = "d07d3626f19b0a5c353eff86d03d0e8f"
+    
+    tagline = "Think in Hualet"
+    
+    # sidebar 
+    github = "https://github.com/hualet"
+    twitter = "https://twitter.com/Hualet"
+    googleplus = "https://plus.google.com/+%E8%80%80%E5%8D%8E%E7%8E%8B"
+    
+    rss = true
