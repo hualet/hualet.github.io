@@ -5,7 +5,7 @@ title = "Think in Hualet"
 theme = "hyde-x"
 
 [author]
-	name = "Hualet Wang"
+    name = "Hualet Wang"
 
 [permalinks]
     post = "/blog/:year/:month/:day/:title/"
