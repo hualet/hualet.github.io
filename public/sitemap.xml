@@ -3,73 +3,73 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://hualet.github.io/about/</loc>
+    <loc>https://hualet.org/about/</loc>
     <lastmod>2017-12-14T21:26:12+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/</loc>
+    <loc>https://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/</loc>
     <lastmod>2017-12-04T21:26:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/</loc>
+    <loc>https://hualet.org/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/</loc>
     <lastmod>2017-11-05T21:26:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/</loc>
+    <loc>https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/</loc>
     <lastmod>2017-08-29T21:26:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/</loc>
+    <loc>https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/</loc>
     <lastmod>2017-08-05T21:26:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</loc>
+    <loc>https://hualet.org/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2017-01-02T21:26:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/</loc>
+    <loc>https://hualet.org/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/</loc>
     <lastmod>2016-12-14T21:26:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/</loc>
+    <loc>https://hualet.org/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/</loc>
     <lastmod>2016-12-05T21:26:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/blog/2016/10/30/things-about-kernel-updates-on-deepin/</loc>
+    <loc>https://hualet.org/blog/2016/10/30/things-about-kernel-updates-on-deepin/</loc>
     <lastmod>2016-10-30T21:26:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/blog/2016/10/27/%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E6%9D%80%E6%89%8B-%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%B9%B6%E8%A1%8C/</loc>
+    <loc>https://hualet.org/blog/2016/10/27/%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E6%9D%80%E6%89%8B-%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%B9%B6%E8%A1%8C/</loc>
     <lastmod>2016-10-27T21:26:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/categories/</loc>
+    <loc>https://hualet.org/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/post/</loc>
+    <loc>https://hualet.org/post/</loc>
     <lastmod>2017-12-04T21:26:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/tags/</loc>
+    <loc>https://hualet.org/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://hualet.github.io/</loc>
+    <loc>https://hualet.org/</loc>
     <lastmod>2017-12-14T21:26:12+08:00</lastmod>
     <priority>0</priority>
   </url>
