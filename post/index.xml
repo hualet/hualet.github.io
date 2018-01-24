@@ -6,10 +6,28 @@
     <description>Recent content in Posts on Think in Hualet</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 04 Dec 2017 21:26:48 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 23 Jan 2018 19:59:00 +0800</lastBuildDate>
     
 	<atom:link href="https://hualet.org/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>初探Linux内核态——通过proc文件系统作快速问题定位</title>
+      <link>https://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/</link>
+      <pubDate>Tue, 23 Jan 2018 19:59:00 +0800</pubDate>
+      
+      <guid>https://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/</guid>
+      <description>文章翻译自 Peeking into Linux kernel-land using /proc filesystem for quick’n’dirty troubleshooting
+这篇博客的内容完全是关于现代Linux内核的。换句话说，指的是与RHEL6一样使用的2.6.3x系列内核，而不是古老的RHEL5所使用的2.6.18内核（都什么鬼了？！），虽然大部分企业都还在使用RHEL5。另外，这篇文章也不会涉及内核调试器或者SystemTap脚本之类的东西，完全是最最简单地在有用的proc文件系统节点上执行“cat /proc/PID/xyz”这样的命令。
+#定位一个程序“运行缓慢”的问题
+下面要举的这个例子是这样的：一个DBA反映说他们的find命令一直运行缓慢，半天都没有什么输出，他们想知道这是为什么。听到这个问题的时候我就大概有直觉造成这个问题的原因，但是他们还是想知道怎么系统地追踪这类问题，并找到解决方案。刚好出问题的现场还在……
+还好，系统是运行在OEL6上的，内核比较新，确切地说是2.6.39 UEK2。
+首先，让我们看看find进程是否还在：
+[root@oel6 ~]# ps -ef | grep find root 27288 27245 4 11:57 pts/0 00:00:01 find . -type f root 27334 27315 0 11:57 pts/1 00:00:00 grep find  跑的好好的，PID是27288（请记好这个将会伴随整篇博客的数字）。
+那么，我们就从最基础的开始分析它的瓶颈：如果它不是被什么操作卡住了（例如从cache中加载它所需要的内容），它应该是100%的CPU占用率；如果它的瓶颈在IO或者资源竞争，那么它应该是很低的CPU占用率，或者是%0。
+我们先看下top：
+[root@oel6 ~]# top -cbp 27288 top - 11:58:15 up 7 days, 3:38, 2 users, load average: 1.21, 0.65, 0.47 Tasks: 1 total, 0 running, 1 sleeping, 0 stopped, 0 zombie Cpu(s): 0.</description>
+    </item>
     
     <item>
       <title>15.5研发心得</title>
