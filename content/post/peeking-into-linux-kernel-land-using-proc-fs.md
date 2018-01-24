@@ -1,7 +1,6 @@
 ---
 title: "初探Linux内核态——通过proc文件系统作快速问题定位"
 date: 2018-01-23T19:59:00+08:00
-draft: true
 ---
 
 文章翻译自 [Peeking into Linux kernel-land using /proc filesystem for quick’n’dirty troubleshooting](https://blog.tanelpoder.com/2013/02/21/peeking-into-linux-kernel-land-using-proc-filesystem-for-quickndirty-troubleshooting/)
