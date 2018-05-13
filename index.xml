@@ -2,25 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Think in Hualet</title>
-    <link>https://hualet.org/</link>
+    <link>http://hualet.org/</link>
     <description>Recent content on Think in Hualet</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 23 Jan 2018 19:59:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 13 May 2018 14:42:41 +0800</lastBuildDate>
     
-	<atom:link href="https://hualet.org/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://hualet.org/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>自制 Profiler 第一部分</title>
+      <link>http://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/</link>
+      <pubDate>Sun, 13 May 2018 14:42:41 +0800</pubDate>
+      
+      <guid>http://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/</guid>
+      <description>​ 最近对性能剖析的技术颇感兴趣。好不容易来了三分钟热度，自然不能浪费，因此在余热消失之前研究并实践了其中一部分细节，对于其中一些知识点，个人感觉对于自身编程能力提升还是比较有益的，因此在这里写出来，抛砖引玉。
+Linux profiler简介 ​ 性能剖析的工具，其实在Linux平台还是挺多的，比如小巧实用的strace、ltrace、latrace，大名鼎鼎的google-perftools、gprof、valgrind，以及瑞士军刀型的linux-perf等等，它们主要分为三个阵营，一个是针对程序执行的性能进行剖析，对程序执行的热点进行分析，如*trace、gprof这些工具；另一个是针对程序运行过程中内存的使用进行剖析，方便针对性地做内存优化，如valgrind；最后一部分就是“脚踏两条船”的，两个我都做，比如google-perftools、linux-perf这些，我们这个系列主要集中在“针对程序执行的性能进行剖析”方面。
+Profiler的本质 ​ 要自制Profiler，首先要知道Profiler的本质是什么。简单来说，Profiler的本质其实就是在程序执行的过程中对程序正在“做什么”进行搜集和统计，如何搜集呢？无非两种：
+ Instrumentaion - 程序主动Profiler告诉它在做什么； Sampling - Profiler自己间断性地去看程序在做什么；  前者的实现主要依靠程序运行时提供的某些钩子机制、代码插桩等方式，例如gprof主要是依靠 gcc 在编译程序的时候”夹带私货“来达到程序运行的时候主动提供给gprof采样样本，来达到事后分析的目的[1]。这种方式相对来说虽然比较可靠、准确，但是对于无法控制编译条件的程序就比较无可奈何了。
+后者的实现则主要是定期对程序当前执行的指令和对程序执行的函数堆栈进行回溯（unwind）来尽量还原程序执行的过程，例如google-perftools就是采用这种方式，这种情况下，采样的周期就显得尤为重要。
+​ 对比以上两种方式，我们果断采用第二种。
+​ PS: 这里需要说明一下的是，利用ptrace系统调用完成工作的strace和ltrace，虽然不依赖编译器夹带私货，但是相当于依赖了内核的“钩子”，不属于sampling的范围；同样，latrace则是依赖了ld的LD_AUDIT“钩子”，也不属于sampling的范围。
+Profiler启动 ​ 那么问题又来了，ptrace没得用，我们怎么去获取被剖析程序的执行状态呢？总不至于profiler要搞成root权限的吧？答案是：不，内核管天管地，总管不到程序自己偷看自己的数据吧？我们想办法把我们的代码塞到被剖析程序中去就可以了！
+​ 刚才提到了ld的LD_AUDIT，这次就轮到它的兄弟——大名鼎鼎的LD_PRELOAD——登场了。想法是这样的，我们的profiler其实只需要在程序开始的时候执行一个定时器，以后每次定时器执行的时候去抓取我们的样本就OK了，所以我们完全可以把自己伪装成一个人畜无害的动态库，等到别个程序有意无意加载到我们，哼哼……事实上，很多profiler都是采取类似的策略，比如google-perftools，再比如heaptrack等等。
+编码实战 ​ 废话少说，放码过来！
+​ 我们在QtCreator中创建一个动态库项目 simple-profiler，主类 SimpleProfiler。首先，我们需要设置好我们的定时器：
+void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;amp;m_tick, nullptr); if ( ret != 0) { fprintf(stderr, &amp;quot;failed to enable profiler: %s&amp;quot;, strerror(errno)); } }  根据 setitimer 的man文档，计时器主要有三种类型：
+ ITIMER_REAL 这个计时器是根据墙上时间进行倒计时，最终触发 SIGALRM 信号； ITIMER_VIRTUAL 这个计时器是根据进程花费在用户空间的 CPU 时间进行倒计时的，最终触发 SIGVTALRM 信号； ITIMER_PROF 这个计时器是根据进程话费在用户空间和内核空间的 CPU 时间进行倒计时的，最终触发 SIGPROF 信号；  个人认为，假如都是用在 profiler 上的话，第一种计时器用来查找程序执行慢（某个函数有IO等情况）的瓶颈比较有效果；后两种计时器用来查找程序 CPU 占用瓶颈比较有效果。不过使用第一种计时器的话，对被追踪程序的执行影响相较于后两者就比较大了，所以这里采用第三种计时器。</description>
+    </item>
+    
+    <item>
       <title>初探Linux内核态——通过proc文件系统作快速问题定位</title>
-      <link>https://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/</link>
+      <link>http://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/</link>
       <pubDate>Tue, 23 Jan 2018 19:59:00 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/</guid>
+      <guid>http://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/</guid>
       <description>文章翻译自 Peeking into Linux kernel-land using /proc filesystem for quick’n’dirty troubleshooting
 这篇博客的内容完全是关于现代Linux内核的。换句话说，指的是与RHEL6一样使用的2.6.3x系列内核，而不是古老的RHEL5所使用的2.6.18内核（都什么鬼了？！），虽然大部分企业都还在使用RHEL5。另外，这篇文章也不会涉及内核调试器或者SystemTap脚本之类的东西，完全是最最简单地在有用的proc文件系统节点上执行“cat /proc/PID/xyz”这样的命令。
-#定位一个程序“运行缓慢”的问题
-下面要举的这个例子是这样的：一个DBA反映说他们的find命令一直运行缓慢，半天都没有什么输出，他们想知道这是为什么。听到这个问题的时候我就大概有直觉造成这个问题的原因，但是他们还是想知道怎么系统地追踪这类问题，并找到解决方案。刚好出问题的现场还在……
+定位一个程序“运行缓慢”的问题 下面要举的这个例子是这样的：一个DBA反映说他们的find命令一直运行缓慢，半天都没有什么输出，他们想知道这是为什么。听到这个问题的时候我就大概有直觉造成这个问题的原因，但是他们还是想知道怎么系统地追踪这类问题，并找到解决方案。刚好出问题的现场还在……
 还好，系统是运行在OEL6上的，内核比较新，确切地说是2.6.39 UEK2。
 首先，让我们看看find进程是否还在：
 [root@oel6 ~]# ps -ef | grep find root 27288 27245 4 11:57 pts/0 00:00:01 find . -type f root 27334 27315 0 11:57 pts/1 00:00:00 grep find  跑的好好的，PID是27288（请记好这个将会伴随整篇博客的数字）。
@@ -31,19 +51,19 @@
     
     <item>
       <title>About</title>
-      <link>https://hualet.org/about/</link>
+      <link>http://hualet.org/about/</link>
       <pubDate>Thu, 14 Dec 2017 21:26:12 +0800</pubDate>
       
-      <guid>https://hualet.org/about/</guid>
+      <guid>http://hualet.org/about/</guid>
       <description>about test</description>
     </item>
     
     <item>
       <title>15.5研发心得</title>
-      <link>https://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/</link>
+      <link>http://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/</link>
       <pubDate>Mon, 04 Dec 2017 21:26:48 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/</guid>
+      <guid>http://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/</guid>
       <description>迟到的经典 2017年11月29日，农历十月十二，经过一番挣扎，deepin 15.5的ISO终于安静地躺在了内网服务器上，静待着属于它的时刻的到来。
 是的，deepin在重新定义了十月一日为农历十月初一以后，甚至连“保证月底发布”的底线也没有守住，妥妥地把发布时间拖到了十一月（阳历）中旬。即便如此，我也觉得这次“迟到”是值得的，在“手机不赚钱，交个朋友”的时代，PC操作系统的研发需要特别用心，才能留住那些对我们期待了那么久的用户朋友。我想，在未来可以预见的时间内，所有deepin的用户都会记住这个特殊的版本号：15.5。这个能让我们在视觉体验上有质的飞跃，在应用包格式上走在世界前面，自带修复工具箱——live修复系统，并且在稳定性和易用性上大幅提升的版本。
 deepin15.5注定成为经典。
@@ -76,10 +96,10 @@ live修复系统为了保持简单、简洁，目前除了必要的浏览器、�
     
     <item>
       <title>给小崔的基础管理课</title>
-      <link>https://hualet.org/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/</link>
+      <link>http://hualet.org/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/</link>
       <pubDate>Sun, 05 Nov 2017 21:26:48 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/</guid>
+      <guid>http://hualet.org/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/</guid>
       <description>最近小崔的日子好像不太好过，负责一个项目的同事发了farewell letter，于是她被莫名其妙地选中来担任整个项目的负责人。 这突如其来的变动，打了小崔一个措手不及：因为给同事分配任务不顺利气哭、因为担心第二天的工作是否能很好完成而失眠……就跟我刚开始担任深度桌面组组长的时候一摸一样。看着实在心疼啊，于是趁着今天天气好出去晃悠的时候顺便跟她传授了一点小小的经验，这里顺便记录一下，希望对有需要的朋友有所帮助。
 在说初级管理的经验之前，我想强调一下“自信”，因为这是我觉得一个人能做成一件事情最基础的基础。如果连自信都做不到，那就不要妄谈管理了，你甚至连自己都做不好。小时候我妈一直说谦虚使人进步、骄傲使人落后，让我平时谦虚一点。我当时想不通，现在依然想不通，我甚至觉得自负要比自卑强得多，这是因为自信心实在是太难培养了。比如我虽然一直对自己的学习能力和技术比较（盲目）自信，但是我刚做管理的时候，其实也不自信能把所有人捏到一起、团结起来，但是因为心里面有执念觉得不能把做不到跟自己扯上关系，所以还是努力地去尝试，很清楚地记得有一次我当着所有人的面把自己的完整解决方案说出来那一刻，我的自信心才完全建立起来，之后的管理就相对容易了很多。说到小崔，我大概是不担心的，她只要把自己在镜子前臭美的状态转化一下，自信心应当是爆棚的 😄
 自信做好了，用来做什么呢？这就是管理的内容了，管理不再是扎头自己的事情，而是掌握大局，在掌握大局以后在处理非自己处理不可的事情。什么是掌控大局？我觉得分两个部分：承上和启下，承上就是了解清楚上级的需求和工作内容；启下就是把需要做的事情分配给自己的组员，让他们清楚自己工作的内容，这个部分其实是管理的核心，后面会提到我的秘诀！什么又是非自己处理不可的事情？这绝不是自己什么都不做，所有事情一股脑塞给下属同事，而是在了解清楚工作内容以后，把那些能提升团队工作效率的事情或者实在是只有自己才能做的事做了，自身做则才能做到服人。
@@ -93,10 +113,10 @@ live修复系统为了保持简单、简洁，目前除了必要的浏览器、�
     
     <item>
       <title>神奇的isatty</title>
-      <link>https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/</link>
+      <link>http://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/</link>
       <pubDate>Tue, 29 Aug 2017 21:26:48 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/</guid>
+      <guid>http://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/</guid>
       <description>前些日子才从apt-get命令系列换成更为时尚的apt系列，作为一个debian系发行版——deepin的开发者，我表示很汗颜……新的apt命令除了在功能上将apt-get、apt-cache等几个命令统一到了一个命令上外，更是有了不错的TUI，如文档所说：
 The `apt` command is meant to be pleasant for end users and does not need to be backward compatible like apt-get(8).  毕竟，还多了进度条呢…… 😂
 不过这不是今天要说的重点，换到apt以后，把apt操作的一些结果跟管道结合一起用，经常会收到警告，例如：
@@ -114,10 +134,10 @@ The `apt` command is meant to be pleasant for end users and does not need to be 
     
     <item>
       <title>输入法消失之谜</title>
-      <link>https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/</link>
+      <link>http://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/</link>
       <pubDate>Sat, 05 Aug 2017 21:26:48 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/</guid>
+      <guid>http://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/</guid>
       <description>最近不少用户在deepin论坛上报告说搜狗输入法的图标不见了，收到反馈我就心想坏了，我的输入法图标很早前就消失不见了，之前发现这个问题但是没有去跟踪是因为没有看到其他同事出现类似情况，我的电脑平常为了调试用户反馈的bug又经常XJB装软件，觉得是个例。现在收到多人反馈，大概又是什么“更新事故”？
 带着沉重的心情，首先要确定的是这个问题影响的范围：
  15.4.1的ISO是不存在这个问题的； 不用输入法的老外是没有受到影响的； 只有少量论坛用户报告了这个问题，大部分人表示更新到最新也没有这个问题；  还好影响范围还比较小，那么下一步就是找解决办法了：
@@ -139,10 +159,10 @@ WARNING: never-assigned local variable &#39;filename&#39; (similar: name, __nr, 
     
     <item>
       <title>2016年终总结</title>
-      <link>https://hualet.org/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</link>
+      <link>http://hualet.org/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</link>
       <pubDate>Mon, 02 Jan 2017 21:26:48 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</guid>
+      <guid>http://hualet.org/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</guid>
       <description>自从开始上班，每年年终总结都少不了，因为都是给老板看的，内容无非是今年我做了什么事情、多牛逼、对公司贡献多大云云，万一老板看到一件他不记得但是你写下来的工作贡献一高兴，说不定给你升职加薪，一年也就不算白干了。但是，写给自己的年终总结哪能这么应付，梳理整理自己一年的得失，做好权衡，最重要的是吸取经验做来年的规划。
 2016关键词：累、读书和成长 2016年是挺累的一年，不知道是不是整个前半年和2015年的后半年都在加班的缘故还是什么，即便是后半年没怎么加班的时候，也没感觉怎么轻松。其间必然有些成绩，但也带来了很多严重的问题，例如我长期状态不佳、思维不清楚等，总是感觉有点得不偿失。最后的两个来月，我都在认真思考这些现象产生的原因，总结下来问题可能出在两个地方：
 一、工作方式不佳，最主要的问题是贪多和多任务并行；
@@ -161,10 +181,10 @@ WARNING: never-assigned local variable &#39;filename&#39; (similar: name, __nr, 
     
     <item>
       <title>12月10日回洛阳记</title>
-      <link>https://hualet.org/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/</link>
+      <link>http://hualet.org/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/</link>
       <pubDate>Wed, 14 Dec 2016 21:26:48 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/</guid>
+      <guid>http://hualet.org/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/</guid>
       <description>2016年12月10日，我们宿舍老五结婚的答谢宴，刚好又在我们大学所在的城市洛阳举行，哥们儿几个商量着都回去一趟，互相见见自己几位久未蒙面的兄弟，到场的有深圳来的老大、洛阳本地的老三、新乡来的老四、东道主老五、上海来的老六、北京来的老七和武汉来的我。能够成行着实不易，简单记录一下，留作纪念。
 9号晚上从武汉出发，卧铺10号早上到的洛阳。下车发了一个朋友圈： “毕业后就没有来过的城市 洛阳，你有点冷啊😢” 相比江城武汉，洛阳显得要冷得多，去的时候觉得“绝对没问题”的羽绒服已经显得不太够用了。火车站旁边的公交车站，虽然大早上已经开始忙碌起来，但还是那么井然有序；又冷又困，我给五哥打了个电话，问清楚酒店地点，上了熟悉而又陌生的68路。
 时间过得总是飞快，上面一幕幕清晰的画面，在现在我码字的时刻，已经是两三天前的场景。这次回洛阳，除了兄弟们一块儿给老五庆祝了婚礼，一块儿吃吃喝喝，还顺带逛了我们的新、老校区，觥筹交错的瞬间，总是感觉回忆满满：
@@ -175,10 +195,10 @@ WARNING: never-assigned local variable &#39;filename&#39; (similar: name, __nr, 
     
     <item>
       <title>楼兰餐厅</title>
-      <link>https://hualet.org/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/</link>
+      <link>http://hualet.org/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/</link>
       <pubDate>Mon, 05 Dec 2016 21:26:48 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/</guid>
+      <guid>http://hualet.org/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/</guid>
       <description>这个星期有点浪过头了，周六出去打了羽毛球，周日又出去觅食，文章呢？代码呢？sigh……不过周日的觅食还颇为成功，倒是可以叙叙，补补文章的缺。
 楼兰餐厅，一个以新疆地域美食为主题的餐厅，是一个大口吃肉大口吃馕的地方，第一次听说还是上周偶然看到表姐的朋友圈，配图中的烤羊排看着烤得焦黄，卖相相当好，仅这一点便深深地吸引了我，遂决定这周即使浪过头也要去尝一尝。中午十二点到世界城五楼，果然要排长队等候，越加坚定了我这个餐厅不错的信念。
 半小时后，终于可以进店享用美食，我俩食量不大，所以只点了四份菜（好像也不完全叫菜，不好称呼）， 因为是第一次来，所以菜都是根据感觉来点的，但是我感觉确实刚好凑出了一个比较好的搭配： 第一个上来的是酸奶哈密瓜： 可能是因为用餐环境比较热或者其他的缘故，酸爽的酸奶搭配香甜的哈密瓜，让人的味觉神经突然就活跃起来，人也精神多了；喝了两口小崔急忙制止：“烤羊排肥，吃了肉再喝酸奶，就不会觉得腻”。果然美食家呀，我心悦诚服，放下勺子。
@@ -189,20 +209,20 @@ WARNING: never-assigned local variable &#39;filename&#39; (similar: name, __nr, 
     
     <item>
       <title>Things about kernel updates on deepin</title>
-      <link>https://hualet.org/blog/2016/10/30/things-about-kernel-updates-on-deepin/</link>
+      <link>http://hualet.org/blog/2016/10/30/things-about-kernel-updates-on-deepin/</link>
       <pubDate>Sun, 30 Oct 2016 21:26:48 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2016/10/30/things-about-kernel-updates-on-deepin/</guid>
+      <guid>http://hualet.org/blog/2016/10/30/things-about-kernel-updates-on-deepin/</guid>
       <description>There were discussions about kernel updates on both deepin forum and deepin telegram group. Users are curious about why security updates are always being lag on deepin, and why there&amp;rsquo;s no newer version kernel for so long. I explained it in telegram group, here I&amp;rsquo;ll do it again in case someone&amp;rsquo;s interested:
 As we all know, deepin&amp;rsquo;s maintaining kernel by ourselves now, based on version 4.4 LTS, our kernel gets patches by our kernel team, from Debian and also from Ubuntu (Yes, we do!</description>
     </item>
     
     <item>
       <title>工作效率杀手-多任务并行</title>
-      <link>https://hualet.org/blog/2016/10/27/%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E6%9D%80%E6%89%8B-%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%B9%B6%E8%A1%8C/</link>
+      <link>http://hualet.org/blog/2016/10/27/%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E6%9D%80%E6%89%8B-%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%B9%B6%E8%A1%8C/</link>
       <pubDate>Thu, 27 Oct 2016 21:26:48 +0800</pubDate>
       
-      <guid>https://hualet.org/blog/2016/10/27/%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E6%9D%80%E6%89%8B-%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%B9%B6%E8%A1%8C/</guid>
+      <guid>http://hualet.org/blog/2016/10/27/%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E6%9D%80%E6%89%8B-%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%B9%B6%E8%A1%8C/</guid>
       <description>日常工作中，我们经常会遇到手头有多项工作，而deadline在即的情况，这时候我们不得不变成三头六臂，多项工作同时进行：先找A商定一下协作前各自需要先完成的工作，再找B确定一下xxx，当要C工作进展到一半的时候，突然发现D工作更紧急一点，正要切换到D工作上，一个同事慢慢向你走过来，“忘记昨天我们说好今天开会的么”……
 还好，如果最后你能撑过这段时间，你可能会赢得“高效能人士”的称号，你可能会被公司领导当众表扬，你也可能从此走上人生巅峰……但是请相信我，这些都是假象，当你在这种假象中高兴过几次以后，你突然发现自己效率急剧降低，精力集中不起来，脑子越来越不好使，浑浑噩噩，最后一发不可收拾。
 为什么多任务并行最后会导致这么严重的后果呢？我认真思考了一下，感觉主要问题还是我们普通人的精力有限，压根儿承受不了两个以上任务同时进行。计算机专业有一个术语叫做“系统颠簸”，它通俗来讲是这样子的：

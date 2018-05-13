@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.32.2" />
+	<meta name="generator" content="Hugo 0.25.1" />
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
@@ -11,24 +11,24 @@
   <title>Think in Hualet &middot; Hualet Wang</title>
 
   
-  <link rel="stylesheet" href="https://hualet.org/css/poole.css">
-  <link rel="stylesheet" href="https://hualet.org/css/hyde.css">
-  <link rel="stylesheet" href="https://hualet.org/css/poole-overrides.css">
-  <link rel="stylesheet" href="https://hualet.org/css/hyde-overrides.css">
-  <link rel="stylesheet" href="https://hualet.org/css/hyde-x.css">
-  <link rel="stylesheet" href="https://hualet.org/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="http://hualet.org/css/poole.css">
+  <link rel="stylesheet" href="http://hualet.org/css/hyde.css">
+  <link rel="stylesheet" href="http://hualet.org/css/poole-overrides.css">
+  <link rel="stylesheet" href="http://hualet.org/css/hyde-overrides.css">
+  <link rel="stylesheet" href="http://hualet.org/css/hyde-x.css">
+  <link rel="stylesheet" href="http://hualet.org/css/highlight/sunburst.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
   
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://hualet.org/touch-icon-144-precomposed.png">
-  <link href="https://hualet.org/favicon.png" rel="icon">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://hualet.org/touch-icon-144-precomposed.png">
+  <link href="http://hualet.org/favicon.png" rel="icon">
 
   
   
   
-  <link href="https://hualet.org/index.xml" rel="alternate" type="application/rss+xml" title="Think in Hualet &middot; Hualet Wang" />
+  <link href="http://hualet.org/index.xml" rel="alternate" type="application/rss+xml" title="Think in Hualet &middot; Hualet Wang" />
 
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -47,7 +47,7 @@
     </div>
 
     <ul class="sidebar-nav">
-      <li class="sidebar-nav-item"><a href="https://hualet.org/">Blog</a></li>
+      <li class="sidebar-nav-item"><a href="http://hualet.org/">Blog</a></li>
       
     </ul>
 
@@ -61,13 +61,13 @@
       
       <a href="https://twitter.com/Hualet"><i class="fa fa-twitter-square fa-3x"></i></a>
       
-      <a href="https://hualet.org/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      <a href="http://hualet.org/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
       </li>
     </ul>
 
     
 
-    <p>Copyright &copy; 2018 <a href="https://hualet.org/license/">License</a><br/>
+    <p>Copyright &copy; 2018 <a href="http://hualet.org/license/">License</a><br/>
        Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
   </div>
 </div>
@@ -79,28 +79,51 @@
     
     <div class="post">
       <h1 class="post-title">
-        <a href="https://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">初探Linux内核态——通过proc文件系统作快速问题定位</a>
+        <a href="http://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/">自制 Profiler 第一部分</a>
+      </h1>
+      <span class="post-date">May 13, 2018
+      </span>
+      
+      ​ 最近对性能剖析的技术颇感兴趣。好不容易来了三分钟热度，自然不能浪费，因此在余热消失之前研究并实践了其中一部分细节，对于其中一些知识点，个人感觉对于自身编程能力提升还是比较有益的，因此在这里写出来，抛砖引玉。
+Linux profiler简介 ​ 性能剖析的工具，其实在Linux平台还是挺多的，比如小巧实用的strace、ltrace、latrace，大名鼎鼎的google-perftools、gprof、valgrind，以及瑞士军刀型的linux-perf等等，它们主要分为三个阵营，一个是针对程序执行的性能进行剖析，对程序执行的热点进行分析，如*trace、gprof这些工具；另一个是针对程序运行过程中内存的使用进行剖析，方便针对性地做内存优化，如valgrind；最后一部分就是“脚踏两条船”的，两个我都做，比如google-perftools、linux-perf这些，我们这个系列主要集中在“针对程序执行的性能进行剖析”方面。
+Profiler的本质 ​ 要自制Profiler，首先要知道Profiler的本质是什么。简单来说，Profiler的本质其实就是在程序执行的过程中对程序正在“做什么”进行搜集和统计，如何搜集呢？无非两种：
+ Instrumentaion - 程序主动Profiler告诉它在做什么； Sampling - Profiler自己间断性地去看程序在做什么；  前者的实现主要依靠程序运行时提供的某些钩子机制、代码插桩等方式，例如gprof主要是依靠 gcc 在编译程序的时候”夹带私货“来达到程序运行的时候主动提供给gprof采样样本，来达到事后分析的目的[1]。这种方式相对来说虽然比较可靠、准确，但是对于无法控制编译条件的程序就比较无可奈何了。
+后者的实现则主要是定期对程序当前执行的指令和对程序执行的函数堆栈进行回溯（unwind）来尽量还原程序执行的过程，例如google-perftools就是采用这种方式，这种情况下，采样的周期就显得尤为重要。
+​ 对比以上两种方式，我们果断采用第二种。
+​ PS: 这里需要说明一下的是，利用ptrace系统调用完成工作的strace和ltrace，虽然不依赖编译器夹带私货，但是相当于依赖了内核的“钩子”，不属于sampling的范围；同样，latrace则是依赖了ld的LD_AUDIT“钩子”，也不属于sampling的范围。
+Profiler启动 ​ 那么问题又来了，ptrace没得用，我们怎么去获取被剖析程序的执行状态呢？总不至于profiler要搞成root权限的吧？答案是：不，内核管天管地，总管不到程序自己偷看自己的数据吧？我们想办法把我们的代码塞到被剖析程序中去就可以了！
+​ 刚才提到了ld的LD_AUDIT，这次就轮到它的兄弟——大名鼎鼎的LD_PRELOAD——登场了。想法是这样的，我们的profiler其实只需要在程序开始的时候执行一个定时器，以后每次定时器执行的时候去抓取我们的样本就OK了，所以我们完全可以把自己伪装成一个人畜无害的动态库，等到别个程序有意无意加载到我们，哼哼……事实上，很多profiler都是采取类似的策略，比如google-perftools，再比如heaptrack等等。
+编码实战 ​ 废话少说，放码过来！
+​ 我们在QtCreator中创建一个动态库项目 simple-profiler，主类 SimpleProfiler。首先，我们需要设置好我们的定时器：
+void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;m_tick, nullptr); if ( ret != 0) { fprintf(stderr, &quot;failed to enable profiler: %s&quot;, strerror(errno)); } }  根据 setitimer 的man文档，计时器主要有三种类型：
+ ITIMER_REAL 这个计时器是根据墙上时间进行倒计时，最终触发 SIGALRM 信号； ITIMER_VIRTUAL 这个计时器是根据进程花费在用户空间的 CPU 时间进行倒计时的，最终触发 SIGVTALRM 信号； ITIMER_PROF 这个计时器是根据进程话费在用户空间和内核空间的 CPU 时间进行倒计时的，最终触发 SIGPROF 信号；  个人认为，假如都是用在 profiler 上的话，第一种计时器用来查找程序执行慢（某个函数有IO等情况）的瓶颈比较有效果；后两种计时器用来查找程序 CPU 占用瓶颈比较有效果。不过使用第一种计时器的话，对被追踪程序的执行影响相较于后两者就比较大了，所以这里采用第三种计时器。
+      <a href="http://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="http://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">初探Linux内核态——通过proc文件系统作快速问题定位</a>
       </h1>
       <span class="post-date">Jan 23, 2018
       </span>
       
       文章翻译自 Peeking into Linux kernel-land using /proc filesystem for quick’n’dirty troubleshooting
 这篇博客的内容完全是关于现代Linux内核的。换句话说，指的是与RHEL6一样使用的2.6.3x系列内核，而不是古老的RHEL5所使用的2.6.18内核（都什么鬼了？！），虽然大部分企业都还在使用RHEL5。另外，这篇文章也不会涉及内核调试器或者SystemTap脚本之类的东西，完全是最最简单地在有用的proc文件系统节点上执行“cat /proc/PID/xyz”这样的命令。
-#定位一个程序“运行缓慢”的问题
-下面要举的这个例子是这样的：一个DBA反映说他们的find命令一直运行缓慢，半天都没有什么输出，他们想知道这是为什么。听到这个问题的时候我就大概有直觉造成这个问题的原因，但是他们还是想知道怎么系统地追踪这类问题，并找到解决方案。刚好出问题的现场还在……
+定位一个程序“运行缓慢”的问题 下面要举的这个例子是这样的：一个DBA反映说他们的find命令一直运行缓慢，半天都没有什么输出，他们想知道这是为什么。听到这个问题的时候我就大概有直觉造成这个问题的原因，但是他们还是想知道怎么系统地追踪这类问题，并找到解决方案。刚好出问题的现场还在……
 还好，系统是运行在OEL6上的，内核比较新，确切地说是2.6.39 UEK2。
 首先，让我们看看find进程是否还在：
 [root@oel6 ~]# ps -ef | grep find root 27288 27245 4 11:57 pts/0 00:00:01 find . -type f root 27334 27315 0 11:57 pts/1 00:00:00 grep find  跑的好好的，PID是27288（请记好这个将会伴随整篇博客的数字）。
 那么，我们就从最基础的开始分析它的瓶颈：如果它不是被什么操作卡住了（例如从cache中加载它所需要的内容），它应该是100%的CPU占用率；如果它的瓶颈在IO或者资源竞争，那么它应该是很低的CPU占用率，或者是%0。
 我们先看下top：
 [root@oel6 ~]# top -cbp 27288 top - 11:58:15 up 7 days, 3:38, 2 users, load average: 1.21, 0.65, 0.47 Tasks: 1 total, 0 running, 1 sleeping, 0 stopped, 0 zombie Cpu(s): 0.
-      <a href="https://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">Read On &rarr;</a>
+      <a href="http://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="https://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/">15.5研发心得</a>
+        <a href="http://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/">15.5研发心得</a>
       </h1>
       <span class="post-date">Dec 4, 2017
       </span>
@@ -133,13 +156,13 @@ live修复系统为了保持简单、简洁，目前除了必要的浏览器、�
 在可预计的将来，应该会有更多实用工具登陆live修复系统，让你进入live修复系统，就感觉到自己像是被武装到了牙齿。
 其他 每次介绍新功能，都不得不辟一个“其他”的栏目，因为新的变动实在太多，其中有些像网易云音乐新版一样，内部真刀实枪地大改造（用qcef替换原来的webkit），但是用户可能不会有太多直接感知的；还有一些“彩蛋”类的像是本次的“自动色温调节”，有些用户发现这个功能后溢于言表，幸福感可能都超过了使用这个功能本身的；另外的一些工具类，如Wi-Fi热点、VPN导入导出的工具类功能，天生就是理科男的命——绿叶。
 在deepin系统的完整度方面，指纹识别算是这次的另外一个亮点了，如果你的电脑配备了指纹识别器，那么升级到15.5，你将从输入密码这项繁琐的工作中解放出来，一切都是那么顺滑。
-      <a href="https://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/">Read On &rarr;</a>
+      <a href="http://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="https://hualet.org/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/">给小崔的基础管理课</a>
+        <a href="http://hualet.org/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/">给小崔的基础管理课</a>
       </h1>
       <span class="post-date">Nov 5, 2017
       </span>
@@ -159,7 +182,7 @@ live修复系统为了保持简单、简洁，目前除了必要的浏览器、�
     
     <div class="post">
       <h1 class="post-title">
-        <a href="https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">神奇的isatty</a>
+        <a href="http://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">神奇的isatty</a>
       </h1>
       <span class="post-date">Aug 29, 2017
       </span>
@@ -177,13 +200,13 @@ The `apt` command is meant to be pleasant for end users and does not need to be 
 他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。
 我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
 我：“你是不是记错了，有isatty，unistd.h里面的……”
-      <a href="https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">Read On &rarr;</a>
+      <a href="http://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">输入法消失之谜</a>
+        <a href="http://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">输入法消失之谜</a>
       </h1>
       <span class="post-date">Aug 5, 2017
       </span>
@@ -205,13 +228,13 @@ $ killall sogou-qimpanel &amp;&amp; strace -e open sogou-qimpanel  打印着打�
 第五步： 看来要祭出大杀器systemtap了，随手写（抄）了一个stp：
 probe syscall.open.return { printf(&quot;%s %s&quot;, filename, execname()) }  运行失败……
 WARNING: never-assigned local variable 'filename' (similar: name, __nr, retstr): identifier 'filename' at sogou_qimpanel_open.stp:2:20 source: printf(&quot;%s, %s&quot;, filename, execname())  请教公司另外一大神，大神表示“你装一下kernel的debug包就行了……” 结果，还是不行……坑……
-      <a href="https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">Read On &rarr;</a>
+      <a href="http://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="https://hualet.org/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/">2016年终总结</a>
+        <a href="http://hualet.org/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/">2016年终总结</a>
       </h1>
       <span class="post-date">Jan 2, 2017
       </span>
@@ -236,7 +259,7 @@ WARNING: never-assigned local variable 'filename' (similar: name, __nr, retstr):
     
     <div class="post">
       <h1 class="post-title">
-        <a href="https://hualet.org/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/">12月10日回洛阳记</a>
+        <a href="http://hualet.org/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/">12月10日回洛阳记</a>
       </h1>
       <span class="post-date">Dec 14, 2016
       </span>
@@ -253,7 +276,7 @@ WARNING: never-assigned local variable 'filename' (similar: name, __nr, retstr):
     
     <div class="post">
       <h1 class="post-title">
-        <a href="https://hualet.org/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/">楼兰餐厅</a>
+        <a href="http://hualet.org/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/">楼兰餐厅</a>
       </h1>
       <span class="post-date">Dec 5, 2016
       </span>
@@ -270,47 +293,71 @@ WARNING: never-assigned local variable 'filename' (similar: name, __nr, retstr):
     
     <div class="post">
       <h1 class="post-title">
-        <a href="https://hualet.org/blog/2016/10/30/things-about-kernel-updates-on-deepin/">Things about kernel updates on deepin</a>
+        <a href="http://hualet.org/blog/2016/10/30/things-about-kernel-updates-on-deepin/">Things about kernel updates on deepin</a>
       </h1>
       <span class="post-date">Oct 30, 2016
       </span>
       
       There were discussions about kernel updates on both deepin forum and deepin telegram group. Users are curious about why security updates are always being lag on deepin, and why there&rsquo;s no newer version kernel for so long. I explained it in telegram group, here I&rsquo;ll do it again in case someone&rsquo;s interested:
 As we all know, deepin&rsquo;s maintaining kernel by ourselves now, based on version 4.4 LTS, our kernel gets patches by our kernel team, from Debian and also from Ubuntu (Yes, we do!
-      <a href="https://hualet.org/blog/2016/10/30/things-about-kernel-updates-on-deepin/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="https://hualet.org/blog/2016/10/27/%E5%B7%A5%E4%BD%9C%E6%95%88%E7%8E%87%E6%9D%80%E6%89%8B-%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%B9%B6%E8%A1%8C/">工作效率杀手-多任务并行</a>
-      </h1>
-      <span class="post-date">Oct 27, 2016
-      </span>
-      
-      日常工作中，我们经常会遇到手头有多项工作，而deadline在即的情况，这时候我们不得不变成三头六臂，多项工作同时进行：先找A商定一下协作前各自需要先完成的工作，再找B确定一下xxx，当要C工作进展到一半的时候，突然发现D工作更紧急一点，正要切换到D工作上，一个同事慢慢向你走过来，“忘记昨天我们说好今天开会的么”……
-还好，如果最后你能撑过这段时间，你可能会赢得“高效能人士”的称号，你可能会被公司领导当众表扬，你也可能从此走上人生巅峰……但是请相信我，这些都是假象，当你在这种假象中高兴过几次以后，你突然发现自己效率急剧降低，精力集中不起来，脑子越来越不好使，浑浑噩噩，最后一发不可收拾。
-为什么多任务并行最后会导致这么严重的后果呢？我认真思考了一下，感觉主要问题还是我们普通人的精力有限，压根儿承受不了两个以上任务同时进行。计算机专业有一个术语叫做“系统颠簸”，它通俗来讲是这样子的：
- 就是当系统内存不够，而又有多个程序同时运行的时候，不活跃的程序会被放置到内存之外，当它再次变成活跃程序的时候，再将它换回到内存中，将另外的程序换出，当系统持续处于这种情况时，整个系统处于机器不稳定、不流畅的状态，就叫系统颠簸；
- 而我们人类也有系统颠簸的情况，就像上面我说的。
-自从我从一名普通的程序员变成管项目的程序员之后，多任务并行在我身上上演了无数次：同时担任项目经理、技术主管、程序员、四分之一个产品经理和十分之一个客服这几个角色；最开始还忙得乐此不疲，但是中国的一句老话说得好，“出来混迟早要还的”……一年多下来，我从一个精神饱满的小青年，眼睁睁就变成了现在目光呆滞、思维缓慢、精力极度不集中的小青年，饱受痛苦。
-所以，我也一直在思考着如果才能从根本上杜绝这种多任务并行（被同事打扰也算）的发生，但是也请不要理解错误，并不是什么所有的任务都不能同时进行，比如《这样工作最高效》里面就介绍说，检查邮件和开会、编译代码和阅读文章 这样的例子是适合多任务并行的，只要不会让同事感到尴尬就行。那么如何很好地保护自己的工作效率不要被多任务并行给“杀”掉呢？
-我想到的大概有两种方式：
- 把时间分成小段 这种方式比较类似于番茄工作法，比如我们把一天的工作定为10个番茄中，每个番茄钟半小时，这半个小时中我们集中精力在一件事情上面，专注于这件工作直至它完成，每两个番茄钟之前有15分钟的休息时间，这段时间可以用来休息，也可以用来解决同事临时过来需要处理的紧急事情。这样一天下来，我们只要保证每个番茄钟内是非常高效的，这一天就能保证是高效。
- 把时间分成大段 这种方式更简单，直接把上午定义为“杂碎期”，下午定义为“专注期”，“杂碎期”用于处理各种计划安排、闲聊、和同事沟通、开会等；“专注期”则专注于自己需要独立完成的工作，这段时间内不要受到任务打扰，保证工作的高效。
-  总而言之，要让我们的大脑保持专注，而不是在不同的任务间切来切去；跟同事沟通好自己的时间安排，避免过多被打扰；做一个高效率的人。
-差点忘了说，我目前正在践行第二种方式，目前感觉良好，希望也能帮到跟我有同样问题的人。
-      
+      <a href="http://hualet.org/blog/2016/10/30/things-about-kernel-updates-on-deepin/">Read On &rarr;</a>
       
     </div>
     
     
+
+<ul class="pagination">
+    
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li
+    class="disabled">
+    <a href="" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    class="active"><a href="/">1</a></li>
+    
+    
+    
+    
+    
+     
+        
+        
+    
+    
+    <li
+    ><a href="/page/2/">2</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/2/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/2/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
 
   </div>
 </div>
 
 
-<script src="https://hualet.org/js/highlight.pack.js"></script>
+<script src="http://hualet.org/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
