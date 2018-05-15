@@ -15,14 +15,14 @@ date: 2018-05-14T14:19:37+08:00
 
 想要在内存中解析出我们想要的函数调用栈，首先我们需要知道的就是一个程序的stack 段里面各个栈帧是如何布局的，要搞清楚这个，我们还需要了解一个概念叫：[调用约定](https://en.wikipedia.org/wiki/Calling_convention)（Calling Convention），调用约定主要约定了（好绕）：
 
-- 函数的参数是如何传递的，是全都放到寄存器，还是全都放在 stack 段，还是混用两者（好像gcc之前是使全用寄存器，后来换成了全用stack）；
+- 函数的参数是如何传递的，是全都放到寄存器，还是全都放在 stack 段，还是混用两者；
 - 函数的参数是按什么顺序放置到内存中的；
 - 函数中的本地变量是如何分配的；
 - 子函数调用是如何返回的；
 - 子函数的栈帧是如何清理的；
 - 等等
 
-所以，调用约定基本上决定了函数调用中每个栈帧的产生、压栈、出栈对内存布局的影响，而这个约定是因架构和平台而异的。我们这里只关注x86\_64 平台下的 [cdecl](https://en.wikipedia.org/wiki/X86_calling_conventions#cdecl) 约定。
+所以，调用约定基本上决定了函数调用中每个栈帧的产生、压栈、出栈对内存布局的影响，而这个约定是因架构和平台而异的。我们这里只关注x86 平台下的 [cdecl](https://en.wikipedia.org/wiki/X86_calling_conventions#cdecl) 约定。
 
 在这个约定下，假如我们有一个函数 `DrawSqure` 调用了 `DrawLine` （例子来自[Wikipedia](https://en.wikipedia.org/wiki/Call_stack)），那么程序内存布局中的 stack 段就应该是类似下图所示：
 
