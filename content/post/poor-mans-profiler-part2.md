@@ -26,13 +26,13 @@ date: 2018-05-14T14:19:37+08:00
 
 在这个约定下，假如我们有一个函数 `DrawSqure` 调用了 `DrawLine` （例子来自[Wikipedia](https://en.wikipedia.org/wiki/Call_stack)），那么程序内存布局中的 stack 段就应该是类似下图所示：
 
-![call stack](//hualet.github.io/img/2018/05/14/Call_stack_layout.svg)
+![call stack](/img/2018/05/14/Call_stack_layout.svg)
 
 每个函数调用即创建一个栈帧，每个栈帧一次压入 stack 中。
 
 其中，`Stack Pointer`(`esp`) 永远指向栈顶， `Frame Pointer`(`ebp`) 指向当前栈帧的中一个固定的地方（基地址）；函数参数以从右往左的顺序依次压栈，然后是压入`Return Address` ，它是当前函数（或者栈帧）执行完成后，程序要继续执行的指令地址， 同时压入父函数的栈帧基地址（`Saved EBP`），它是当前函数执行完成以后，`Stack Pointer` 和 `Frame Pointer` 将会指向的地方，基于这个地址，程序指令可以方便地访问函数本地变量（`ebp`负向偏移）和函数参数（`ebp`正向偏移）。 
 
-![stack info](//hualet.github.io/img/2018/05/14/stackIntro.png)
+![stack info](/img/2018/05/14/stackIntro.png)
 
 结合上面两张图，其实可以看出，每个栈帧其实都保存了上一个栈帧的基地址，因此所有的栈帧最终组成了一个链表，这也就是我们能拿到函数堆栈的理论基础了。
 

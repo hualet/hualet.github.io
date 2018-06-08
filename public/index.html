@@ -11,24 +11,24 @@
   <title>Think in Hualet &middot; Hualet Wang</title>
 
   
-  <link rel="stylesheet" href="http://hualet.org/css/poole.css">
-  <link rel="stylesheet" href="http://hualet.org/css/hyde.css">
-  <link rel="stylesheet" href="http://hualet.org/css/poole-overrides.css">
-  <link rel="stylesheet" href="http://hualet.org/css/hyde-overrides.css">
-  <link rel="stylesheet" href="http://hualet.org/css/hyde-x.css">
-  <link rel="stylesheet" href="http://hualet.org/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://hualet.org/css/poole.css">
+  <link rel="stylesheet" href="https://hualet.org/css/hyde.css">
+  <link rel="stylesheet" href="https://hualet.org/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://hualet.org/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://hualet.org/css/hyde-x.css">
+  <link rel="stylesheet" href="https://hualet.org/css/highlight/sunburst.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   
 
   
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://hualet.org/touch-icon-144-precomposed.png">
-  <link href="http://hualet.org/favicon.png" rel="icon">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://hualet.org/touch-icon-144-precomposed.png">
+  <link href="https://hualet.org/favicon.png" rel="icon">
 
   
   
   
-  <link href="http://hualet.org/index.xml" rel="alternate" type="application/rss+xml" title="Think in Hualet &middot; Hualet Wang" />
+  <link href="https://hualet.org/index.xml" rel="alternate" type="application/rss+xml" title="Think in Hualet &middot; Hualet Wang" />
 
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -47,7 +47,7 @@
     </div>
 
     <ul class="sidebar-nav">
-      <li class="sidebar-nav-item"><a href="http://hualet.org/">Blog</a></li>
+      <li class="sidebar-nav-item"><a href="https://hualet.org/">Blog</a></li>
       
     </ul>
 
@@ -61,13 +61,13 @@
       
       <a href="https://twitter.com/Hualet"><i class="fa fa-twitter-square fa-3x"></i></a>
       
-      <a href="http://hualet.org/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      <a href="https://hualet.org/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
       </li>
     </ul>
 
     
 
-    <p>Copyright &copy; 2018 <a href="http://hualet.org/license/">License</a><br/>
+    <p>Copyright &copy; 2018 <a href="https://hualet.org/license/">License</a><br/>
        Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
   </div>
 </div>
@@ -79,7 +79,7 @@
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2018/05/14/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E8%B0%83%E7%94%A8%E6%A0%88%E5%9B%9E%E6%BA%AF/">自制 Profiler 第二部分——调用栈回溯</a>
+        <a href="https://hualet.org/blog/2018/05/14/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E8%B0%83%E7%94%A8%E6%A0%88%E5%9B%9E%E6%BA%AF/">自制 Profiler 第二部分——调用栈回溯</a>
       </h1>
       <span class="post-date">May 14, 2018
       </span>
@@ -95,13 +95,13 @@
 结合上面两张图，其实可以看出，每个栈帧其实都保存了上一个栈帧的基地址，因此所有的栈帧最终组成了一个链表，这也就是我们能拿到函数堆栈的理论基础了。
 （注：上面只是粗略的讲解，参考链接 [1] 非常详细的描述了函数调用的过程中栈帧、stack 段和esp、ebp寄存器的变化，如果感兴趣，可以详细了解一下。）
 参考方案 看完上面一大串概念以后，我们发现如果我们要按照函数约定的方式去获取函数调用堆栈，可以，但是太过蛋疼，而且不跨平台，很难受。 所以秉承不要重复造轮子的优良传统，我们发现有几个方式可以简单地获取到函数调用栈：
-      <a href="http://hualet.org/blog/2018/05/14/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E8%B0%83%E7%94%A8%E6%A0%88%E5%9B%9E%E6%BA%AF/">Read On &rarr;</a>
+      <a href="https://hualet.org/blog/2018/05/14/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%E8%B0%83%E7%94%A8%E6%A0%88%E5%9B%9E%E6%BA%AF/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/">自制 Profiler 第一部分</a>
+        <a href="https://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/">自制 Profiler 第一部分</a>
       </h1>
       <span class="post-date">May 13, 2018
       </span>
@@ -119,13 +119,13 @@ Profiler启动 ​ 那么问题又来了，ptrace没得用，我们怎么去获�
 ​ 我们在QtCreator中创建一个动态库项目 simple-profiler，主类 SimpleProfiler。首先，我们需要设置好我们的定时器：
 void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;m_tick, nullptr); if ( ret != 0) { fprintf(stderr, &quot;failed to enable profiler: %s&quot;, strerror(errno)); } }  根据 setitimer 的man文档，计时器主要有三种类型：
  ITIMER_REAL 这个计时器是根据墙上时间进行倒计时，最终触发 SIGALRM 信号； ITIMER_VIRTUAL 这个计时器是根据进程花费在用户空间的 CPU 时间进行倒计时的，最终触发 SIGVTALRM 信号； ITIMER_PROF 这个计时器是根据进程话费在用户空间和内核空间的 CPU 时间进行倒计时的，最终触发 SIGPROF 信号；  个人认为，假如都是用在 profiler 上的话，第一种计时器用来查找程序执行慢（某个函数有IO等情况）的瓶颈比较有效果；后两种计时器用来查找程序 CPU 占用瓶颈比较有效果。不过使用第一种计时器的话，对被追踪程序的执行影响相较于后两者就比较大了，所以这里采用第三种计时器。
-      <a href="http://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/">Read On &rarr;</a>
+      <a href="https://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">初探Linux内核态——通过proc文件系统作快速问题定位</a>
+        <a href="https://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">初探Linux内核态——通过proc文件系统作快速问题定位</a>
       </h1>
       <span class="post-date">Jan 23, 2018
       </span>
@@ -139,13 +139,13 @@ void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;m_t
 那么，我们就从最基础的开始分析它的瓶颈：如果它不是被什么操作卡住了（例如从cache中加载它所需要的内容），它应该是100%的CPU占用率；如果它的瓶颈在IO或者资源竞争，那么它应该是很低的CPU占用率，或者是%0。
 我们先看下top：
 [root@oel6 ~]# top -cbp 27288 top - 11:58:15 up 7 days, 3:38, 2 users, load average: 1.21, 0.65, 0.47 Tasks: 1 total, 0 running, 1 sleeping, 0 stopped, 0 zombie Cpu(s): 0.
-      <a href="http://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">Read On &rarr;</a>
+      <a href="https://hualet.org/blog/2018/01/23/%E5%88%9D%E6%8E%A2linux%E5%86%85%E6%A0%B8%E6%80%81%E9%80%9A%E8%BF%87proc%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BD%9C%E5%BF%AB%E9%80%9F%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/">15.5研发心得</a>
+        <a href="https://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/">15.5研发心得</a>
       </h1>
       <span class="post-date">Dec 4, 2017
       </span>
@@ -178,13 +178,13 @@ live修复系统为了保持简单、简洁，目前除了必要的浏览器、�
 在可预计的将来，应该会有更多实用工具登陆live修复系统，让你进入live修复系统，就感觉到自己像是被武装到了牙齿。
 其他 每次介绍新功能，都不得不辟一个“其他”的栏目，因为新的变动实在太多，其中有些像网易云音乐新版一样，内部真刀实枪地大改造（用qcef替换原来的webkit），但是用户可能不会有太多直接感知的；还有一些“彩蛋”类的像是本次的“自动色温调节”，有些用户发现这个功能后溢于言表，幸福感可能都超过了使用这个功能本身的；另外的一些工具类，如Wi-Fi热点、VPN导入导出的工具类功能，天生就是理科男的命——绿叶。
 在deepin系统的完整度方面，指纹识别算是这次的另外一个亮点了，如果你的电脑配备了指纹识别器，那么升级到15.5，你将从输入密码这项繁琐的工作中解放出来，一切都是那么顺滑。
-      <a href="http://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/">Read On &rarr;</a>
+      <a href="https://hualet.org/blog/2017/12/04/15.5%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/">给小崔的基础管理课</a>
+        <a href="https://hualet.org/blog/2017/11/05/%E7%BB%99%E5%B0%8F%E5%B4%94%E7%9A%84%E5%9F%BA%E7%A1%80%E7%AE%A1%E7%90%86%E8%AF%BE/">给小崔的基础管理课</a>
       </h1>
       <span class="post-date">Nov 5, 2017
       </span>
@@ -204,7 +204,7 @@ live修复系统为了保持简单、简洁，目前除了必要的浏览器、�
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">神奇的isatty</a>
+        <a href="https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">神奇的isatty</a>
       </h1>
       <span class="post-date">Aug 29, 2017
       </span>
@@ -222,13 +222,13 @@ The `apt` command is meant to be pleasant for end users and does not need to be 
 他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。
 我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
 我：“你是不是记错了，有isatty，unistd.h里面的……”
-      <a href="http://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">Read On &rarr;</a>
+      <a href="https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">输入法消失之谜</a>
+        <a href="https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">输入法消失之谜</a>
       </h1>
       <span class="post-date">Aug 5, 2017
       </span>
@@ -250,13 +250,13 @@ $ killall sogou-qimpanel &amp;&amp; strace -e open sogou-qimpanel  打印着打�
 第五步： 看来要祭出大杀器systemtap了，随手写（抄）了一个stp：
 probe syscall.open.return { printf(&quot;%s %s&quot;, filename, execname()) }  运行失败……
 WARNING: never-assigned local variable 'filename' (similar: name, __nr, retstr): identifier 'filename' at sogou_qimpanel_open.stp:2:20 source: printf(&quot;%s, %s&quot;, filename, execname())  请教公司另外一大神，大神表示“你装一下kernel的debug包就行了……” 结果，还是不行……坑……
-      <a href="http://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">Read On &rarr;</a>
+      <a href="https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">Read On &rarr;</a>
       
     </div>
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/">2016年终总结</a>
+        <a href="https://hualet.org/blog/2017/01/02/2016%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/">2016年终总结</a>
       </h1>
       <span class="post-date">Jan 2, 2017
       </span>
@@ -281,7 +281,7 @@ WARNING: never-assigned local variable 'filename' (similar: name, __nr, retstr):
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/">12月10日回洛阳记</a>
+        <a href="https://hualet.org/blog/2016/12/14/12%E6%9C%8810%E6%97%A5%E5%9B%9E%E6%B4%9B%E9%98%B3%E8%AE%B0/">12月10日回洛阳记</a>
       </h1>
       <span class="post-date">Dec 14, 2016
       </span>
@@ -298,7 +298,7 @@ WARNING: never-assigned local variable 'filename' (similar: name, __nr, retstr):
     
     <div class="post">
       <h1 class="post-title">
-        <a href="http://hualet.org/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/">楼兰餐厅</a>
+        <a href="https://hualet.org/blog/2016/12/05/%E6%A5%BC%E5%85%B0%E9%A4%90%E5%8E%85/">楼兰餐厅</a>
       </h1>
       <span class="post-date">Dec 5, 2016
       </span>
@@ -366,7 +366,7 @@ WARNING: never-assigned local variable 'filename' (similar: name, __nr, retstr):
 </div>
 
 
-<script src="http://hualet.org/js/highlight.pack.js"></script>
+<script src="https://hualet.org/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
