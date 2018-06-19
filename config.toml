@@ -17,6 +17,7 @@ theme = "hyde-x"
     highlight = "sunburst"
     
     gravatarHash = "d07d3626f19b0a5c353eff86d03d0e8f"
+	googleAnalytics = "UA-121092907-1"
     
     tagline = "Think in Hualet"
     
