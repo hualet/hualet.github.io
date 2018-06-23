@@ -1,6 +1,7 @@
 baseURL = "https://hualet.org/"
 languageCode = "zh-cn"
 title = "Think in Hualet"
+disqusShortname = "Zwpa7VvDyo"
 
 theme = "hyde-x"
 
