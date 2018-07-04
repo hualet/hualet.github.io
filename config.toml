@@ -8,10 +8,18 @@ theme = "hyde-x"
 [author]
     name = "Hualet Wang"
 
+[menus]
+	[[menu.main]]
+	    identifier = "Blogroll"
+		name = "Blogroll"
+		url = "/blogroll/"
+
 [permalinks]
     post = "/blog/:year/:month/:day/:title/"
 
 [params]
+
+	home = "Home"
 
     hideReadingTime = true
     

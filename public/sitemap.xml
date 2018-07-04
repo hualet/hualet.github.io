@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://hualet.org/blogroll/</loc>
+    <lastmod>2018-07-04T23:17:40+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hualet.org/blog/2018/06/18/%E8%87%B4%E7%8E%8B%E5%8B%87/</loc>
     <lastmod>2018-06-18T20:25:10+08:00</lastmod>
   </url>
@@ -95,7 +100,7 @@
   
   <url>
     <loc>https://hualet.org/</loc>
-    <lastmod>2018-06-18T20:25:10+08:00</lastmod>
+    <lastmod>2018-07-04T23:17:40+08:00</lastmod>
     <priority>0</priority>
   </url>
   
