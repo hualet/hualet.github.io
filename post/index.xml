@@ -6,10 +6,27 @@
     <description>Recent content in Posts on Think in Hualet</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 02 Sep 2018 10:27:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 17 Sep 2018 15:23:47 +0800</lastBuildDate>
     
 	<atom:link href="https://hualet.org/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>关于 deepin-code-release 的一点新的思考</title>
+      <link>https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/</link>
+      <pubDate>Mon, 17 Sep 2018 15:23:47 +0800</pubDate>
+      
+      <guid>https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/</guid>
+      <description>为什么要做 deepin-code-release 呢？其实我们在 deepin-code-release 的 README.md 中写得挺详细了：
+ 从deepin项目启动开始，伴随着越来越多的deepin子项目产生，不同开源/商业定制版本的分割加剧，项目间的版本依赖问题、上游项目的patch丢失问题和系统环境无法恢复问题越来越严重，我们迫切需要一个统一的系统来帮助我们记录不同版本的ISO/软件仓库的状态，做各个子项目版本的版本控制和patch的版本控制，以达到快速恢复开发/系统环境，进而使针对不同系统版本的开发更加高效。
+deepin release系统就是这样一个辅助系统，它的目标在于将它的每一个状态都对应到我们所有发布的ISO/软件仓库状态、每一个针对ISO/软件仓库的改动都能反映到这个仓库的改动上。
+ 简而言之，deepin-code-release 是版本的版本控制管理工具，用来管理 deepin 众多“轮子”项目的版本号的，每次系统发布都需要进行一次记录，方便以后开发修问题的时候能找到当时的代码进行bug修复。
+为了确保记录的准确，它的想法是这样的，每次（系统）发布前，深度的程序员各自检查一下自己负责的项目，如果需要跟随系统进行发布，就提交 CL 到 deepin-code-release 项目，这个 CL 会自动触发项目在对应仓库的打包，并且将打包结果反馈到 CL 的 Code Review 评分上，+1 分的就进行合并，反之闭门思过解决问题后再次提交，直到成功合并。
+问题 以上需求还是听简单明确的，但是在目前的实现上却有一个问题：使用了 git-submodule 进行子项目的管理，再加上其他几个没有考虑的情况，这导致了好多小问题，以至于推行到现在还是阻碍重重：
+1. 使用起来比较麻烦 deepin 的项目都是放在 gerrit 上的，它并没有一个统一的 git 用户（类似git@github.com中的git），所以同一个项目在不同开发人员的机器上的项目地址是不一样的，当成 submodule 放到 deepin-code-release 这个项目中以后，必须驱动项目地址中的用户名部分，再在 ~/.config/ssh 中添加一些额外的配置（参见 README.md ）。
+2. submodule 用起来比较别扭 最直接、也是抱怨最多的一点，是大家平常使用 git submodule 系列的命令并不多，所以对操作 git submodule 有不太习惯，而且就算是我比较熟练了，也总觉得 git submodule update 这个有点反直觉，感觉上应该是类似 git pull --recurse-submodules 的功能，但是实际上并不是这样。以至于很多人一不小心，把别个辛辛苦苦提交的更新又给退回去了。
+3. 多了一个额外的仓库 原本的打算是每个开发都只需要克隆一个 deepin-code-release 项目，然后在其中 init 自己负责的项目并进行提交，需要关注多个项目的就按需 init 多个项目即可，但是实际推行的过程中还是发现大家并不是特别关注自己项目外的项目，deepin-code-release 里面就一个自己的项目初始化了，而且用着还挺别扭，还不如自己单独克隆一份，结果就每个开发上面既有一个自己项目的仓库，还要有一个包含了自己项目仓库的 deepin-code-release 项目，也是抱怨声颇多。</description>
+    </item>
     
     <item>
       <title>15.7 研发心得——最好版本的台前幕后</title>
