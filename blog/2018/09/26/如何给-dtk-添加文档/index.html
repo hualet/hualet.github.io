@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>如何给 DTK 添加文档 &middot; Hualet Wang</title>
+
+  
+  <link rel="stylesheet" href="https://hualet.org/css/poole.css">
+  <link rel="stylesheet" href="https://hualet.org/css/hyde.css">
+  <link rel="stylesheet" href="https://hualet.org/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://hualet.org/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://hualet.org/css/hyde-x.css">
+  <link rel="stylesheet" href="https://hualet.org/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://hualet.org/touch-icon-144-precomposed.png">
+  <link href="https://hualet.org/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-121092907-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+        <img src="https://www.gravatar.com/avatar/d07d3626f19b0a5c353eff86d03d0e8f?s=200"
+             alt="gravatar" title="Hualet Wang">
+      
+      <h1>Hualet Wang</h1>
+      <p class="lead">Think in Hualet</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://hualet.org/">Home</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://hualet.org/blogroll/">Blogroll</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/hualet"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      <a href="https://plus.google.com/&#43;%E8%80%80%E5%8D%8E%E7%8E%8B"><i class="fa fa-google-plus-square fa-3x"></i></a>
+      
+      <a href="https://twitter.com/Hualet"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://hualet.org/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2018 <a href="https://hualet.org/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">如何给 DTK 添加文档</h1>
+    <span class="post-date">Sep 26, 2018 &middot; <a href="https://hualet.org/blog/2018/09/26/%E5%A6%82%E4%BD%95%E7%BB%99-dtk-%E6%B7%BB%E5%8A%A0%E6%96%87%E6%A1%A3/#disqus_thread">Comments</a>
+    </span>
+    
+
+<h2 id="背景">背景</h2>
+
+<p>经过几年的摸爬滚打，DTK 作为构建 deepin 全家桶的基石，一直被说的主要有两个毛病：</p>
+
+<ol>
+<li>内部人员觉得它不够稳；</li>
+<li>外部人员觉得它无从下手；</li>
+</ol>
+
+<p>第一个问题主要原因是 DTK 在最开始的时候缺失的东西太多，各种剧烈的变化同时进行，但是又没有比较好的版本控制和接口管理，所以经常是这个应用要用新版本，新版本删除了一个废弃的接口，用了旧接口的应用就崩了。由于最近 DTK 的变化日趋平稳，以及有了基本的版本控制，第一个问题渐渐淡出了人们的视野。</p>
+
+<p>第二个问题外部人员无从下手的原因是 DTK 在开发过程中并没有留下接口文档，所以目前想使用 DTK，内部靠得是口口相传，外部靠的是阅读源码，完全的石器时代……甚至连社区的小伙伴都看不下去了，自己做了一个<a href="http://deepin.lolimay.cn/">《Deepin开发指南》</a> 。</p>
+
+<p>是时候给DTK添加一下文档了！</p>
+
+<h2 id="工具选择">工具选择</h2>
+
+<p>其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。</p>
+
+<p>用什么文档工具呢？ DTK 是基于 Qt 之上的开发库，最自然的想法是使用 QDoc，但是据使用 QDoc 搭建了 <a href="https://github.com/linuxdeepin/dde-file-manager">dde-file-manager</a> 的 <a href="https://linuxdeepin.github.io/dde-file-manager/">Github Pages</a> 的 @BLumia 同学说 QDoc 对国际化的支持不是特别好，我们按道理是要支持中英双语文档的，遂放弃。除了 QDoc 以外，文档生成工具就是 Doxygen、还有一个KDE 项目自己的文档工具 KApiDox ，它们三者之间是什么关系呢？Doxygen 从 QDoc 上 fork 出来的，KApiDox 是基于 Doxygen 的封装……我没有怎么看 KApiDox ，所以就选择了 Doxygen 。</p>
+
+<h2 id="如何写">如何写</h2>
+
+<p>下面就是规则部分了。</p>
+
+<h3 id="1-文档注释位置">1. 文档注释位置</h3>
+
+<p>为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。</p>
+
+<h3 id="2-多语言">2. 多语言</h3>
+
+<p>按照 Doxygen 多语言处理的方式，需要在中文文档前添加 <code>\~chinese</code> 命令，在英文文档前添加 <code>\~english</code> 命令，这样设置 Doxyfile 中 <code>OUTPUT_LANGUAGE=Chinese</code>之后，就只会包含中文文档，而不会夹杂英文了，如：</p>
+
+<pre><code class="language-c++">/*!
+ * \~english \brief DApplication::loadTranslator loads translate file form
+ * \~english system or application data path;
+ * \~english \param localeFallback, a list of fallback locale you want load.
+ * \~english \return load success
+ *
+ * \~chinese \brief DApplication::loadTranslator 加载程序的翻译文件。
+ * \~chinese 使用这个函数需要保证翻译文件必须正确命名: 例如程序名叫 dde-dock，
+ * \~chinese 那么翻译文件在中文locale下的名称必须是 dde-dock_zh_CN.qm；翻译文件还需要放置
+ * \~chinese 在特定的位置，此函数会按照优先级顺序在以下目录中查找翻译文件：
+ * \~chinese 1. ~/.local/share/APPNAME/translations;
+ * \~chinese 2. /usr/local/share/APPNAME/translations;
+ * \~chinese 3. /usr/share/APPNAME/translations;
+ *
+ * \~chinese \param localeFallback 指定了回退的locale列表，默认只有系统locale。
+ * \~chinese \return 加载成功返回 true，否则返回 false。
+ */
+</code></pre>
+
+<h3 id="3-一般的格式">3. 一般的格式</h3>
+
+<h4 id="函数">函数</h4>
+
+<p>格式如下，函数简介第一句需要包含完整的主谓宾（<code>\brief</code>命令后的简介，如无特殊说明，均照此要求），如 “setSingleInstance 用于将程序设置成单实例“。</p>
+
+<pre><code>\brief 函数名 函数简介
+函数详细作用描述
+\param 参数名 参数作用介绍
+\return 返回值说明
+</code></pre>
+
+<p>例如:</p>
+
+<pre><code class="language-c++">/**
+ * \~chinese \brief DApplication::setSingleInstance setSingleInstance 用于将程序
+ * \~chinese 设置成单实例。
+ * \~chinese \param key 是确定程序唯一性的ID，一般使用程序的二进制名称即可。
+ *
+ * \~chinese \note 一般情况下单实例的实现使用 QSystemSemaphore，如果你的程序需要在沙箱
+ * \~chinese 环境如 flatpak 中运行，可选的一套方案是通过 DTK_DBUS_SINGLEINSTANCE 这个
+ * \~chinese 编译宏来控制单实例使用 DBus 方案。
+ *
+ * \~chinese \return 设置成功返回 true，否则返回 false。
+ */
+</code></pre>
+
+<p>输出：</p>
+
+<p><img src="img/2018/09/26/function.png" alt="class" /></p>
+
+<h4 id="类">类</h4>
+
+<p>因为类的声明一般都在头文件中，所以在源文件中写类的文档注释时需要注意，放在相应 Private 类的函数实现之后，格式如下：</p>
+
+<pre><code>\class 类名
+\brief 类简介
+类详细作用描述
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code class="language-c++">/*!
+ * \~chinese \class DApplication
+ *
+ * \~chinese \brief DApplication 是 DTK 中用于替换 QCoreApplication 相关功能实现的类。
+ * \~chinese 继承自 QApplication，并在此之上添加了一些特殊的设定，如：
+ * \~chinese - 在 FORCE_RASTER_WIDGETS 宏生效的情况下，默认设置 Qt::AA_ForceRasterWidgets 以减少 glx 相关库的加载，减少程序启动时间；
+ * \~chinese - 自动根据 applicationName 和 系统 locale 加载对应的翻译文件；
+ * \~chinese - 会根据系统gsettings中 com.deepin.dde.dapplication 的 qpixmapCacheLimit 值来设置 QPixmapCache::cacheLimit；
+ * \~chinese - 方便地通过 setSingleInstance 来实现程序的单实例。
+ *
+ * \~chinese \sa loadTranslator, setSingleInstance.
+ */
+</code></pre>
+
+<p>输出：<img src="img/2018/09/26/function.png" alt="function" /></p>
+
+<p><img src="img/2018/09/26/class.png" alt="class" /></p>
+
+<h4 id="结构体">结构体</h4>
+
+<p>结构体出声明关键字为 <code>\struct</code> 外，其余与类格式要求相同。</p>
+
+<h4 id="枚举">枚举</h4>
+
+<p>枚举的声明也是一般都在头文件中，所以在源文件中写类的文档注释时需要注意，放在所属类的文档注释之后，格式如下：</p>
+
+<pre><code>\enum 枚举名
+\brief 枚举简介
+枚举主要作用详细介绍
+\var 枚举名 枚举值 枚举值说明
+
+</code></pre>
+
+<p>需要注意枚举值使用 <code>\var</code> 命令来声明，命令之后需要先跟上枚举名，再写枚举值。例如：</p>
+
+<pre><code class="language-c++">/*!
+ *
+ * \~chinese \enum DApplication::SingleScope
+ * \~chinese DApplication::SingleScope 定义了 DApplication 单实例的效应范围。
+ *
+ * \~chinese \var DApplication::SingleScope DApplication::UserScope
+ * \~chinese 代表单实例的范围为用户范围，即同一个用户会话中不允许其他实例出现。
+ *
+ * \~chinese \var DApplication::SingleScope DApplication::SystemScope
+ * \~chinese 代表单实例的范围为系统范围，当前系统内只允许一个程序实例运行。
+ */
+</code></pre>
+
+<p>输出：</p>
+
+<p><img src="img/2018/09/26/enum.png" alt="enum" /></p>
+
+<h4 id="属性">属性</h4>
+
+<p>Doxygen 可以自动识别到 Qt 中的属性，也可以使用 <code>\property</code> 命令给属性添加文档，但是属性并不会自动关联到相应的 accessor（ getter 和 setter ） 函数，这里暂不处理，属性的文档注释写到属性的 getter 函数之上，getter 和 setter 函数可以不写文档。</p>
+
+<p>格式如下：</p>
+
+<pre><code>\property 属性名
+\brief 属性名简介
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code class="language-c++">/*!
+ * \~chinese \property DApplication::visibleMenuIcon
+ * \~chinese \brief visibleMenuIcon 属性代表了程序中菜单项是否显示图标。
+ */
+</code></pre>
+
+<p>输出：</p>
+
+<p><img src="img/2018/09/26/property.png" alt="property" /></p>
+
+<h4 id="信号">信号</h4>
+
+<p>Doxygen 可以自动识别到 Qt 的信号，我们在源文件写信号的文档时，需要使用 <code>\fn</code> 命令来给信号添加对应的文档，位置应放置在所属类的文档注释下面。格式如下：</p>
+
+<pre><code>\fn 信号名
+\brief 信号简介
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code class="language-c++">/*!
+ * \~chinese \fn DApplication::newInstanceStarted()
+ * \~chinese \brief newInstanceStarted 信号会在程序的一个新实例启动的时候被触发。
+ *
+ * \~chinese \fn DApplication::iconThemeChanged()
+ * \~chinese \brief iconThemeChanged 信号会在系统图标主题发生改变的时候被触发。
+ */
+</code></pre>
+
+<p>输出：</p>
+
+<p><img src="img/2018/09/26/signal.png" alt="signal" /></p>
+
+<h3 id="4-其他一些用法">4. 其他一些用法</h3>
+
+<p>因为写文档大家都是新手，所以其他高级用法就没有做什么特殊说明和要求了，文档中引用本类、其他类或者函数只需要写上相应的名称即可，非常简单。另外，也非常鼓励使用 <code>\sa</code> 和 <code>\example</code> 等标签来加强文档的便捷性和可读性。</p>
+
+<blockquote>
+<p>注：引用 Qt 相关类和函数的方式跟引用本地函数没有不同，只是需要配置一下 Doxygen ，这篇文章暂时略过，会有单独的文章补充说明，写文档的时候尽情引用便是。</p>
+</blockquote>
+
+<h2 id="工具">工具</h2>
+
+<p>推荐使用 QtCreator 进行文档编写，QtCreator 对 Doxygen 代码注释有自动补全的功能，有三种形式：</p>
+
+<ul>
+<li><code>///</code></li>
+<li><code>//!</code></li>
+<li><code>/*!</code></li>
+</ul>
+
+<p>在函数名、类名等声明上一行输入以上几种注释格式并按下回车，QtCreator 会自动按照函数的语法信息生成 <code>\brief</code> 、<code>\param</code>  和 <code>\return</code>　等指令和响应的参数，可以说非常方便了。</p>
+
+<p>不过，鉴于 deepin 内部开发主要写中文文档，手写 <code>\~chinese</code>的工作量实在太大，所以修改了一个版本的QtCreator ，作补全时会自动添加 <code>\~chinese</code> 标签。开发团队都可以在”不清真deb包“这个共享目录中找到响应的 deb 包。</p>
+
+<h2 id="集成">集成</h2>
+
+<p>曾经有同学问 <a href="https://github.com/linuxdeepin/deepin-tool-kit">deepin-tool-kit</a>  这个项目是干啥用的，这里刚好解释一下：</p>
+
+<p>DTK 原来是在 deepin-tool-kit 这个项目里面的，发展壮大以后分家了：dtkcore、dtkwidget 和 dtkwm，所以现在这个项目主要是用来做文档管理用的，所有 dtk 的子项目都作为 submodule 放在这个项目内进行（文档的）版本控制，这个项目也配置了 Doxygen ，就可以在这个项目里面统一做所有 dtk 子项目的文档生成了。</p>
+
+<p>所以，文档生成主要是在 deepin-tool-kit 这个项目中进行，以后持续集成之类的也会在这个项目上进行配置。</p>
+
+<h3 id="本地测试">本地测试</h3>
+
+<p>如果需要在编写文档的过程中进行本地测试，如在 dtkwidget 项目中，有两种方式：</p>
+
+<ol>
+<li>通过各种手段把修改的 dtkwidget 项目放置到 deepin-tool-kit 项目中；</li>
+<li>简单地做一个 Doxygen 的临时配置。</li>
+</ol>
+
+<p>然后使用 <code>doxygen</code> 命令生成文档进行测试即可。</p>
+
+<p>第一种方式稍微麻烦点，但是很简单，就不多说了。</p>
+
+<p>第二种方式也只需要简单几步：</p>
+
+<ol>
+<li>在项目源码目录运行 <code>doxygen -g</code> 生成一个 Doxyfile 配置文件；</li>
+<li>修改 Doxyfile 中 <code>OUTPUT_LANGUAGE=Chinese</code>，<code>INPUT=./src</code>，<code>RECURSIVE=YES</code>，<code>OUTPUT_DIR=docs</code>；</li>
+<li>然后运行 <code>doxygen</code>，即可在 docs/html 目录中找到生成的文档，打开 index.html 即可查看。</li>
+</ol>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "hualetblog";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "hualetblog";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="https://hualet.org/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+
