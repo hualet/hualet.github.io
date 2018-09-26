@@ -91,6 +91,26 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="https://hualet.org/blog/2018/09/26/%E5%A6%82%E4%BD%95%E7%BB%99-dtk-%E6%B7%BB%E5%8A%A0%E6%96%87%E6%A1%A3/">如何给 DTK 添加文档</a>
+      </h1>
+      <span class="post-date">Sep 26, 2018 &middot; <a href="https://hualet.org/blog/2018/09/26/%E5%A6%82%E4%BD%95%E7%BB%99-dtk-%E6%B7%BB%E5%8A%A0%E6%96%87%E6%A1%A3/#disqus_thread">Comments</a>
+      </span>
+      
+      背景 经过几年的摸爬滚打，DTK 作为构建 deepin 全家桶的基石，一直被说的主要有两个毛病：
+ 内部人员觉得它不够稳； 外部人员觉得它无从下手；  第一个问题主要原因是 DTK 在最开始的时候缺失的东西太多，各种剧烈的变化同时进行，但是又没有比较好的版本控制和接口管理，所以经常是这个应用要用新版本，新版本删除了一个废弃的接口，用了旧接口的应用就崩了。由于最近 DTK 的变化日趋平稳，以及有了基本的版本控制，第一个问题渐渐淡出了人们的视野。
+第二个问题外部人员无从下手的原因是 DTK 在开发过程中并没有留下接口文档，所以目前想使用 DTK，内部靠得是口口相传，外部靠的是阅读源码，完全的石器时代……甚至连社区的小伙伴都看不下去了，自己做了一个《Deepin开发指南》 。
+是时候给DTK添加一下文档了！
+工具选择 其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。
+用什么文档工具呢？ DTK 是基于 Qt 之上的开发库，最自然的想法是使用 QDoc，但是据使用 QDoc 搭建了 dde-file-manager 的 Github Pages 的 @BLumia 同学说 QDoc 对国际化的支持不是特别好，我们按道理是要支持中英双语文档的，遂放弃。除了 QDoc 以外，文档生成工具就是 Doxygen、还有一个KDE 项目自己的文档工具 KApiDox ，它们三者之间是什么关系呢？Doxygen 从 QDoc 上 fork 出来的，KApiDox 是基于 Doxygen 的封装……我没有怎么看 KApiDox ，所以就选择了 Doxygen 。
+如何写 下面就是规则部分了。
+1. 文档注释位置 为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。
+2. 多语言 按照 Doxygen 多语言处理的方式，需要在中文文档前添加 \~chinese 命令，在英文文档前添加 \~english 命令，这样设置 Doxyfile 中 OUTPUT_LANGUAGE=Chinese之后，就只会包含中文文档，而不会夹杂英文了，如：
+      <a href="https://hualet.org/blog/2018/09/26/%E5%A6%82%E4%BD%95%E7%BB%99-dtk-%E6%B7%BB%E5%8A%A0%E6%96%87%E6%A1%A3/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/">关于 deepin-code-release 的一点新的思考</a>
       </h1>
       <span class="post-date">Sep 17, 2018 &middot; <a href="https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/#disqus_thread">Comments</a>
@@ -331,30 +351,6 @@ live修复系统为了保持简单、简洁，目前除了必要的浏览器、�
 根据我这几年的工作和生活经验，说一下我的“困难观”。面对困难一般有两条路可选，第一是消极面对，相信这个事情总会能熬过去的，等熬过去了，又是春光明媚。这种一般在面对自己完全非自愿但又不得不去抗的事情时用来安慰自己，让自己不至于分裂、崩溃；另一个是积极面对，相信自己的聪明，找到问题的关键，搞定它，解决这个困难，你自己也会有所提升；这种情况我一般都把困难拆分成一个一个的难题（拆解问题的能力也很关键，因为暂时不需要，等以后再聊），像福尔摩斯一样运用自己的智慧去解开每个难题的答案，这样的面对困难重重的生活才不会觉得枯燥无味。
 最后，不管使用哪种方式处理现在项目上的问题，我觉得都是对自己的一种磨砺吧，希望小崔可以顺利度过难关 :3
       
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">神奇的isatty</a>
-      </h1>
-      <span class="post-date">Aug 29, 2017 &middot; <a href="https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/#disqus_thread">Comments</a>
-      </span>
-      
-      前些日子才从apt-get命令系列换成更为时尚的apt系列，作为一个debian系发行版——deepin的开发者，我表示很汗颜……新的apt命令除了在功能上将apt-get、apt-cache等几个命令统一到了一个命令上外，更是有了不错的TUI，如文档所说：
-The `apt` command is meant to be pleasant for end users and does not need to be backward compatible like apt-get(8).  毕竟，还多了进度条呢…… 😂
-不过这不是今天要说的重点，换到apt以后，把apt操作的一些结果跟管道结合一起用，经常会收到警告，例如：
-(ssh) hualet@hualet-PC : ~ [0] % apt search deepin | grep -i superstar WARNING: apt does not have a stable CLI interface. Use with caution in scripts.  CLI的输出也算是API要保持stable么？汗颜again……dtk作为一个系统级的开发库都还没有到stable的状态、某in公司的CTO写得命令行工具，第二天接口就全变了😂……敬畏之余，困惑我的倒不是这个警告的内容，毕竟新的东西都不保证稳定么，但是apt是怎么知道它的输出被连到管道了呢？
-一直没空处理，直到昨天，又一次遇到了，遂记下，晚上思来想去没什么想法，遂请教前文提到的不靠谱CTO，丫直接甩过来一句：
-“istty检测output啊，很多命令行程序都会根据这个做不同的反应”
-我：“man istty没有结果啊“
-他：”你man page没装全吧？“
-我默默敲下sudo apt install manpages-dev，显示已经安装了……
-我：“装全了啊，我Google一下吧”
-他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。
-我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
-我：“你是不是记错了，有isatty，unistd.h里面的……”
-      <a href="https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">Read On &rarr;</a>
       
     </div>
     
