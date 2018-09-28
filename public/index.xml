@@ -6,10 +6,25 @@
     <description>Recent content on Think in Hualet</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 26 Sep 2018 17:10:14 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 28 Sep 2018 16:42:40 +0800</lastBuildDate>
     
 	<atom:link href="https://hualet.org/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>给 Doxygen 生成的文档中 Qt 的引用添加链接</title>
+      <link>https://hualet.org/blog/2018/09/28/%E7%BB%99-doxygen-%E7%94%9F%E6%88%90%E7%9A%84%E6%96%87%E6%A1%A3%E4%B8%AD-qt-%E7%9A%84%E5%BC%95%E7%94%A8%E6%B7%BB%E5%8A%A0%E9%93%BE%E6%8E%A5/</link>
+      <pubDate>Fri, 28 Sep 2018 16:42:40 +0800</pubDate>
+      
+      <guid>https://hualet.org/blog/2018/09/28/%E7%BB%99-doxygen-%E7%94%9F%E6%88%90%E7%9A%84%E6%96%87%E6%A1%A3%E4%B8%AD-qt-%E7%9A%84%E5%BC%95%E7%94%A8%E6%B7%BB%E5%8A%A0%E9%93%BE%E6%8E%A5/</guid>
+      <description>额……这个标题怎么改读着都不怎么顺口，不过不用在意这些细节，问题不大 :)
+上篇文章提到了 如何给DTK添加文档 ，给同事讲的时候有同事提出来最好能自动给对 Qt 的引用加上链接，我当时拍胸脯说文档里面 Qt 的类和方法随便引用，到时候一定让生成的文档可以链接到 Qt 的文档上。其实，到啥时候我也说不准……所以，还是研究了一下，翻了半天的 Stack Overflow 和 其他一些资料才搞清楚要怎么做到，这里记录一下。
+如何在文档中添加外部文档的链接呢？官方文档 说得其实挺简单的： TAGFILES ！最开始没有仔细看文档，理解歪了，以为 tags 文件是一个文档压缩包，添加到 TAGFILES 这项后面生成文档的时候自动下载，然后自动根据索引添加引用链接到文档中。所以，根据 doxygen generated documentation with auto-generated links to qt project 这篇文章，Doxyfile 配置文件写了：
+TAGFILES = qtcore.tags=http://doc.qt.io/qt-5/ \ qtgui.tags=http://doc.qt.io/qt-5/ \ qtwidgets.tags=http://doc.qt.io/qt-5/ \ qtxml.tags=http://doc.qt.io/qt-5/ \ qtnetwork.tags=http://doc.qt.io/qt-5/  生成文档，怎么都不生效…… WTF ?!
+继续 Google ，发现一个提交， 里面的
+for i in core svg xmlpatterns; do curl -fsSLO &amp;quot;https://doc.qt.io/qt-5/qt$i.tags&amp;quot;; done;  引起了我的注意，恍然大悟：
+原来这个 tags 文件就是索引文件，需要预先下载下来，之所以有 = 加上一个网址，是因为 tags 中只有类名到文档名的映射，并没有规定使用某种协议以及host。</description>
+    </item>
     
     <item>
       <title>如何给 DTK 添加文档</title>
