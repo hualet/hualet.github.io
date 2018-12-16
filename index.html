@@ -91,6 +91,30 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="https://hualet.org/blog/2018/12/16/%E4%BF%AE%E7%90%86-freerdp/">修理 FreeRDP</a>
+      </h1>
+      <span class="post-date">Dec 16, 2018 &middot; <a href="https://hualet.org/blog/2018/12/16/%E4%BF%AE%E7%90%86-freerdp/#disqus_thread">Comments</a>
+      </span>
+      
+      起因 头段时间入了一个大坑儿，大概被坑了有一个月之久，出来之后同事还不忘嘲讽一番：”这么个事情就搞了一个月，看吧，你果然是老了“。听了这句话，心里真是百般滋味，但转念一想，”我年轻的时候做事好像也不怎么快“，顿时也就释怀了 :)
+这个坑就是”给 FreeRDP 的 RAIL 模式添加托盘支持“，当然，跟所有的需求一样，这么具有总结性而又直指根源的需求描述，绝对不是它最原始的模样——我刚接到这个坑的时候，它是这样的：FreeRDP 的 RAIL 模式下，应用的托盘在我们 DDE 下不显示。请注意这里说得是不显示，而不是后来发现的压根儿没有支持！
+FreeRDP 说到这，可能有读者还不了解 FreeRDP 和 RAIL，所以先简单介绍一下。
+RDP 其实是一个协议名称，全称 Remote Desktop Protocol（远程桌面协议），是微软公司开发的一套用于远程桌面展示和操作的协议，FreeRDP 就是它在开源世界的实现咯。而 RAIL 的全称是 Remote Application Integrated Locally （远程应用本地集成），其实就是非常类似大家熟悉的虚拟机的”无缝模式“，通过将应用的显示跟本地环境相融合，让用户完全感受不到这个应用其实不在本机运行——就是这么一种技术。
+问题也就出在这，我当时第一反应是这么老的技术实现肯定比较完整了，托盘没有显示出来应该是跟 DDE 的兼容性有点小问题，稍微修一下就完了，三下五除二的事情，所以满口答应了下来……
+经过 既然答应了，硬着头皮也要顶下去的。何况调 BUG 这种事情——不管是不是我们自己的问题——在深度都是家常便饭。慢慢地，调各种项目的 BUG 竟然成了我的一种乐趣——每次开始接手一个新的项目的时候，我都把自己当成了福尔摩斯或者胡八一，或者也可以是其他全世界最聪明的那类人 😜，在通过代码找寻问题线索的过程中，慢慢成为这个项目世界中的主宰，解开真相……
+额……不好意思，白日梦又发作了一会儿。总之，这次也不例外，而且刚好这次在调问题的过程中有记录几个关键环节，所以打算把中间的过程写成日记性质的记录，看看能不能有更好的阅读效果：
+2018-11-14 从”沈老板“那收到需求，说 FreeRDP 在我们系统上有问题，应用的托盘显示不出来，QQ之类的程序关闭了窗口以后就没办法显示出来了，无法使用。这丫的又拿刘老大来压我……呵呵，想削他。不过看在他快要当爸爸的份上，还是算了。问了下时间要求，大概需要两周左右有初步的结果。不过我自己最近没有什么时间，先把锅丢给了印象中还比较熟悉网络协议的 @Blumia 同学。
+2018-11-15 从 @Blumia 那收到反馈，可能 FreeRDP 没有实现托盘图标这部分的功能，我怕他一个人搞不定，简单翻了翻 FreeRDP 的项目 wiki 和 RDP 的一些介绍，给了他，让他先帮忙找一下需要补充实现部分的代码结构。
+2018-11-16 没时间处理。
+@Blumia 搭了测试环境。
+中间几天两个人都没有时间处理 FreeRDP 的事情。
+2018-11-22 留了少部分时间，看了 FreeRDP 的代码，大概找到了托盘图标相关处理应该在的位置。
+      <a href="https://hualet.org/blog/2018/12/16/%E4%BF%AE%E7%90%86-freerdp/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="https://hualet.org/blog/2018/11/21/15.8%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/">15.8研发心得</a>
       </h1>
       <span class="post-date">Nov 21, 2018 &middot; <a href="https://hualet.org/blog/2018/11/21/15.8%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97/#disqus_thread">Comments</a>
@@ -313,30 +337,6 @@ perf这个工具最开始是作为Performance Counter的接口引入内核的，
       
     </div>
     
-    <div class="post">
-      <h1 class="post-title">
-        <a href="https://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/">自制 Profiler 第一部分</a>
-      </h1>
-      <span class="post-date">May 13, 2018 &middot; <a href="https://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/#disqus_thread">Comments</a>
-      </span>
-      
-      ​ 最近对性能剖析的技术颇感兴趣。好不容易来了三分钟热度，自然不能浪费，因此在余热消失之前研究并实践了其中一部分细节，对于其中一些知识点，个人感觉对于自身编程能力提升还是比较有益的，因此在这里写出来，抛砖引玉。
-Linux profiler简介 ​ 性能剖析的工具，其实在Linux平台还是挺多的，比如小巧实用的strace、ltrace、latrace，大名鼎鼎的google-perftools、gprof、valgrind，以及瑞士军刀型的linux-perf等等，它们主要分为三个阵营，一个是针对程序执行的性能进行剖析，对程序执行的热点进行分析，如*trace、gprof这些工具；另一个是针对程序运行过程中内存的使用进行剖析，方便针对性地做内存优化，如valgrind；最后一部分就是“脚踏两条船”的，两个我都做，比如google-perftools、linux-perf这些，我们这个系列主要集中在“针对程序执行的性能进行剖析”方面。
-Profiler的本质 ​ 要自制Profiler，首先要知道Profiler的本质是什么。简单来说，Profiler的本质其实就是在程序执行的过程中对程序正在“做什么”进行搜集和统计，如何搜集呢？无非两种：
- Instrumentaion - 程序主动Profiler告诉它在做什么； Sampling - Profiler自己间断性地去看程序在做什么；  前者的实现主要依靠程序运行时提供的某些钩子机制、代码插桩等方式，例如gprof主要是依靠 gcc 在编译程序的时候”夹带私货“来达到程序运行的时候主动提供给gprof采样样本，来达到事后分析的目的[1]。这种方式相对来说虽然比较可靠、准确，但是对于无法控制编译条件的程序就比较无可奈何了。
-后者的实现则主要是定期对程序当前执行的指令和对程序执行的函数堆栈进行回溯（unwind）来尽量还原程序执行的过程，例如google-perftools就是采用这种方式，这种情况下，采样的周期就显得尤为重要。
-​ 对比以上两种方式，我们果断采用第二种。
-​ PS: 这里需要说明一下的是，利用ptrace系统调用完成工作的strace和ltrace，虽然不依赖编译器夹带私货，但是相当于依赖了内核的“钩子”，不属于sampling的范围；同样，latrace则是依赖了ld的LD_AUDIT“钩子”，也不属于sampling的范围。
-Profiler启动 ​ 那么问题又来了，ptrace没得用，我们怎么去获取被剖析程序的执行状态呢？总不至于profiler要搞成root权限的吧？答案是：不，内核管天管地，总管不到程序自己偷看自己的数据吧？我们想办法把我们的代码塞到被剖析程序中去就可以了！
-​ 刚才提到了ld的LD_AUDIT，这次就轮到它的兄弟——大名鼎鼎的LD_PRELOAD——登场了。想法是这样的，我们的profiler其实只需要在程序开始的时候执行一个定时器，以后每次定时器执行的时候去抓取我们的样本就OK了，所以我们完全可以把自己伪装成一个人畜无害的动态库，等到别个程序有意无意加载到我们，哼哼……事实上，很多profiler都是采取类似的策略，比如google-perftools，再比如heaptrack等等。
-编码实战 ​ 废话少说，放码过来！
-​ 我们在QtCreator中创建一个动态库项目 simple-profiler，主类 SimpleProfiler。首先，我们需要设置好我们的定时器：
-void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;m_tick, nullptr); if ( ret != 0) { fprintf(stderr, &quot;failed to enable profiler: %s&quot;, strerror(errno)); } }  根据 setitimer 的man文档，计时器主要有三种类型：
- ITIMER_REAL 这个计时器是根据墙上时间进行倒计时，最终触发 SIGALRM 信号； ITIMER_VIRTUAL 这个计时器是根据进程花费在用户空间的 CPU 时间进行倒计时的，最终触发 SIGVTALRM 信号； ITIMER_PROF 这个计时器是根据进程话费在用户空间和内核空间的 CPU 时间进行倒计时的，最终触发 SIGPROF 信号；  个人认为，假如都是用在 profiler 上的话，第一种计时器用来查找程序执行慢（某个函数有IO等情况）的瓶颈比较有效果；后两种计时器用来查找程序 CPU 占用瓶颈比较有效果。不过使用第一种计时器的话，对被追踪程序的执行影响相较于后两者就比较大了，所以这里采用第三种计时器。
-      <a href="https://hualet.org/blog/2018/05/13/%E8%87%AA%E5%88%B6-profiler-%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86/">Read On &rarr;</a>
-      
-    </div>
-    
     
 
 <ul class="pagination">
@@ -375,13 +375,25 @@ void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;m_t
     ><a href="/page/2/">2</a></li>
     
     
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
     <li
     >
     <a href="/page/2/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
     </li>
     
     <li>
-        <a href="/page/2/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/page/3/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
     </li>
     
 </ul>

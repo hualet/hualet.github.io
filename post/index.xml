@@ -6,10 +6,31 @@
     <description>Recent content in Posts on Think in Hualet</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 21 Nov 2018 09:07:31 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 16 Dec 2018 14:41:44 +0800</lastBuildDate>
     
 	<atom:link href="https://hualet.org/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>修理 FreeRDP</title>
+      <link>https://hualet.org/blog/2018/12/16/%E4%BF%AE%E7%90%86-freerdp/</link>
+      <pubDate>Sun, 16 Dec 2018 14:41:44 +0800</pubDate>
+      
+      <guid>https://hualet.org/blog/2018/12/16/%E4%BF%AE%E7%90%86-freerdp/</guid>
+      <description>起因 头段时间入了一个大坑儿，大概被坑了有一个月之久，出来之后同事还不忘嘲讽一番：”这么个事情就搞了一个月，看吧，你果然是老了“。听了这句话，心里真是百般滋味，但转念一想，”我年轻的时候做事好像也不怎么快“，顿时也就释怀了 :)
+这个坑就是”给 FreeRDP 的 RAIL 模式添加托盘支持“，当然，跟所有的需求一样，这么具有总结性而又直指根源的需求描述，绝对不是它最原始的模样——我刚接到这个坑的时候，它是这样的：FreeRDP 的 RAIL 模式下，应用的托盘在我们 DDE 下不显示。请注意这里说得是不显示，而不是后来发现的压根儿没有支持！
+FreeRDP 说到这，可能有读者还不了解 FreeRDP 和 RAIL，所以先简单介绍一下。
+RDP 其实是一个协议名称，全称 Remote Desktop Protocol（远程桌面协议），是微软公司开发的一套用于远程桌面展示和操作的协议，FreeRDP 就是它在开源世界的实现咯。而 RAIL 的全称是 Remote Application Integrated Locally （远程应用本地集成），其实就是非常类似大家熟悉的虚拟机的”无缝模式“，通过将应用的显示跟本地环境相融合，让用户完全感受不到这个应用其实不在本机运行——就是这么一种技术。
+问题也就出在这，我当时第一反应是这么老的技术实现肯定比较完整了，托盘没有显示出来应该是跟 DDE 的兼容性有点小问题，稍微修一下就完了，三下五除二的事情，所以满口答应了下来……
+经过 既然答应了，硬着头皮也要顶下去的。何况调 BUG 这种事情——不管是不是我们自己的问题——在深度都是家常便饭。慢慢地，调各种项目的 BUG 竟然成了我的一种乐趣——每次开始接手一个新的项目的时候，我都把自己当成了福尔摩斯或者胡八一，或者也可以是其他全世界最聪明的那类人 😜，在通过代码找寻问题线索的过程中，慢慢成为这个项目世界中的主宰，解开真相……
+额……不好意思，白日梦又发作了一会儿。总之，这次也不例外，而且刚好这次在调问题的过程中有记录几个关键环节，所以打算把中间的过程写成日记性质的记录，看看能不能有更好的阅读效果：
+2018-11-14 从”沈老板“那收到需求，说 FreeRDP 在我们系统上有问题，应用的托盘显示不出来，QQ之类的程序关闭了窗口以后就没办法显示出来了，无法使用。这丫的又拿刘老大来压我……呵呵，想削他。不过看在他快要当爸爸的份上，还是算了。问了下时间要求，大概需要两周左右有初步的结果。不过我自己最近没有什么时间，先把锅丢给了印象中还比较熟悉网络协议的 @Blumia 同学。
+2018-11-15 从 @Blumia 那收到反馈，可能 FreeRDP 没有实现托盘图标这部分的功能，我怕他一个人搞不定，简单翻了翻 FreeRDP 的项目 wiki 和 RDP 的一些介绍，给了他，让他先帮忙找一下需要补充实现部分的代码结构。
+2018-11-16 没时间处理。
+@Blumia 搭了测试环境。
+中间几天两个人都没有时间处理 FreeRDP 的事情。
+2018-11-22 留了少部分时间，看了 FreeRDP 的代码，大概找到了托盘图标相关处理应该在的位置。</description>
+    </item>
     
     <item>
       <title>15.8研发心得</title>
