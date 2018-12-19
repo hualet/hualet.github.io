@@ -52,3 +52,5 @@ date: 2018-12-18T11:07:26+08:00
 3. 增加系统发布工作的灵活度；
 4. 发挥产品、开发和测试团队每个人的主观能动性；
 5. 最终整体上提高系统的稳定性和质量。
+
+注：本文档将在 [developer-center wiki](https://github.com/linuxdeepin/developer-center/wiki/%E6%B7%B1%E5%BA%A6%E6%BB%9A%E5%8A%A8%E6%9B%B4%E6%96%B0%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B) 持续更新。
