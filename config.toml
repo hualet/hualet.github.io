@@ -22,17 +22,18 @@ theme = "hyde-x"
 	home = "Home"
 
     hideReadingTime = true
-    
+
     highlight = "sunburst"
-    
+    summary_length = 100
+
     gravatarHash = "d07d3626f19b0a5c353eff86d03d0e8f"
 	googleAnalytics = "UA-121092907-1"
-    
+
     tagline = "Think in Hualet"
-    
-    # sidebar 
+
+    # sidebar
     github = "https://github.com/hualet"
     twitter = "https://twitter.com/Hualet"
     googleplus = "https://plus.google.com/+%E8%80%80%E5%8D%8E%E7%8E%8B"
-    
+
     rss = true
