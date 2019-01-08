@@ -24,7 +24,7 @@ theme = "hyde-x"
     hideReadingTime = true
 
     highlight = "sunburst"
-    summary_length = 100
+    summaryLength = 100
 
     gravatarHash = "d07d3626f19b0a5c353eff86d03d0e8f"
 	googleAnalytics = "UA-121092907-1"
