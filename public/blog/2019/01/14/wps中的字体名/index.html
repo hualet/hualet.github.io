@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>WPS中的字体名 &middot; Hualet Wang</title>
+
+  
+  <link rel="stylesheet" href="https://hualet.org/css/poole.css">
+  <link rel="stylesheet" href="https://hualet.org/css/hyde.css">
+  <link rel="stylesheet" href="https://hualet.org/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://hualet.org/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://hualet.org/css/hyde-x.css">
+  <link rel="stylesheet" href="https://hualet.org/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://hualet.org/touch-icon-144-precomposed.png">
+  <link href="https://hualet.org/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-121092907-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+        <img src="https://www.gravatar.com/avatar/d07d3626f19b0a5c353eff86d03d0e8f?s=200"
+             alt="gravatar" title="Hualet Wang">
+      
+      <h1>Hualet Wang</h1>
+      <p class="lead">Think in Hualet</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://hualet.org/">Home</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://hualet.org/blogroll/">Blogroll</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://github.com/hualet"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      <a href="https://plus.google.com/&#43;%E8%80%80%E5%8D%8E%E7%8E%8B"><i class="fa fa-google-plus-square fa-3x"></i></a>
+      
+      <a href="https://twitter.com/Hualet"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://hualet.org/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2019 <a href="https://hualet.org/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">WPS中的字体名</h1>
+    <span class="post-date">Jan 14, 2019 &middot; <a href="https://hualet.org/blog/2019/01/14/wps%E4%B8%AD%E7%9A%84%E5%AD%97%E4%BD%93%E5%90%8D/#disqus_thread">Comments</a>
+    </span>
+    <p>今天又被  <code>fontconfig</code> 坑到了……仔细想想，半年到一年前我还对 <code>fontconfig</code>  狗屁不通呢，而现在我已经被 <code>fontconfit</code> 坑了有几次了，这印证了一个真理：“只要你足够迟钝，世界就是美好的，一旦你有了某种能力，麻烦就会找到你”——这只是个玩笑，事实上不管你有没有能力，现实都不会让你好过 😈</p>
+
+<p>在这些坑里面，有两个是跟今天主题相关的，也就是关于WPS中字体名称的两个问题：</p>
+
+<ul>
+<li>WPS 字体列表中中文字体在中文环境下不显示中文名（比如系统里面有宋体，列表里面显示 <code>SimSun</code>）；</li>
+<li>WPS 设置段落字体（中文字体）后，工具栏显示的字体为英文名（比如你设置一段文字是宋体，但是标题栏显示的仍然是<code>SimSun</code>）</li>
+</ul>
+
+<p>这两个问题有点像，但是却不是同一个问题（也不只是WPS有问题，而是）：</p>
+
+<p>第一个问题原先是 <a href="https://bbs.deepin.org/forum.php?mod=viewthread&amp;tid=166999">论坛用户报告</a> 的（实际上刘老大也报过，不过被自动忽略了😂），论坛用户又报过来以后，大家看用户的报告太详细了，感动得一塌糊涂，顿时解决问题的动力都有了。我也折腾了大半天，不过脑袋里面一直有一个同事的声音：那是字体有问题！我也挺赞同的：盗版的字体，不靠谱很正常……所以，我就考虑能不能给字体做一些别名啥的，比如 <code>SimSun</code> 就叫 <code>宋体</code>……当然了最后就是玩了一下 <code>fontconfig</code> 的配置以后，默默就放弃了。</p>
+
+<p>最后经过 <a href="https://github.com/felixonmars">@felixonmars</a> 同学的排查，发现是上游的一个 <a href="https://bugs.freedesktop.org/show_bug.cgi?id=105756">bug</a> ，所以赶紧更了一波，解决了这个问题。</p>
+
+<p>本以为皆大欢喜了，今天又有客户报过来 bug，说 Windows 上写好的文档，调整好的字体，跑到deepin下字体就不对了，废了老大的劲儿才又调好，其中提到了选择方正字库里面的字体，显示的不是中文字体名称的问题。</p>
+
+<p>怎么说呢，幸亏我脑子不好，不记得之前已经解决过中文字体名显示为英文的问题，要不然得跟客户和老板掰扯一会儿，我只记得字体的中英文名字好像是有点问题，所以默默赶紧去看了一下，还真真的有问题。</p>
+
+<p>因为 DDE 并没有设置过多的 <code>fontconfig</code> 配置，所以我依然相信这不是 DDE 的问题，但是又觉得对于一个文字处理软件来说，如果这么重要的功能有 BUG，我真不信 WPS 的人还能坐得住，所以就想试一下在 Ubuntu 下 WPS 的这个行为是否正确。刚好年前 ElementryOS 发新版的时候尝鲜装了一个在测试机器上，所以很快切进去下了一个 WPS 安装上，从一个正版的网站上下载了一个盗版的宋体，试了一下，果然踏马的是好的……</p>
+
+<p>理性的我用事实证明了感性的我是错误的，气氛一度很尴尬。</p>
+
+<p>更让人尴尬的是，我也不知道这是怎么回事。但是，无巧不成书，就在这种尴尬氛围的笼罩下，我鬼使神差地在 ElementryOS （太长了，下面简称 EOS ）上运行了 <code>fc-match 宋体</code> 这个命令，而且很神奇的发现输出的 <code>simsun.ttf: &quot;宋体&quot; &quot;Regular&quot;</code> 跟 deepin 下同样命令输出的 <code>simsun.ttf: &quot;SimSun&quot; &quot;Regular&quot;</code> 不太一样，这可把我乐坏了——要知道一个稍微复杂点的图形软件，打开 <code>fontconfig</code> 的调试以后，输出就是很可怕的，更别说 WPS！别问我是怎么知道的，回忆起来都是泪。但是现在使用 <code>fc-match</code> 就能重现的问题（我打心底认为这俩是同一个问题），调试起来就比较简单了。</p>
+
+<pre><code class="language-bash">$ FC_DEBUG=1 fc-match 宋体
+FC_DEBUG=1
+Match Pattern has 25 elts (size 32)
+	family: &quot;宋体&quot;(s) &quot;Noto Sans CJK SC&quot;(s) &quot;Noto Sans&quot;(s)
+	familylang: &quot;en&quot;(s) &quot;en-us&quot;(w)
+	stylelang: &quot;en&quot;(s) &quot;en-us&quot;(w)
+	fullnamelang: &quot;en&quot;(s) &quot;en-us&quot;(w)
+	slant: 0(i)(s)
+	weight: 80(i)(s)
+	width: 100(i)(s)
+	size: 12(f)(s)
+	pixelsize: 12.5(f)(s)
+	hintstyle: 1(i)(w)
+	hinting: True(s)
+	verticallayout: False(s)
+	autohint: False(s)
+	globaladvance: True(s)
+	dpi: 75(f)(s)
+	scale: 1(f)(s)
+	lang: &quot;zh-CN&quot;(w)
+	fontversion: 2147483647(i)(s)
+	embeddedbitmap: True(s)
+	decorative: False(s)
+	lcdfilter: 1(i)(w)
+	namelang: &quot;en&quot;(w)
+	prgname: &quot;fc-match&quot;(s)
+	symbol: False(s)
+	variable: False(s)
+
+Best score 0 0 0 0 0 0 0 0 0 0 1e+99 0 0 0 0 0 0 0 0 0 0 0 0 0 2.14735e+12
+Pattern has 25 elts (size 25)
+	family: &quot;SimSun&quot;(w) &quot;宋体&quot;(w)
+	familylang: &quot;en&quot;(w) &quot;zh-cn&quot;(w)
+	style: &quot;Regular&quot;(w)
+	stylelang: &quot;en&quot;(w)
+	fullname: &quot;SimSun&quot;(w) &quot;宋体&quot;(w)
+	fullnamelang: &quot;en&quot;(w) &quot;zh-cn&quot;(w)
+	slant: 0(i)(w)
+	weight: 80(f)(w)
+	width: 100(f)(w)
+	spacing: 90(i)(w)
+	foundry: &quot;ZYEC&quot;(w)
+	file: &quot;/home/hualet/.fonts/simsun.ttf&quot;(w)
+	index: 0(i)(w)
+	outline: True(w)
+	scalable: True(w)
+	charset: 
+	0000: 00000000 ffffffff ffffffff ffffffff 00000000 ffffffff ffffffff ffffffff
+	0001: 08080002 00000800 000c2110 01000803 00040000 00000000 15554000 00000000
+	0002: 00000000 00000000 00020000 00000002 00000000 00000000 12000ec0 00000000
+	0003: 00000000 00000000 00000000 00000000 fffe0000 fffe03fb 000003fb 00000000
+	0004: ffff0002 ffffffff 0002ffff 00000000 00000000 00000000 00000000 00000000
+	0020: 77790000 0e2d0067 00000000 00000000 00000000 00001000 00000000 00000000
+	0021: 00400228 00000006 00000000 03ff0fff 03cf0000 00000000 00000000 00000000
+	0022: e4228100 20f04fa9 00041100 0000c0f3 02200000 80000020 00000000 00000000
+	0023: 00040000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+	0024: 00000000 00000000 00000000 fff003ff 0fffffff 00000000 00000000 00000000
+	0025: ffffffff ffffffff ffff0fff 000fffff 0038fffe 300c0003 0000c8c0 0000003c
+	0026: 00000260 00000000 00000005 00000000 00000000 00000000 00000000 00000000
+	0030: 60ffffef 000003fe fffffffe ffffffff 780fffff fffffffe ffffffff 707fffff
+	0031: ffffffe0 000003ff 00000000 00000000 00000000 00000000 00000000 00000000
+	0032: 00000000 000203ff 00000000 00000000 00000000 00000008 00000000 00000000
+	0033: 00000000 00000000 00000000 00000000 7000c000 00000002 00264010 00000000
+	004e: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	004f: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0050: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0051: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0052: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0053: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0054: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0055: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0056: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0057: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0058: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0059: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	005a: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	005b: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	005c: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	005d: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	005e: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	005f: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0060: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0061: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0062: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0063: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0064: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0065: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0066: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0067: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0068: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0069: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	006a: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	006b: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	006c: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	006d: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	006e: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	006f: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0070: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0071: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0072: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0073: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0074: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0075: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0076: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0077: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0078: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0079: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	007a: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	007b: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	007c: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	007d: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	007e: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	007f: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0080: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0081: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0082: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0083: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0084: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0085: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0086: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0087: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0088: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0089: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	008a: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	008b: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	008c: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	008d: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	008e: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	008f: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0090: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0091: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0092: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0093: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0094: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0095: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0096: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0097: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0098: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	0099: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	009a: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	009b: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	009c: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	009d: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	009e: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+	009f: ffffffff ffffffff ffffffff ffffffff ffffffff 0000003f 00000000 00000000
+	00e7: 00000000 00000000 00000000 00000000 00000000 00000000 00000180 000fff80
+	00e8: ffe00000 ffffffff ffffffff 0000001f 00000000 00000000 00000000 00000000
+	00f9: 00000000 00001000 00000000 02000000 00200000 00000000 00000000 00020080
+	00fa: 811af000 0000039b 00000000 00000000 00000000 00000000 00000000 00000000
+	00fe: 00000000 fffb0000 fef7fe1f 00000f7f 00000000 00000000 00000000 00000000
+	00ff: fffffffe ffffffff 7fffffff 00000000 00000000 00000000 00000000 0000003f
+(w)
+	lang: aa|ay|bg|bi|br|ch|co|da|de|en|es|eu|fj|fo|fr|fur|fy|gd|gl|gv|ho|ia|id|ie|io|is|it|kum|lb|mg|nb|nds|nl|nn|no|nr|nso|oc|om|os|pt|rm|ru|sel|sma|smj|so|sq|ss|st|sv|sw|tl|tn|ts|uz|vo|wa|xh|yap|zh-cn|zh-sg|zu|an|fil|ht|jv|kj|kwm|li|ms|ng|pap-an|pap-aw|rn|rw|sc|sg|sn|su|za(w)
+	fontversion: 131072(i)(w)
+	capability: &quot;otlayout:hani&quot;(w)
+	fontformat: &quot;TrueType&quot;(w)
+	decorative: False(w)
+	postscriptname: &quot;SimSun&quot;(w)
+	color: False(w)
+	symbol: False(w)
+	variable: False(w)
+
+simsun.ttf: &quot;SimSun&quot; &quot;Regular&quot;
+
+</code></pre>
+
+<p>因为以前调 <code>fontconfig</code> 的经验，我模模糊糊知道那个 <code>familylang</code> 是控制 <code>family</code> 也就是字体名显示的语言的，所以看到</p>
+
+<pre><code class="language-bash">familylang: &quot;en&quot;(s) &quot;en-us&quot;(w)
+</code></pre>
+
+<p>这行以后，大致能确定应该是系统某个配置出了问题让 <code>fontconfig</code> 误以为语言环境是英文。看了一下环境变量，没发现哪个是设置英文的，所以只能去看代码了。</p>
+
+<p>下了 <code>fontconfig</code> 的源码，搜了一下关键字 <code>familylang</code> ，猜测这个属性应该是通过操纵 <code>FC_FAMILYLANG_OBJECT</code> ，再次搜索：</p>
+
+<pre><code> $ rg -i FC_FAMILYLANG_OBJECT
+src/fcmatch.c
+380:	case FC_FAMILYLANG_OBJECT:
+551:	if (fe-&gt;object == FC_FAMILYLANG_OBJECT ||
+565:	    FC_ASSERT_STATIC ((FC_FAMILY_OBJECT + 1) == FC_FAMILYLANG_OBJECT);
+695:	    pe-&gt;object != FC_FAMILYLANG_OBJECT &amp;&amp;
+
+src/fclist.c
+430:		familyidx = FcGetDefaultObjectLangIndex (font, FC_FAMILYLANG_OBJECT, lang);
+
+src/fcfreetype.c
+1671:	    while (FcPatternObjectGetString (pat, FC_FAMILYLANG_OBJECT, n, &amp;familylang) == FcResultMatch)
+
+src/fcdefault.c
+316:    if (!FcPatternFindObjectIter (pattern, &amp;iter, FC_FAMILYLANG_OBJECT))
+318:	FcPatternObjectAdd (pattern, FC_FAMILYLANG_OBJECT, namelang, FcTrue);
+319:	FcPatternObjectAddWithBinding (pattern, FC_FAMILYLANG_OBJECT, v2, FcValueBindingWeak, FcTrue);
+
+</code></pre>
+
+<p>其中只有 <code>fcdefault.c</code> 里面有执行 <code>FcPatternObjectAdd</code> 这个操作像是在修改这个属性，其他地方明显都只是读取，刚好 <code>fc-match/fc-match.c</code> 里面也有调用这个函数，所以仔细看了一下这个函数，发现从逻辑上 <code>familylang</code> 如果没有设置，就会从 <code>namelang</code> 属性继承，然后我忽然发现 <code>fc-match</code> 的帮助里面写得位置参数概念上叫 <code>pattern</code> ，难道就对应 <code>FcPattern</code>，那它应该也可以指定 <code>familylang</code> 咯？网上搜寻了一番，发现可以 <code>fc-match 宋体:familylang=zh-cn</code>，果然输出正常的中文名。这算是一个小插曲吧。</p>
+
+<p>接着 <code>namelang</code> 属性说，这个属性是从一个叫 <code>FcGetDefaultLang</code> 的函数处获取，我心想总算是要到头了，然而发现从函数的实现来看，这个函数会从 <code>FC_LANG</code>、<code>LC_ALL</code>、<code>LC_CTYPE</code>和<code>LANG</code>这些环境变量里面挨个读取默认的语言（后来发现直接 <code>man FcGetDefaultlangs</code> 就可以看到），看起来没毛病呀。</p>
+
+<p>写了个测试程序：</p>
+
+<pre><code class="language-c">#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+#include &lt;fontconfig/fontconfig.h&gt;
+
+int main(int argc, char const *argv[])
+{
+    FcStrSet *langs = NULL;
+
+    langs = FcGetDefaultLangs();
+    if (langs)
+    {
+        FcChar8 *lang = NULL;
+        FcStrList *lang_list = NULL;
+
+        lang_list = FcStrListCreate(langs);
+        FcStrListFirst(lang_list);
+
+        while(lang = FcStrListNext(lang_list)) {
+            printf(&quot;%s&quot;, lang);
+        }
+    }
+
+    return 0;
+}
+</code></pre>
+
+<p>编译执行，输出 <code>zh-CN</code> ，666</p>
+
+<p>中间尝试了使用 <code>gdb</code> 在 <code>fc-match.c</code>中调用 <code>FcDefaultSubstitute</code> 的部分加断点，但是死活无法跳入函数体里面，直接在函数里面响应的行数处断点，直接无效……撞鬼了</p>
+
+<p>没办法了，只能改代码了，找了找代码里面的 log 模块叫 <code>fcdbg.c</code> ，我本来还说从 <code>FcPattern</code>  里面读取属性有点麻烦，又不熟悉代码，但是意外地找到一个 <code>FcPatternPrint</code> ，连继续研究下去的动力都没有了，赶紧加代码打印，分别在 <code>FcConfigSubstitute</code> 和 <code>FcDefaultSubstitute</code> 前后加了打印看对 <code>pat</code> 的代码：</p>
+
+<pre><code>	FcPatternPrint(pat);
+    FcConfigSubstitute (0, pat, FcMatchPattern);
+	FcPatternPrint(pat);
+    FcDefaultSubstitute (pat);
+	FcPatternPrint(pat);
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code class="language-bash">$ ./fc-match 宋体
+Pattern has 1 elts (size 16)
+	family: &quot;宋体&quot;(s)
+
+Pattern has 6 elts (size 16)
+	family: &quot;宋体&quot;(s) &quot;Noto Sans CJK SC&quot;(s) &quot;Noto Sans&quot;(s)
+	hintstyle: 1(i)(w)
+	lang: &quot;zh-CN&quot;(w)
+	lcdfilter: 1(i)(w)
+	namelang: &quot;en&quot;(w)
+	prgname: &quot;fc-match&quot;(s)
+
+Pattern has 25 elts (size 32)
+	family: &quot;宋体&quot;(s) &quot;Noto Sans CJK SC&quot;(s) &quot;Noto Sans&quot;(s)
+	familylang: &quot;en&quot;(s) &quot;en-us&quot;(w)
+	stylelang: &quot;en&quot;(s) &quot;en-us&quot;(w)
+	fullnamelang: &quot;en&quot;(s) &quot;en-us&quot;(w)
+	slant: 0(i)(s)
+	weight: 80(i)(s)
+	width: 100(i)(s)
+	size: 12(f)(s)
+	pixelsize: 12.5(f)(s)
+	hintstyle: 1(i)(w)
+	hinting: True(s)
+	verticallayout: False(s)
+	autohint: False(s)
+	globaladvance: True(s)
+	dpi: 75(f)(s)
+	scale: 1(f)(s)
+	lang: &quot;zh-CN&quot;(w)
+	fontversion: 2147483647(i)(s)
+	embeddedbitmap: True(s)
+	decorative: False(s)
+	lcdfilter: 1(i)(w)
+	namelang: &quot;en&quot;(w)
+	prgname: &quot;fc-match&quot;(s)
+	symbol: False(s)
+	variable: False(s)
+
+simsun.ttf: &quot;SimSun&quot; &quot;Regular&quot;
+</code></pre>
+
+<p>可以确认是 <code>FcConfigSubstitute</code> 函数里面给 <code>pat</code> 设置了 <code>en</code> 的 <code>namelang</code>，那之后在 <code>FcDefaultSubstitute</code> 中 <code>familylang</code>  就从 <code>namelang</code> 继承了 <code>en</code> ，又加上了 <code>en-us</code> ，变成了我们看到的 <code>&quot;en&quot;，&quot;en-us&quot;</code> 。看函数名， <code>FcConfigSubstitute</code> 应该就是读取了配置文件，然后做了什么修改，至于怎么改的我也不知道。</p>
+
+<p>不过，这时候我偷懒症犯了，没有去看代码了（看着略复杂），我发现新版 <code>fontconfig</code> 多了一个工具叫 <code>fc-conflist</code> 能列出来 <code>fontconfig</code> 加载的所有配置文件列表，通过这个命令我发现系统里面的配置文件主要放在 <code>/etc/fonts</code> 和 <code>/usr/share/fontconfig</code> ，然后就用 <code>rg</code> 去里面搜关键字 <code>lang</code> 了，排除其中 <code>&lt;test&gt;</code> 的行，还真发现一个叫 <code>/usr/share/conf.avail/15-assign-lang-en.conf</code> 的文件里面有 <code>edit</code> <code>namelang</code> 这个属性，在此之前，我都不知道还有 <code>edit</code> 这种操作……我也更不信这个问题会出在 <code>fontconfig</code> 的配置上。</p>
+
+<pre><code class="language-bash">$ dpkg -S conf.avail/15-assign-lang-en.conf
+deepin-default-settings: /usr/share/fontconfig/conf.avail/15-assign-lang-en.conf
+</code></pre>
+
+<p>事实证明，这个配置文件还真是 deepin 提供的……</p>
+
+<p>本来想搞清楚之前为什么要做这个的，但是提交信息太简单了，没有提供相关线索，猜测应该是以前有些字体名称会乱码——字体名称需要特殊字体的支持，然而系统（终端）的字体不支持这种字体的字体名 😅</p>
+
+<p>不过有了 Noto 这种问题应该就很少了，所以狠心删掉了这个配置：<a href="https://github.com/linuxdeepin/default-settings/commit/34ce7928e70f082b02a7da7e60a9ddaaf7a036f4">提交</a>。</p>
+
+<p>结合这两个问题，猜测 WPS 字体设置分两个部分，一部分是从系统获取字体列表，这个部分是从 Qt 拿的，用的 Qt 提供的字体名（中文），第二部分是从这个字体名拿到系统中匹配度最高的字体，应该是通过 <code>libfontconfig</code> 直接做得（deepin下英文），然后再把这个字体设置给实际的文档，工具栏中显示的也就是这个名字。总之，人家又不开源，瞎猜一下图个开心咯。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+</div>
+
+
+<script type="text/javascript">
+var disqus_shortname = "hualetblog";
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+
+
+<script type="text/javascript">
+    var disqus_shortname = "hualetblog";
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<script src="https://hualet.org/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+
