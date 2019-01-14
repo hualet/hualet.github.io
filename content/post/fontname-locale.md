@@ -10,17 +10,17 @@ date: 2019-01-14T18:31:08+08:00
 - WPS 字体列表中中文字体在中文环境下不显示中文名（比如系统里面有宋体，列表里面显示 `SimSun`）；
 - WPS 设置段落字体（中文字体）后，工具栏显示的字体为英文名（比如你设置一段文字是宋体，但是标题栏显示的仍然是`SimSun`）
 
-这两个问题有点像，但是却不是同一个问题（也不只是WPS有问题，而是）：
+这两个问题有点像，但是却不是同一个问题（也不只是WPS有问题，而是WPS对字体的需求比较多）：
 
 第一个问题原先是 [论坛用户报告](https://bbs.deepin.org/forum.php?mod=viewthread&tid=166999) 的（实际上刘老大也报过，不过被自动忽略了😂），论坛用户又报过来以后，大家看用户的报告太详细了，感动得一塌糊涂，顿时解决问题的动力都有了。我也折腾了大半天，不过脑袋里面一直有一个同事的声音：那是字体有问题！我也挺赞同的：盗版的字体，不靠谱很正常……所以，我就考虑能不能给字体做一些别名啥的，比如 `SimSun` 就叫 `宋体`……当然了最后就是玩了一下 `fontconfig` 的配置以后，默默就放弃了。
 
-最后经过 [@felixonmars](https://github.com/felixonmars) 同学的排查，发现是上游的一个 [bug](https://bugs.freedesktop.org/show_bug.cgi?id=105756) ，所以赶紧更了一波，解决了这个问题。
+最后经过 [@felixonmars](https://github.com/felixonmars) 同学的排查，发现是上游的一个 [bug](https://bugs.freedesktop.org/show_bug.cgi?id=105756) ，而且已经修复，所以赶紧更了一波，解决了这个问题。
 
-本以为皆大欢喜了，今天又有客户报过来 bug，说 Windows 上写好的文档，调整好的字体，跑到deepin下字体就不对了，废了老大的劲儿才又调好，其中提到了选择方正字库里面的字体，显示的不是中文字体名称的问题。
+本以为皆大欢喜了，今天又有客户报过来 bug，说 Windows 上写好的文档，调整好的字体，跑到deepin下字体就不对了，废了老大的劲儿才又调好，其中就提到了选择方正字库里面的字体，显示的不是中文字体名称的问题。
 
 怎么说呢，幸亏我脑子不好，不记得之前已经解决过中文字体名显示为英文的问题，要不然得跟客户和老板掰扯一会儿，我只记得字体的中英文名字好像是有点问题，所以默默赶紧去看了一下，还真真的有问题。
 
-因为 DDE 并没有设置过多的 `fontconfig` 配置，所以我依然相信这不是 DDE 的问题，但是又觉得对于一个文字处理软件来说，如果这么重要的功能有 BUG，我真不信 WPS 的人还能坐得住，所以就想试一下在 Ubuntu 下 WPS 的这个行为是否正确。刚好年前 ElementryOS 发新版的时候尝鲜装了一个在测试机器上，所以很快切进去下了一个 WPS 安装上，从一个正版的网站上下载了一个盗版的宋体，试了一下，果然踏马的是好的……
+因为 DDE 并没有设置过多的 `fontconfig` 配置，所以我相信这不是 DDE 的问题，但是又觉得对于一个文字处理软件来说，如果这么重要的功能都有 BUG，我真不信 WPS 的人还能坐得住，所以就想试一下在 Ubuntu 下 WPS 的这个行为是否正确。刚好年前 ElementryOS 发新版的时候尝鲜装了一个在测试机器上，所以很快切进去下了一个 WPS 安装上，从一个正版的网站上下载了一个盗版的宋体，试了一下，果然踏马的是好的……
 
 理性的我用事实证明了感性的我是错误的，气氛一度很尴尬。
 
@@ -224,7 +224,7 @@ src/fcdefault.c
 
 ```
 
-其中只有 `fcdefault.c` 里面有执行 `FcPatternObjectAdd` 这个操作像是在修改这个属性，其他地方明显都只是读取，刚好 `fc-match/fc-match.c` 里面也有调用这个函数，所以仔细看了一下这个函数，发现从逻辑上 `familylang` 如果没有设置，就会从 `namelang` 属性继承，然后我忽然发现 `fc-match` 的帮助里面写得位置参数概念上叫 `pattern` ，难道就对应 `FcPattern`，那它应该也可以指定 `familylang` 咯？网上搜寻了一番，发现可以 `fc-match 宋体:familylang=zh-cn`，果然输出正常的中文名。这算是一个小插曲吧。
+发现其中只有 `fcdefault.c` 里面有执行 `FcPatternObjectAdd` 这个操作像是在修改这个属性，其他地方明显都只是读取，刚好 `fc-match/fc-match.c` 里面也有调用这个函数，所以仔细看了一下这个函数，从逻辑上看意思是 `familylang` 如果没有设置，就会从 `namelang` 属性继承，然后我忽然发现 `fc-match` 的帮助里面写得位置参数概念上叫 `pattern` ，难道就对应 `FcPattern`，那它应该也可以指定 `familylang` 咯？网上搜寻了一番，发现可以 `fc-match 宋体:familylang=zh-cn`，果然输出正常的中文名。这算是一个小插曲吧。
 
 接着 `namelang` 属性说，这个属性是从一个叫 `FcGetDefaultLang` 的函数处获取，我心想总算是要到头了，然而发现从函数的实现来看，这个函数会从 `FC_LANG`、`LC_ALL`、`LC_CTYPE`和`LANG`这些环境变量里面挨个读取默认的语言（后来发现直接 `man FcGetDefaultlangs` 就可以看到），看起来没毛病呀。
 
@@ -262,7 +262,7 @@ int main(int argc, char const *argv[])
 
 中间尝试了使用 `gdb` 在 `fc-match.c`中调用 `FcDefaultSubstitute` 的部分加断点，但是死活无法跳入函数体里面，直接在函数里面响应的行数处断点，直接无效……撞鬼了
 
-没办法了，只能改代码了，找了找代码里面的 log 模块叫 `fcdbg.c` ，我本来还说从 `FcPattern`  里面读取属性有点麻烦，又不熟悉代码，但是意外地找到一个 `FcPatternPrint` ，连继续研究下去的动力都没有了，赶紧加代码打印，分别在 `FcConfigSubstitute` 和 `FcDefaultSubstitute` 前后加了打印看对 `pat` 的代码：
+没办法了，只能改代码了，找了找代码里面的 log 模块叫 `fcdbg.c` ，我本来还说从 `FcPattern`  里面读取属性有点麻烦，又不熟悉代码，但是意外地找到一个 `FcPatternPrint` ，这下连继续研究下去的动力都没有了，赶紧加代码打印，分别在 `FcConfigSubstitute` 和 `FcDefaultSubstitute` 前后加了打印看对 `pat` 的代码：
 
 ```
 	FcPatternPrint(pat);
@@ -319,7 +319,7 @@ simsun.ttf: "SimSun" "Regular"
 
 可以确认是 `FcConfigSubstitute` 函数里面给 `pat` 设置了 `en` 的 `namelang`，那之后在 ``FcDefaultSubstitute`` 中 `familylang`  就从 `namelang` 继承了 `en` ，又加上了 `en-us` ，变成了我们看到的 `"en"，"en-us"` 。看函数名， ``FcConfigSubstitute`` 应该就是读取了配置文件，然后做了什么修改，至于怎么改的我也不知道。
 
-不过，这时候我偷懒症犯了，没有去看代码了（看着略复杂），我发现新版 `fontconfig` 多了一个工具叫 `fc-conflist` 能列出来 `fontconfig` 加载的所有配置文件列表，通过这个命令我发现系统里面的配置文件主要放在 `/etc/fonts` 和 `/usr/share/fontconfig` ，然后就用 `rg` 去里面搜关键字 `lang` 了，排除其中 `<test>` 的行，还真发现一个叫 `/usr/share/conf.avail/15-assign-lang-en.conf` 的文件里面有 `edit` `namelang` 这个属性，在此之前，我都不知道还有 `edit` 这种操作……我也更不信这个问题会出在 `fontconfig` 的配置上。
+这时候我偷懒症犯了，没有去看代码了（看着略复杂），我发现新版 `fontconfig` 多了一个工具叫 `fc-conflist` 能列出来 `fontconfig` 加载的所有配置文件列表，通过这个命令我发现系统里面的配置文件主要放在 `/etc/fonts` 和 `/usr/share/fontconfig` ，然后就用 `rg` 去里面搜关键字 `lang` 了，排除其中 `<test>` 的行，还真发现一个叫 `/usr/share/conf.avail/15-assign-lang-en.conf` 的文件里面有 `edit` `namelang` 这个属性，在此之前，我都不知道还有 `edit` 这种操作……我也更不信这个问题会出在 `fontconfig` 的配置上。
 
 ```bash
 $ dpkg -S conf.avail/15-assign-lang-en.conf
@@ -328,7 +328,7 @@ deepin-default-settings: /usr/share/fontconfig/conf.avail/15-assign-lang-en.conf
 
 事实证明，这个配置文件还真是 deepin 提供的……
 
-本来想搞清楚之前为什么要做这个的，但是提交信息太简单了，没有提供相关线索，猜测应该是以前有些字体名称会乱码——字体名称需要特殊字体的支持，然而系统（终端）的字体不支持这种字体的字体名 😅 
+本来想搞清楚之前为什么要做这个的，但是提交信息太简单了，没有提供相关线索，猜测应该是以前有些字体名称会乱码——字体名称需要特殊字体的支持，然而系统（终端）的字体不支持这种字体的字体名，为了解决乱码，默认使用英文输出字体名称 😅 
 
 不过有了 Noto 这种问题应该就很少了，所以狠心删掉了这个配置：[提交](https://github.com/linuxdeepin/default-settings/commit/34ce7928e70f082b02a7da7e60a9ddaaf7a036f4)。
 
