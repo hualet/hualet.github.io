@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
-	<meta name="generator" content="Hugo 0.36" />
+	<meta name="generator" content="Hugo 0.41" />
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
@@ -88,6 +88,30 @@
 <div class="content container">
   <div class="posts">
     
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="https://hualet.org/blog/2019/03/10/%E6%B7%B1%E5%BA%A6%E6%95%B0%E6%8D%AE%E7%9B%98%E5%92%8Cfuse%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">深度数据盘和FUSE文件系统</a>
+      </h1>
+      <span class="post-date">Mar 10, 2019 &middot; <a href="https://hualet.org/blog/2019/03/10/%E6%B7%B1%E5%BA%A6%E6%95%B0%E6%8D%AE%E7%9B%98%E5%92%8Cfuse%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/#disqus_thread">Comments</a>
+      </span>
+      
+      ​ 说起FUSE，大概很早之前就知道了，但是写文件系统这种东西，大概一辈子也没几次机会会用到，所以当时也没怎么研究，直到最近遇到一个“扭曲”的需求……
+​ 这个需求是这样的。在深度系统的安装器中，有一个全盘安装的功能，这个功能看起来非常简单：扔一块全新的或者老旧的硬盘给安装器，只需一杯咖啡的功夫，你的系统也就能优雅地躺在你的硬盘上了。然而，其中有一个处心积虑，哦不，深思熟虑的细节设定，就是假如你硬盘够大，安装器就会给你多分出一个分区：数据盘。
+​ 据说数据盘的主要作用是让用户存放数据文件，也就是以前用Windows的时候D盘或者E盘等的作用，放点图片、下点片之类的。用户重装系统的时候，也可以方便的做数据迁移。不过鉴于之前我们的一些客户对文件权限的设计不太理解，经常莫名其妙就出权限文件，所以，这个数据盘大概隐含了两个阴性需求：
+ 文件权限不要太严格； 文件权限不要太严格……  第一次尝试 ​ 收到需求的你肯定想，Linux（类Unix）把用户权限、文件权限划分地这么好，虽然也不算天衣无缝吧，但是回到上古时代的没有文件权限这种事，简直就是历史的倒退么……然而作为一名优秀的程序员，怎么能不理解这种为了用户使用方便，宁愿自己背负骂名的行为呢，所以我们选择了不抵抗。另外，为了这个盘可以被双系统的Windows读到，当时我们毅然选择了NTFS作为数据盘的分区格式。
+​ 然而，过了一段时间。
+ 社区用户：我的硬盘发热好厉害呀，是不是这个NTFS分区…… 商业伙伴：这个NTFS文件系统的有点不清真啊……  ​ 这显然没有达到我们预期的目的嘛，必须想办法搞定啊。数据盘这个需求就开始了它的扭曲之旅。
+第二次尝试 ​ 如果不使用NTFS，那就在ext4上面做文章咯？在网络上搜索了半天，也没有发现什么好的方式，要么就是chmod -R xxx 这种，要么就是 chown……然后突然想到之前同事提到过的ACL（限于篇幅和主题，就不展开了），就研究了一下，果然还就能解决问题，两条命令：
+$ setfacl -d -m &quot;g:sudo:rwx&quot; /xxx $ setfacl -m &quot;g:sudo:rwx&quot; /xxx  ​ 其中的/xxx就是数据盘的挂载点，第一行命令设定了挂载点目录的默认ACL规则是：所有sudo组的用户可以对文件有rwx操作权限，第二句是设定了挂载点目录的ACL规则是：所有sudo组的用户可以对文件有rwx操作权限，好像看起来没有什么区别，其实不同的地方在于第一行命令设定的是目录的默认ACL规则，而第二行命令设定的是目录本身的ACL规则。设定了默认规则以后目录里面新创建的文件或者文件夹就会继承这个规则，如果只设置目录的ACL规则，则新文件和子目录不会继承这些ACL规则；如果只设置目录的默认ACL规则，而不设置目录本身的ACL规则，则目录本身没有ACL规则生效。
+​ 虽然这个设定感觉有点让人发晕，但是好歹功能都实现了呀，一切都看似那么美好。
+​ 然而程序员的所有美好都怕测试这种物种，测试有一天突然发现：“咦？系统里面的A用户放在数据盘里面的文件怎么B用户无法访问？”程序员就多了个BUG……
+​ 经过调试，发现一种神奇的现象：Linux（可能其他系统也是）对ACL的处理有点奇怪，假如在拥有ACL规则的对象（文件或者目录）上进行chmod操作，那么chmod 会对对象的ACL规则造成影响，影响的结果就是对象虽然有ACL规则，但是ACL的有效值会变成chmod要达成的效果。
+​ 举个例子，假如文件原来的ACL规则如下：
+$ getfacl testacl # file: testacl # owner: hualet # group: hualet user::rw- group::r-- group:sudo:rwx mask::rwx other::r--  ​ 文件的权限是644，但是sudo组的用户有rwx权限。这时候如果我们使用chmod 700 testacl修改一下文件的权限，再次查看文件的ACL会变成：
+      <a href="https://hualet.org/blog/2019/03/10/%E6%B7%B1%E5%BA%A6%E6%95%B0%E6%8D%AE%E7%9B%98%E5%92%8Cfuse%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">Read On &rarr;</a>
+      
+    </div>
     
     <div class="post">
       <h1 class="post-title">
@@ -299,26 +323,6 @@ for i in core svg xmlpatterns; do curl -fsSLO &quot;https://doc.qt.io/qt-5/qt$i.
 1. 文档注释位置 为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。
 2. 多语言 按照 Doxygen 多语言处理的方式，需要在中文文档前添加 \~chinese 命令，在英文文档前添加 \~english 命令，这样设置 Doxyfile 中 OUTPUT_LANGUAGE=Chinese之后，就只会包含中文文档，而不会夹杂英文了，如：
       <a href="https://hualet.org/blog/2018/09/26/%E5%A6%82%E4%BD%95%E7%BB%99-dtk-%E6%B7%BB%E5%8A%A0%E6%96%87%E6%A1%A3/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/">关于 deepin-code-release 的一点新的思考</a>
-      </h1>
-      <span class="post-date">Sep 17, 2018 &middot; <a href="https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/#disqus_thread">Comments</a>
-      </span>
-      
-      为什么要做 deepin-code-release 呢？其实我们在 deepin-code-release 的 README.md 中写得挺详细了：
- 从deepin项目启动开始，伴随着越来越多的deepin子项目产生，不同开源/商业定制版本的分割加剧，项目间的版本依赖问题、上游项目的patch丢失问题和系统环境无法恢复问题越来越严重，我们迫切需要一个统一的系统来帮助我们记录不同版本的ISO/软件仓库的状态，做各个子项目版本的版本控制和patch的版本控制，以达到快速恢复开发/系统环境，进而使针对不同系统版本的开发更加高效。
-deepin release系统就是这样一个辅助系统，它的目标在于将它的每一个状态都对应到我们所有发布的ISO/软件仓库状态、每一个针对ISO/软件仓库的改动都能反映到这个仓库的改动上。
- 简而言之，deepin-code-release 是版本的版本控制管理工具，用来管理 deepin 众多“轮子”项目的版本号的，每次系统发布都需要进行一次记录，方便以后开发修问题的时候能找到当时的代码进行bug修复。
-为了确保记录的准确，它的想法是这样的，每次（系统）发布前，深度的程序员各自检查一下自己负责的项目，如果需要跟随系统进行发布，就提交 CL 到 deepin-code-release 项目，这个 CL 会自动触发项目在对应仓库的打包，并且将打包结果反馈到 CL 的 Code Review 评分上，+1 分的就进行合并，反之闭门思过解决问题后再次提交，直到成功合并。
-问题 以上需求还是听简单明确的，但是在目前的实现上却有一个问题：使用了 git-submodule 进行子项目的管理，再加上其他几个没有考虑的情况，这导致了好多小问题，以至于推行到现在还是阻碍重重：
-1. 使用起来比较麻烦 deepin 的项目都是放在 gerrit 上的，它并没有一个统一的 git 用户（类似git@github.com中的git），所以同一个项目在不同开发人员的机器上的项目地址是不一样的，当成 submodule 放到 deepin-code-release 这个项目中以后，必须驱动项目地址中的用户名部分，再在 ~/.config/ssh 中添加一些额外的配置（参见 README.md ）。
-2. submodule 用起来比较别扭 最直接、也是抱怨最多的一点，是大家平常使用 git submodule 系列的命令并不多，所以对操作 git submodule 有不太习惯，而且就算是我比较熟练了，也总觉得 git submodule update 这个有点反直觉，感觉上应该是类似 git pull --recurse-submodules 的功能，但是实际上并不是这样。以至于很多人一不小心，把别个辛辛苦苦提交的更新又给退回去了。
-3. 多了一个额外的仓库 原本的打算是每个开发都只需要克隆一个 deepin-code-release 项目，然后在其中 init 自己负责的项目并进行提交，需要关注多个项目的就按需 init 多个项目即可，但是实际推行的过程中还是发现大家并不是特别关注自己项目外的项目，deepin-code-release 里面就一个自己的项目初始化了，而且用着还挺别扭，还不如自己单独克隆一份，结果就每个开发上面既有一个自己项目的仓库，还要有一个包含了自己项目仓库的 deepin-code-release 项目，也是抱怨声颇多。
-      <a href="https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/">Read On &rarr;</a>
       
     </div>
     
