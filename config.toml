@@ -19,7 +19,7 @@ theme = "hyde-x"
 
 [params]
 
-	home = "Home"
+    home = "Home"
 
     hideReadingTime = true
 
