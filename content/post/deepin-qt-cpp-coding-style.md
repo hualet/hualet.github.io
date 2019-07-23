@@ -144,7 +144,7 @@ date: 2019-07-23T19:17:06+08:00
 
 ## 换行和折行
 
-- 代码一行的内容不要太长，保证在100个字符以内，否则进行折行处理；
+- 代码一行的内容不要太长，建议保证在100个字符以内，否则进行折行处理；
 - 注释同上；.
 - 逗号写在折行末尾，操作符写在折行开始：
 
@@ -180,7 +180,6 @@ date: 2019-07-23T19:17:06+08:00
 --align-reference=name 
 --convert-tabs 
 --attach-namespaces
---max-code-length=100 
 --max-instatement-indent=120 
 --pad-header
 --pad-oper
