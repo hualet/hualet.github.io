@@ -91,6 +91,23 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="https://hualet.org/blog/2019/07/23/deepin-qt/c-%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97/">deepin Qt/C&#43;&#43; 代码风格指南</a>
+      </h1>
+      <span class="post-date">Jul 23, 2019 &middot; <a href="https://hualet.org/blog/2019/07/23/deepin-qt/c-%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97/#disqus_thread">Comments</a>
+      </span>
+      
+      本代码风格为深度科技Qt/C++代码风格规范，主要是在Qt Coding Style上进行删减和修改。
+代码缩进  使用4个空格进行缩进； 禁止使用Tab进行缩进。  声明变量  不同的变量声明不要放在同一行； 变量尽量起有意义的变量名； 单字符变量尽量避免，且只能在局部变量和临时变量处使用； 需要变量时再去定义变量（对比C语言在头部声明所有变量）；
+// 错误写法 int a, b; char *c, *d; // 正确写法 int height; int width; char *nameOfThis; char *nameOfThat;  变量名和函数名使用小写开头，命名规范遵循驼峰式命名规范；
+// 错误写法 short Cntr; char ITEM_DELIM = ' '; // 正确写法 short counter; char itemDelimiter = ' ';  类名以大写开头，命名规范遵循驼峰式命名规范。
+  空格  在代码段落之间使用空行隔开； 任何地方的空行不要超过两行； 关键词后和大括号前均需空格:
+// 错误写法 if(foo){ } // 正确写法 if (foo) { }  对于指针和引用，*和&amp;需要和变量名紧挨:
+      <a href="https://hualet.org/blog/2019/07/23/deepin-qt/c-%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="https://hualet.org/blog/2019/05/25/deepin%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">deepin系统启动流程</a>
       </h1>
       <span class="post-date">May 25, 2019 &middot; <a href="https://hualet.org/blog/2019/05/25/deepin%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/#disqus_thread">Comments</a>
@@ -317,24 +334,6 @@ RDP 其实是一个协议名称，全称 Remote Desktop Protocol（远程桌面�
 回到正题，之所以前段时间突然研究了一下 Socket 传递文件描述符的东西，是遇到这样一个需求：一个进程将自己的标准输入、标准输出和标准错误输出映射到另外一个进程相应的位置。带着对 Unix Domain Socket 的朦胧认识，写了一个简单的实现原型：
 // outlet.c #include &lt;sys/socket.h&gt; #include &lt;sys/un.h&gt; #include &lt;string.h&gt; #include &lt;stdio.h&gt; #include &lt;errno.h&gt; #include &lt;unistd.h&gt; #define SOCKET_NAME &quot;/tmp/connection-uds-fd&quot; int make_connection() { int fd; int connection_fd; int result; struct sockaddr_un sun; fd = socket(PF_UNIX, SOCK_STREAM, 0); sun.sun_family = AF_UNIX; strncpy(sun.
       <a href="https://hualet.org/blog/2018/10/28/%E9%80%9A%E8%BF%87-unix-domain-socket-%E4%BC%A0%E9%80%92%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="https://hualet.org/blog/2018/09/28/%E7%BB%99-doxygen-%E7%94%9F%E6%88%90%E7%9A%84%E6%96%87%E6%A1%A3%E4%B8%AD-qt-%E7%9A%84%E5%BC%95%E7%94%A8%E6%B7%BB%E5%8A%A0%E9%93%BE%E6%8E%A5/">给 Doxygen 生成的文档中 Qt 的引用添加链接</a>
-      </h1>
-      <span class="post-date">Sep 28, 2018 &middot; <a href="https://hualet.org/blog/2018/09/28/%E7%BB%99-doxygen-%E7%94%9F%E6%88%90%E7%9A%84%E6%96%87%E6%A1%A3%E4%B8%AD-qt-%E7%9A%84%E5%BC%95%E7%94%A8%E6%B7%BB%E5%8A%A0%E9%93%BE%E6%8E%A5/#disqus_thread">Comments</a>
-      </span>
-      
-      额……这个标题怎么改读着都不怎么顺口，不过不用在意这些细节，问题不大 :)
-上篇文章提到了 如何给DTK添加文档 ，给同事讲的时候有同事提出来最好能自动给对 Qt 的引用加上链接，我当时拍胸脯说文档里面 Qt 的类和方法随便引用，到时候一定让生成的文档可以链接到 Qt 的文档上。其实，到啥时候我也说不准……所以，还是研究了一下，翻了半天的 Stack Overflow 和 其他一些资料才搞清楚要怎么做到，这里记录一下。
-如何在文档中添加外部文档的链接呢？官方文档 说得其实挺简单的： TAGFILES ！最开始没有仔细看文档，理解歪了，以为 tags 文件是一个文档压缩包，添加到 TAGFILES 这项后面生成文档的时候自动下载，然后自动根据索引添加引用链接到文档中。所以，根据 doxygen generated documentation with auto-generated links to qt project 这篇文章，Doxyfile 配置文件写了：
-TAGFILES = qtcore.tags=http://doc.qt.io/qt-5/ \ qtgui.tags=http://doc.qt.io/qt-5/ \ qtwidgets.tags=http://doc.qt.io/qt-5/ \ qtxml.tags=http://doc.qt.io/qt-5/ \ qtnetwork.tags=http://doc.qt.io/qt-5/  生成文档，怎么都不生效…… WTF ?!
-继续 Google ，发现一个提交， 里面的
-for i in core svg xmlpatterns; do curl -fsSLO &quot;https://doc.qt.io/qt-5/qt$i.tags&quot;; done;  引起了我的注意，恍然大悟：
-原来这个 tags 文件就是索引文件，需要预先下载下来，之所以有 = 加上一个网址，是因为 tags 中只有类名到文档名的映射，并没有规定使用某种协议以及host。
-      <a href="https://hualet.org/blog/2018/09/28/%E7%BB%99-doxygen-%E7%94%9F%E6%88%90%E7%9A%84%E6%96%87%E6%A1%A3%E4%B8%AD-qt-%E7%9A%84%E5%BC%95%E7%94%A8%E6%B7%BB%E5%8A%A0%E9%93%BE%E6%8E%A5/">Read On &rarr;</a>
       
     </div>
     

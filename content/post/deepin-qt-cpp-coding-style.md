@@ -1,7 +1,6 @@
 ---
 title: "deepin Qt/C++ 代码风格指南"
 date: 2019-07-23T19:17:06+08:00
-draft: true
 ---
 
 本代码风格为深度科技Qt/C++代码风格规范，主要是在[Qt Coding Style](https://wiki.qt.io/Qt_Coding_Style)上进行删减和修改。
