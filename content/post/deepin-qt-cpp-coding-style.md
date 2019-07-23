@@ -71,10 +71,10 @@ date: 2019-07-23T19:17:06+08:00
 - 尽量避免C风格的类型转换：
 
 ```
- // Wrong
+ // 错误写法
  char* blockOfMemory = (char* ) malloc(data.size());
 
- // Correct
+ // 正确写法
  char *blockOfMemory = reinterpret_cast<char *>(malloc(data.size()));
 ```
 
@@ -149,13 +149,13 @@ date: 2019-07-23T19:17:06+08:00
 - 逗号写在折行末尾，操作符写在折行开始：
 
 ```
- // Wrong
+ // 错误写法
  if (longExpression +
      otherLongExpression +
      otherOtherLongExpression) {
  }
 
- // Correct
+ // 正确写法
  if (longExpression
      + otherLongExpression
      + otherOtherLongExpression) {
