@@ -93,7 +93,7 @@
 
 <p>为了保证研发项目的规范化，避免不一致造成的效率低下，特在此规范中对项目目录、README、代码风格、版权信息和版本控制等方面进行了一定约束，公司内部及合作项目均需按此规范进行。</p>
 
-<h2 id="项目目录">项目目录</h2>
+<h1 id="项目目录">项目目录</h1>
 
 <p>一般情况下，项目目录结构按照下表说明进行创建和管理，对于复杂项目由开发经理按需以此为基础调整项目目录结构：</p>
 
@@ -113,7 +113,7 @@
 
 <tr>
 <td>3rdparty/</td>
-<td>存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。</td>
+<td>存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。</td>
 </tr>
 
 <tr>
@@ -163,7 +163,7 @@
 </tbody>
 </table>
 
-<h2 id="readme">README</h2>
+<h1 id="readme">README</h1>
 
 <p>每个项目必需包含该README文件，README文件内需包含如下内容：</p>
 
@@ -238,13 +238,13 @@ We encourage you to report issues and contribute changes
 
 </code></pre>
 
-<h2 id="代码风格">代码风格</h2>
+<h1 id="代码风格">代码风格</h1>
 
 <p>Qt/C++ 代码风格规范详见：<a href="https://docs-blog.wh-redirect.deepin.cn/?p=2788">Qt/C++代码风格指南</a>；</p>
 
 <p>Golang 代码风格按官方风格，使用go fmt进行格式化，此处不再详述。</p>
 
-<h2 id="版权信息">版权信息</h2>
+<h1 id="版权信息">版权信息</h1>
 
 <p>开源项目（DDE和应用）除开发库开源协议需具体安排外，其余项目均优先采用GPLv3协议进行开源；</p>
 
@@ -278,11 +278,11 @@ We encourage you to report issues and contribute changes
 <pre><code>Copyright (C) 2019 Deepin Technology Co., Ltd.
 </code></pre>
 
-<h2 id="版本管理">版本管理</h2>
+<h1 id="版本管理">版本管理</h1>
 
 <p>项目版本管理如无特殊要求，使用<code>git</code>作为项目版本管理软件。</p>
 
-<h3 id="代码提交">代码提交</h3>
+<h2 id="1-代码提交">1. 代码提交</h2>
 
 <p>代码提交过程需遵循以下要求：</p>
 
@@ -303,27 +303,38 @@ We encourage you to report issues and contribute changes
 <li>代码提交后，需由项目组中其他开发人员审核加分后才能合并；</li>
 </ol>
 
-<h3 id="分支命名规范">分支命名规范</h3>
+<h2 id="2-分支命名规范">2. 分支命名规范</h2>
 
-<h4 id="开发分支">开发分支</h4>
+<p>开发分支</p>
 
 <ul>
 <li>默认的开发为 <code>master</code> 分支，同时作为社区版的维护分支，所以要保证一定的稳定性，不能太过于激进；</li>
 <li>影响比较大的功能，开新分支进行开发，分支命名规则为 <code>dev/功能代号</code> ，如 <code>dev/hidpi</code> (一个项目的开发分支定期清理一下，不要超过5个)。</li>
 </ul>
 
-<h4 id="维护分支">维护分支</h4>
+<p>维护分支</p>
 
 <ul>
 <li>社区版因为滚动更新的原因，维护分支为master分支；</li>
 <li>专业版维护分支命名规则为 <code>maintain/pro/专业版版本号</code>，各个项目在同一个专业版上使用同样的维护分支，如 <code>maintain/pro/15.5</code>。</li>
 </ul>
 
-<h3 id="其他要求">其他要求</h3>
+<h2 id="3-其他要求">3. 其他要求</h2>
 
 <ul>
 <li>推送至服务器的提交、tag等禁止修改，以避免协作者处出现不必要的问题。</li>
 </ul>
+
+<h1 id="软件配置">软件配置</h1>
+
+<p>为了便于系统功能定制和统一同一软件在不同版本（社区版、专业版、服务器版等）下的deb包，对于软件中使用到的配置做出如下要求：</p>
+
+<ol>
+<li>操作系统软件配置项统一使用<code>gsettings</code>，禁止<code>json</code>、<code>ini</code> 和其他基于文本的配置文件；</li>
+<li>针对架构无法支持的功能，使用编译参数控制关闭；</li>
+<li>定制性的功能，包括功能开关、差异化配置等同上，统一使用<code>gsettings</code>，禁止使用编译选项；</li>
+<li>项目自身的<code>schema</code>文件存放于自己项目内，系统级的<code>override</code>文件统一存放于<code>deepin-desktop-schemas</code>项目中，并分服务器版（server）、专业版（pro）、社区版（community）进行维护。</li>
+</ol>
 
   </div>
   <div id="disqus_thread"></div>
