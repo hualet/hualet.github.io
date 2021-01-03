@@ -3,7 +3,7 @@ title: "《成就》读后感"
 date: 2021-01-03T15:41:39+08:00
 ---
 
-![成就](https://img1.doubanio.com/view/subject/l/public/s33599779.jpg)
+![成就](/img/2021/01/book1.jpg)
 
 
 
