@@ -1,7 +1,6 @@
 ---
-title: "The Making of a Manager"
+title: "《硬核晋升》读后感"
 date: 2023-03-31T00:12:22+08:00
-draft: true
 ---
 
 
