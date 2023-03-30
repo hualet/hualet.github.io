@@ -91,6 +91,26 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/">关于 deepin-code-release 的一点新的思考</a>
+      </h1>
+      <span class="post-date">Sep 17, 2018 &middot; <a href="https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/#disqus_thread">Comments</a>
+      </span>
+      
+      为什么要做 deepin-code-release 呢？其实我们在 deepin-code-release 的 README.md 中写得挺详细了：
+ 从deepin项目启动开始，伴随着越来越多的deepin子项目产生，不同开源/商业定制版本的分割加剧，项目间的版本依赖问题、上游项目的patch丢失问题和系统环境无法恢复问题越来越严重，我们迫切需要一个统一的系统来帮助我们记录不同版本的ISO/软件仓库的状态，做各个子项目版本的版本控制和patch的版本控制，以达到快速恢复开发/系统环境，进而使针对不同系统版本的开发更加高效。
+deepin release系统就是这样一个辅助系统，它的目标在于将它的每一个状态都对应到我们所有发布的ISO/软件仓库状态、每一个针对ISO/软件仓库的改动都能反映到这个仓库的改动上。
+ 简而言之，deepin-code-release 是版本的版本控制管理工具，用来管理 deepin 众多“轮子”项目的版本号的，每次系统发布都需要进行一次记录，方便以后开发修问题的时候能找到当时的代码进行bug修复。
+为了确保记录的准确，它的想法是这样的，每次（系统）发布前，深度的程序员各自检查一下自己负责的项目，如果需要跟随系统进行发布，就提交 CL 到 deepin-code-release 项目，这个 CL 会自动触发项目在对应仓库的打包，并且将打包结果反馈到 CL 的 Code Review 评分上，+1 分的就进行合并，反之闭门思过解决问题后再次提交，直到成功合并。
+问题 以上需求还是听简单明确的，但是在目前的实现上却有一个问题：使用了 git-submodule 进行子项目的管理，再加上其他几个没有考虑的情况，这导致了好多小问题，以至于推行到现在还是阻碍重重：
+1. 使用起来比较麻烦 deepin 的项目都是放在 gerrit 上的，它并没有一个统一的 git 用户（类似git@github.com中的git），所以同一个项目在不同开发人员的机器上的项目地址是不一样的，当成 submodule 放到 deepin-code-release 这个项目中以后，必须驱动项目地址中的用户名部分，再在 ~/.config/ssh 中添加一些额外的配置（参见 README.md ）。
+2. submodule 用起来比较别扭 最直接、也是抱怨最多的一点，是大家平常使用 git submodule 系列的命令并不多，所以对操作 git submodule 有不太习惯，而且就算是我比较熟练了，也总觉得 git submodule update 这个有点反直觉，感觉上应该是类似 git pull --recurse-submodules 的功能，但是实际上并不是这样。以至于很多人一不小心，把别个辛辛苦苦提交的更新又给退回去了。
+3. 多了一个额外的仓库 原本的打算是每个开发都只需要克隆一个 deepin-code-release 项目，然后在其中 init 自己负责的项目并进行提交，需要关注多个项目的就按需 init 多个项目即可，但是实际推行的过程中还是发现大家并不是特别关注自己项目外的项目，deepin-code-release 里面就一个自己的项目初始化了，而且用着还挺别扭，还不如自己单独克隆一份，结果就每个开发上面既有一个自己项目的仓库，还要有一个包含了自己项目仓库的 deepin-code-release 项目，也是抱怨声颇多。
+      <a href="https://hualet.org/blog/2018/09/17/%E5%85%B3%E4%BA%8E-deepin-code-release-%E7%9A%84%E4%B8%80%E7%82%B9%E6%96%B0%E7%9A%84%E6%80%9D%E8%80%83/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="https://hualet.org/blog/2018/09/02/15.7-%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97%E6%9C%80%E5%A5%BD%E7%89%88%E6%9C%AC%E7%9A%84%E5%8F%B0%E5%89%8D%E5%B9%95%E5%90%8E/">15.7 研发心得——最好版本的台前幕后</a>
       </h1>
       <span class="post-date">Sep 2, 2018 &middot; <a href="https://hualet.org/blog/2018/09/02/15.7-%E7%A0%94%E5%8F%91%E5%BF%83%E5%BE%97%E6%9C%80%E5%A5%BD%E7%89%88%E6%9C%AC%E7%9A%84%E5%8F%B0%E5%89%8D%E5%B9%95%E5%90%8E/#disqus_thread">Comments</a>
@@ -335,34 +355,6 @@ The `apt` command is meant to be pleasant for end users and does not need to be 
 我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
 我：“你是不是记错了，有isatty，unistd.h里面的……”
       <a href="https://hualet.org/blog/2017/08/29/%E7%A5%9E%E5%A5%87%E7%9A%84isatty/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">输入法消失之谜</a>
-      </h1>
-      <span class="post-date">Aug 5, 2017 &middot; <a href="https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/#disqus_thread">Comments</a>
-      </span>
-      
-      最近不少用户在deepin论坛上报告说搜狗输入法的图标不见了，收到反馈我就心想坏了，我的输入法图标很早前就消失不见了，之前发现这个问题但是没有去跟踪是因为没有看到其他同事出现类似情况，我的电脑平常为了调试用户反馈的bug又经常XJB装软件，觉得是个例。现在收到多人反馈，大概又是什么“更新事故”？
-带着沉重的心情，首先要确定的是这个问题影响的范围：
- 15.4.1的ISO是不存在这个问题的； 不用输入法的老外是没有受到影响的； 只有少量论坛用户报告了这个问题，大部分人表示更新到最新也没有这个问题；  还好影响范围还比较小，那么下一步就是找解决办法了：
- 想办法绕过？对于这个问题来说好像不太好使； debug找到问题的根本原因；  （注：其实用户反馈是集中在这两周的时间甚至更短，如果是其他人的话可能会去排查最近更新了什么包，但是我刚好很早以前遇到了这个问题，受其干扰，所以走了一条冤枉路……）
-下面进入本文主题，怎么去debug？以前压根儿没有调过输入法的问题啊，遂去请教公司大神，大神表示：”我也不知道啊 （无奈脸 ”～ 那么我们只能瞎猜了：
-第一步：卸载掉搜狗，排除是否是搜狗输入法（问题多多，值得怀疑）导致的。
-结果显示卸载掉搜狗输入法以后，小企鹅的图标可以正常显示，看来果然是搜狗输入法导致的？
-第二步：下载官方搜狗搜狗输入法，重新安装，排除搜狗输入法版本的问题。
-重新安装后没卵用。但是突然想起来搜狗在家目录下的.config/sogou-qimpanel/skin 里面有皮肤缓存，据Google说是皮肤有可能导致输入法图标不见的问题……我们在做2D极速版适配的时候，玩了点黑魔法，替换了一些资源文件，可能是改坏了什么东西？
-第三步：删除皮肤缓存，排除修改皮肤的问题。
-没卵用…… 陷入僵局，但是发现如果将sogou-qimpanel这个进程杀掉，输入法的图标就会显示出来了……那么估计是这个进程负责读取sogou的皮肤文件然后更改输入法图标，中间可能出现了什么岔子？
-第四步：使用strace跟踪sogou-qimpanel，感觉胜利在望。
-$ killall sogou-qimpanel &amp;&amp; strace -e open sogou-qimpanel  打印着打印着，吭哧，sogou-qimpanel尼玛居然退出了……什么鬼，再次尝试，还是退出了。看来是daemonize了？那么strace attach到子进程呢？貌似关键的信息已经丢了……陷入僵局……
-如何在系统级别追踪呢？？？
-第五步： 看来要祭出大杀器systemtap了，随手写（抄）了一个stp：
-probe syscall.open.return { printf(&quot;%s %s&quot;, filename, execname()) }  运行失败……
-WARNING: never-assigned local variable 'filename' (similar: name, __nr, retstr): identifier 'filename' at sogou_qimpanel_open.stp:2:20 source: printf(&quot;%s, %s&quot;, filename, execname())  请教公司另外一大神，大神表示“你装一下kernel的debug包就行了……” 结果，还是不行……坑……
-      <a href="https://hualet.org/blog/2017/08/05/%E8%BE%93%E5%85%A5%E6%B3%95%E6%B6%88%E5%A4%B1%E4%B9%8B%E8%B0%9C/">Read On &rarr;</a>
       
     </div>
     
