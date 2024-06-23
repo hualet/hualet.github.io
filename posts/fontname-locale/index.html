@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <title>
   WPS中的字体名 · Think in Hualet
 </title>
@@ -39,7 +39,7 @@ WPS 字体列表中中文字体在中文环境下不显示中文名（比如系�
 理性的我用事实证明了感性的我是错误的，气氛一度很尴尬。
 更让人尴尬的是，我也不知道这是怎么回事。但是，无巧不成书，就在这种尴尬氛围的笼罩下，我鬼使神差地在 ElementryOS （太长了，下面简称 EOS ）上运行了 fc-match 宋体 这个命令，而且很神奇的发现输出的 simsun.ttf: &#34;宋体&#34; &#34;Regular&#34; 跟 deepin 下同样命令输出的 simsun.ttf: &#34;SimSun&#34; &#34;Regular&#34; 不太一样，这可把我乐坏了——要知道一个稍微复杂点的图形软件，打开 fontconfig 的调试以后，输出就是很可怕的，更别说 WPS！别问我是怎么知道的，回忆起来都是泪。但是现在使用 fc-match 就能重现的问题（我打心底认为这俩是同一个问题），调试起来就比较简单了。">
 
-<meta property="og:url" content="http://localhost:1313/posts/fontname-locale/">
+<meta property="og:url" content="https://www.hualet.org/posts/fontname-locale/">
   <meta property="og:site_name" content="Think in Hualet">
   <meta property="og:title" content="WPS中的字体名">
   <meta property="og:description" content="今天又被 fontconfig 坑到了……仔细想想，半年到一年前我还对 fontconfig 狗屁不通呢，而现在我已经被 fontconfit 坑了有几次了，这印证了一个真理：“只要你足够迟钝，世界就是美好的，一旦你有了某种能力，麻烦就会找到你”——这只是个玩笑，事实上不管你有没有能力，现实都不会让你好过 😈
@@ -61,7 +61,7 @@ WPS 字体列表中中文字体在中文环境下不显示中文名（比如系�
 
 
 
-<link rel="canonical" href="http://localhost:1313/posts/fontname-locale/">
+<link rel="canonical" href="https://www.hualet.org/posts/fontname-locale/">
 
 
 <link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -71,7 +71,7 @@ WPS 字体列表中中文字体在中文环境下不显示中文名（比如系�
 
   
   
-  <link rel="stylesheet" href="/css/coder.css" media="screen">
+  <link rel="stylesheet" href="/css/coder.min.38c4552ac40f9ae3408bad40358f654ebd8804412fe74ed56f2d6c8a7af82dd3.css" integrity="sha256-OMRVKsQPmuNAi61ANY9lTr2IBEEv507Vby1sinr4LdM=" crossorigin="anonymous" media="screen" />
 
 
 
@@ -81,7 +81,7 @@ WPS 字体列表中中文字体在中文环境下不显示中文名（比如系�
   
     
     
-    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+    <link rel="stylesheet" href="/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css" integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin="anonymous" media="screen" />
   
 
 
@@ -129,7 +129,7 @@ WPS 字体列表中中文字体在中文环境下不显示中文名（比如系�
     <nav class="navigation">
   <section class="container">
     
-    <a class="navigation-title" href="http://localhost:1313/">
+    <a class="navigation-title" href="https://www.hualet.org/">
       Think in Hualet
     </a>
     
@@ -142,15 +142,15 @@ WPS 字体列表中中文字体在中文环境下不显示中文名（比如系�
         
           
             <li class="navigation-item">
-              <a class="navigation-link " href="/about/">About</a>
-            </li>
-          
-            <li class="navigation-item">
               <a class="navigation-link " href="/posts/">Blog</a>
             </li>
           
             <li class="navigation-item">
               <a class="navigation-link " href="/blogroll/">Blogroll</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
             </li>
           
         
@@ -168,7 +168,7 @@ WPS 字体列表中中文字体在中文环境下不显示中文名（比如系�
       <header>
         <div class="post-title">
           <h1 class="title">
-            <a class="title-link" href="http://localhost:1313/posts/fontname-locale/">
+            <a class="title-link" href="https://www.hualet.org/posts/fontname-locale/">
               WPS中的字体名
             </a>
           </h1>
@@ -539,7 +539,7 @@ src/fcdefault.c
 
   
   
-  <script src="/js/coder.js"></script>
+  <script src="/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js" integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script>
   
 
   

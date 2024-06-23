@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <title>
   关于 deepin-code-release 的一点新的思考 · Think in Hualet
 </title>
@@ -35,7 +35,7 @@ deepin release系统就是这样一个辅助系统，它的目标在于将它的
 1. 使用起来比较麻烦 Link to heading deepin 的项目都是放在 gerrit 上的，它并没有一个统一的 git 用户（类似git@github.com中的git），所以同一个项目在不同开发人员的机器上的项目地址是不一样的，当成 submodule 放到 deepin-code-release 这个项目中以后，必须驱动项目地址中的用户名部分，再在 ~/.config/ssh 中添加一些额外的配置（参见 README.md ）。
 2. submodule 用起来比较别扭 Link to heading 最直接、也是抱怨最多的一点，是大家平常使用 git submodule 系列的命令并不多，所以对操作 git submodule 有不太习惯，而且就算是我比较熟练了，也总觉得 git submodule update 这个有点反直觉，感觉上应该是类似 git pull --recurse-submodules 的功能，但是实际上并不是这样。以至于很多人一不小心，把别个辛辛苦苦提交的更新又给退回去了。">
 
-<meta property="og:url" content="http://localhost:1313/posts/deepin-code-release/">
+<meta property="og:url" content="https://www.hualet.org/posts/deepin-code-release/">
   <meta property="og:site_name" content="Think in Hualet">
   <meta property="og:title" content="关于 deepin-code-release 的一点新的思考">
   <meta property="og:description" content="为什么要做 deepin-code-release 呢？其实我们在 deepin-code-release 的 README.md 中写得挺详细了：
@@ -55,7 +55,7 @@ deepin release系统就是这样一个辅助系统，它的目标在于将它的
 
 
 
-<link rel="canonical" href="http://localhost:1313/posts/deepin-code-release/">
+<link rel="canonical" href="https://www.hualet.org/posts/deepin-code-release/">
 
 
 <link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -65,7 +65,7 @@ deepin release系统就是这样一个辅助系统，它的目标在于将它的
 
   
   
-  <link rel="stylesheet" href="/css/coder.css" media="screen">
+  <link rel="stylesheet" href="/css/coder.min.38c4552ac40f9ae3408bad40358f654ebd8804412fe74ed56f2d6c8a7af82dd3.css" integrity="sha256-OMRVKsQPmuNAi61ANY9lTr2IBEEv507Vby1sinr4LdM=" crossorigin="anonymous" media="screen" />
 
 
 
@@ -75,7 +75,7 @@ deepin release系统就是这样一个辅助系统，它的目标在于将它的
   
     
     
-    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+    <link rel="stylesheet" href="/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css" integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin="anonymous" media="screen" />
   
 
 
@@ -123,7 +123,7 @@ deepin release系统就是这样一个辅助系统，它的目标在于将它的
     <nav class="navigation">
   <section class="container">
     
-    <a class="navigation-title" href="http://localhost:1313/">
+    <a class="navigation-title" href="https://www.hualet.org/">
       Think in Hualet
     </a>
     
@@ -136,15 +136,15 @@ deepin release系统就是这样一个辅助系统，它的目标在于将它的
         
           
             <li class="navigation-item">
-              <a class="navigation-link " href="/about/">About</a>
-            </li>
-          
-            <li class="navigation-item">
               <a class="navigation-link " href="/posts/">Blog</a>
             </li>
           
             <li class="navigation-item">
               <a class="navigation-link " href="/blogroll/">Blogroll</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
             </li>
           
         
@@ -162,7 +162,7 @@ deepin release系统就是这样一个辅助系统，它的目标在于将它的
       <header>
         <div class="post-title">
           <h1 class="title">
-            <a class="title-link" href="http://localhost:1313/posts/deepin-code-release/">
+            <a class="title-link" href="https://www.hualet.org/posts/deepin-code-release/">
               关于 deepin-code-release 的一点新的思考
             </a>
           </h1>
@@ -294,7 +294,7 @@ deepin release系统就是这样一个辅助系统，它的目标在于将它的
 
   
   
-  <script src="/js/coder.js"></script>
+  <script src="/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js" integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script>
   
 
   

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <title>
   deepin Qt/C&#43;&#43; 代码风格指南 · Think in Hualet
 </title>
@@ -23,7 +23,7 @@
   <meta name="twitter:description" content="本代码风格为深度科技Qt/C&#43;&#43;代码风格规范，主要是在Qt Coding Style上进行删减和修改。
 代码缩进 Link to heading 使用4个空格进行缩进； 禁止使用Tab进行缩进。 声明变量 Link to heading 不同的变量声明不要放在同一行； 变量尽量起有意义的变量名； 单字符变量尽量避免，且只能在局部变量和临时变量处使用； 需要变量时再去定义变量（对比C语言在头部声明所有变量）； // 错误写法 int a, b; char *c, *d; // 正确写法 int height; int width; char *nameOfThis; char *nameOfThat; 变量名和函数名使用小写开头，命名规范遵循驼峰式命名规范； // 错误写法 short Cntr; char ITEM_DELIM = &#39; &#39;; // 正确写法 short counter; char itemDelimiter = &#39; &#39;; 类名以大写开头，命名规范遵循驼峰式命名规范。 空格 Link to heading 在代码段落之间使用空行隔开； 任何地方的空行不要超过两行； 关键词后和大括号前均需空格: // 错误写法 if(foo){ } // 正确写法 if (foo) { } 对于指针和引用，*和&amp;需要和变量名紧挨: char *x; const QString &amp;myString; const char * const y = &#34;hello&#34;; 二元操作符两侧需有空格； 尽量避免C风格的类型转换： // 错误写法 char* blockOfMemory = (char* ) malloc(data.">
 
-<meta property="og:url" content="http://localhost:1313/posts/deepin-qt-cpp-coding-style/">
+<meta property="og:url" content="https://www.hualet.org/posts/deepin-qt-cpp-coding-style/">
   <meta property="og:site_name" content="Think in Hualet">
   <meta property="og:title" content="deepin Qt/C&#43;&#43; 代码风格指南">
   <meta property="og:description" content="本代码风格为深度科技Qt/C&#43;&#43;代码风格规范，主要是在Qt Coding Style上进行删减和修改。
@@ -37,7 +37,7 @@
 
 
 
-<link rel="canonical" href="http://localhost:1313/posts/deepin-qt-cpp-coding-style/">
+<link rel="canonical" href="https://www.hualet.org/posts/deepin-qt-cpp-coding-style/">
 
 
 <link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -47,7 +47,7 @@
 
   
   
-  <link rel="stylesheet" href="/css/coder.css" media="screen">
+  <link rel="stylesheet" href="/css/coder.min.38c4552ac40f9ae3408bad40358f654ebd8804412fe74ed56f2d6c8a7af82dd3.css" integrity="sha256-OMRVKsQPmuNAi61ANY9lTr2IBEEv507Vby1sinr4LdM=" crossorigin="anonymous" media="screen" />
 
 
 
@@ -57,7 +57,7 @@
   
     
     
-    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+    <link rel="stylesheet" href="/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css" integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin="anonymous" media="screen" />
   
 
 
@@ -105,7 +105,7 @@
     <nav class="navigation">
   <section class="container">
     
-    <a class="navigation-title" href="http://localhost:1313/">
+    <a class="navigation-title" href="https://www.hualet.org/">
       Think in Hualet
     </a>
     
@@ -118,15 +118,15 @@
         
           
             <li class="navigation-item">
-              <a class="navigation-link " href="/about/">About</a>
-            </li>
-          
-            <li class="navigation-item">
               <a class="navigation-link " href="/posts/">Blog</a>
             </li>
           
             <li class="navigation-item">
               <a class="navigation-link " href="/blogroll/">Blogroll</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
             </li>
           
         
@@ -144,7 +144,7 @@
       <header>
         <div class="post-title">
           <h1 class="title">
-            <a class="title-link" href="http://localhost:1313/posts/deepin-qt-cpp-coding-style/">
+            <a class="title-link" href="https://www.hualet.org/posts/deepin-qt-cpp-coding-style/">
               deepin Qt/C&#43;&#43; 代码风格指南
             </a>
           </h1>
@@ -414,7 +414,7 @@
 
   
   
-  <script src="/js/coder.js"></script>
+  <script src="/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js" integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script>
   
 
   
