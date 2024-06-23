@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <title>
   使用 Perf 优化程序性能 · Think in Hualet
 </title>
@@ -73,7 +73,7 @@ perf这个工具最开始是作为Performance Counter的接口引入内核的，
 第二个命令是 perf record，它跟第三个命令 perf report 是搭配使用的，record 用来记录一段时间内的程序执行情况，然后用 report 来进行展示。 -g 参数的意义跟 perf top一致，启用了函数栈以后，我们可以使用 –call-graph 来制定使用哪种方式来获取函数栈：
 fp 方式，是使用传统的方式 frame pointer来获取堆栈，这个我在之前的文章中也介绍过；">
 
-<meta property="og:url" content="http://localhost:1313/posts/perf-training-one/">
+<meta property="og:url" content="https://www.hualet.org/posts/perf-training-one/">
   <meta property="og:site_name" content="Think in Hualet">
   <meta property="og:title" content="使用 Perf 优化程序性能">
   <meta property="og:description" content="因为原定deepin 15.7会做优化（能耗、资源占用等）方面的工作，所以在此之前，想提升一下团队整体的性能剖析、优化方面的水平，也就有了这次（周五）的培训。本来想用视频记录的，一个是自己回头能看看，反思和改进一下演说能力；另一个是以后有新人入职，我也就不用挨个再讲一遍，天不遂人愿，录制视频的软件半道挂了（ 所以只能这里尽量回忆当时想表述的内容，这里文字稿记录了。
@@ -112,7 +112,7 @@ fp 方式，是使用传统的方式 frame pointer来获取堆栈，这个我在
 
 
 
-<link rel="canonical" href="http://localhost:1313/posts/perf-training-one/">
+<link rel="canonical" href="https://www.hualet.org/posts/perf-training-one/">
 
 
 <link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -122,7 +122,7 @@ fp 方式，是使用传统的方式 frame pointer来获取堆栈，这个我在
 
   
   
-  <link rel="stylesheet" href="/css/coder.css" media="screen">
+  <link rel="stylesheet" href="/css/coder.min.38c4552ac40f9ae3408bad40358f654ebd8804412fe74ed56f2d6c8a7af82dd3.css" integrity="sha256-OMRVKsQPmuNAi61ANY9lTr2IBEEv507Vby1sinr4LdM=" crossorigin="anonymous" media="screen" />
 
 
 
@@ -132,7 +132,7 @@ fp 方式，是使用传统的方式 frame pointer来获取堆栈，这个我在
   
     
     
-    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+    <link rel="stylesheet" href="/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css" integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin="anonymous" media="screen" />
   
 
 
@@ -180,7 +180,7 @@ fp 方式，是使用传统的方式 frame pointer来获取堆栈，这个我在
     <nav class="navigation">
   <section class="container">
     
-    <a class="navigation-title" href="http://localhost:1313/">
+    <a class="navigation-title" href="https://www.hualet.org/">
       Think in Hualet
     </a>
     
@@ -193,15 +193,15 @@ fp 方式，是使用传统的方式 frame pointer来获取堆栈，这个我在
         
           
             <li class="navigation-item">
-              <a class="navigation-link " href="/about/">About</a>
-            </li>
-          
-            <li class="navigation-item">
               <a class="navigation-link " href="/posts/">Blog</a>
             </li>
           
             <li class="navigation-item">
               <a class="navigation-link " href="/blogroll/">Blogroll</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
             </li>
           
         
@@ -219,7 +219,7 @@ fp 方式，是使用传统的方式 frame pointer来获取堆栈，这个我在
       <header>
         <div class="post-title">
           <h1 class="title">
-            <a class="title-link" href="http://localhost:1313/posts/perf-training-one/">
+            <a class="title-link" href="https://www.hualet.org/posts/perf-training-one/">
               使用 Perf 优化程序性能
             </a>
           </h1>
@@ -432,7 +432,7 @@ fp 方式，是使用传统的方式 frame pointer来获取堆栈，这个我在
 
   
   
-  <script src="/js/coder.js"></script>
+  <script src="/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js" integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script>
   
 
   
