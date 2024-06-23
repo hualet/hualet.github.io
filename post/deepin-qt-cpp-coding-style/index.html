@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  deepin Qt/C&#43;&#43; 代码风格指南 · johndoe
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="John Doe">
+<meta name="description" content="本代码风格为深度科技Qt/C&#43;&#43;代码风格规范，主要是在Qt Coding Style上进行删减和修改。
+代码缩进 Link to heading 使用4个空格进行缩进； 禁止使用Tab进行缩进。 声明变量 Link to heading 不同的变量声明不要放在同一行； 变量尽量起有意义的变量名； 单字符变量尽量避免，且只能在局部变量和临时变量处使用； 需要变量时再去定义变量（对比C语言在头部声明所有变量）； // 错误写法 int a, b; char *c, *d; // 正确写法 int height; int width; char *nameOfThis; char *nameOfThat; 变量名和函数名使用小写开头，命名规范遵循驼峰式命名规范； // 错误写法 short Cntr; char ITEM_DELIM = &#39; &#39;; // 正确写法 short counter; char itemDelimiter = &#39; &#39;; 类名以大写开头，命名规范遵循驼峰式命名规范。 空格 Link to heading 在代码段落之间使用空行隔开； 任何地方的空行不要超过两行； 关键词后和大括号前均需空格: // 错误写法 if(foo){ } // 正确写法 if (foo) { } 对于指针和引用，*和&amp;需要和变量名紧挨: char *x; const QString &amp;myString; const char * const y = &#34;hello&#34;; 二元操作符两侧需有空格； 尽量避免C风格的类型转换： // 错误写法 char* blockOfMemory = (char* ) malloc(data.">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="deepin Qt/C&#43;&#43; 代码风格指南">
+  <meta name="twitter:description" content="本代码风格为深度科技Qt/C&#43;&#43;代码风格规范，主要是在Qt Coding Style上进行删减和修改。
+代码缩进 Link to heading 使用4个空格进行缩进； 禁止使用Tab进行缩进。 声明变量 Link to heading 不同的变量声明不要放在同一行； 变量尽量起有意义的变量名； 单字符变量尽量避免，且只能在局部变量和临时变量处使用； 需要变量时再去定义变量（对比C语言在头部声明所有变量）； // 错误写法 int a, b; char *c, *d; // 正确写法 int height; int width; char *nameOfThis; char *nameOfThat; 变量名和函数名使用小写开头，命名规范遵循驼峰式命名规范； // 错误写法 short Cntr; char ITEM_DELIM = &#39; &#39;; // 正确写法 short counter; char itemDelimiter = &#39; &#39;; 类名以大写开头，命名规范遵循驼峰式命名规范。 空格 Link to heading 在代码段落之间使用空行隔开； 任何地方的空行不要超过两行； 关键词后和大括号前均需空格: // 错误写法 if(foo){ } // 正确写法 if (foo) { } 对于指针和引用，*和&amp;需要和变量名紧挨: char *x; const QString &amp;myString; const char * const y = &#34;hello&#34;; 二元操作符两侧需有空格； 尽量避免C风格的类型转换： // 错误写法 char* blockOfMemory = (char* ) malloc(data.">
+
+<meta property="og:url" content="http://localhost:1313/post/deepin-qt-cpp-coding-style/">
+  <meta property="og:site_name" content="johndoe">
+  <meta property="og:title" content="deepin Qt/C&#43;&#43; 代码风格指南">
+  <meta property="og:description" content="本代码风格为深度科技Qt/C&#43;&#43;代码风格规范，主要是在Qt Coding Style上进行删减和修改。
+代码缩进 Link to heading 使用4个空格进行缩进； 禁止使用Tab进行缩进。 声明变量 Link to heading 不同的变量声明不要放在同一行； 变量尽量起有意义的变量名； 单字符变量尽量避免，且只能在局部变量和临时变量处使用； 需要变量时再去定义变量（对比C语言在头部声明所有变量）； // 错误写法 int a, b; char *c, *d; // 正确写法 int height; int width; char *nameOfThis; char *nameOfThat; 变量名和函数名使用小写开头，命名规范遵循驼峰式命名规范； // 错误写法 short Cntr; char ITEM_DELIM = &#39; &#39;; // 正确写法 short counter; char itemDelimiter = &#39; &#39;; 类名以大写开头，命名规范遵循驼峰式命名规范。 空格 Link to heading 在代码段落之间使用空行隔开； 任何地方的空行不要超过两行； 关键词后和大括号前均需空格: // 错误写法 if(foo){ } // 正确写法 if (foo) { } 对于指针和引用，*和&amp;需要和变量名紧挨: char *x; const QString &amp;myString; const char * const y = &#34;hello&#34;; 二元操作符两侧需有空格； 尽量避免C风格的类型转换： // 错误写法 char* blockOfMemory = (char* ) malloc(data.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2019-07-23T19:17:06+08:00">
+    <meta property="article:modified_time" content="2019-07-23T19:17:06+08:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/post/deepin-qt-cpp-coding-style/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      johndoe
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/contact/">Contact me</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/pt-br/">🇧🇷</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container page">
+  <article>
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="http://localhost:1313/post/deepin-qt-cpp-coding-style/">
+          deepin Qt/C&#43;&#43; 代码风格指南
+        </a>
+      </h1>
+    </header>
+
+    <p>本代码风格为深度科技Qt/C++代码风格规范，主要是在<a href="https://wiki.qt.io/Qt_Coding_Style"  class="external-link" target="_blank" rel="noopener">Qt Coding Style</a>上进行删减和修改。</p>
+<h2 id="代码缩进">
+  代码缩进
+  <a class="heading-link" href="#%e4%bb%a3%e7%a0%81%e7%bc%a9%e8%bf%9b">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li>使用4个空格进行缩进；</li>
+<li>禁止使用Tab进行缩进。</li>
+</ul>
+<h2 id="声明变量">
+  声明变量
+  <a class="heading-link" href="#%e5%a3%b0%e6%98%8e%e5%8f%98%e9%87%8f">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li>不同的变量声明不要放在同一行；</li>
+<li>变量尽量起有意义的变量名；</li>
+<li>单字符变量尽量避免，且只能在局部变量和临时变量处使用；</li>
+<li>需要变量时再去定义变量（对比C语言在头部声明所有变量）；</li>
+</ul>
+<pre tabindex="0"><code> // 错误写法
+ int a, b;
+ char *c, *d;
+
+ // 正确写法
+ int height;
+ int width;
+ char *nameOfThis;
+ char *nameOfThat;
+</code></pre><ul>
+<li>变量名和函数名使用小写开头，命名规范遵循驼峰式命名规范；</li>
+</ul>
+<pre tabindex="0"><code> // 错误写法
+ short Cntr;
+ char ITEM_DELIM = &#39; &#39;;
+
+ // 正确写法
+ short counter;
+ char itemDelimiter = &#39; &#39;;
+</code></pre><ul>
+<li>类名以大写开头，命名规范遵循驼峰式命名规范。</li>
+</ul>
+<h2 id="空格">
+  空格
+  <a class="heading-link" href="#%e7%a9%ba%e6%a0%bc">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li>在代码段落之间使用空行隔开；</li>
+<li>任何地方的空行不要超过两行；</li>
+<li>关键词后和大括号前均需空格:</li>
+</ul>
+<pre tabindex="0"><code> // 错误写法
+ if(foo){
+ }
+
+ // 正确写法
+ if (foo) {
+ }
+</code></pre><ul>
+<li>对于指针和引用，*和&amp;需要和变量名紧挨:</li>
+</ul>
+<pre tabindex="0"><code> char *x;
+ const QString &amp;myString;
+ const char * const y = &#34;hello&#34;;
+</code></pre><ul>
+<li>二元操作符两侧需有空格；</li>
+<li>尽量避免C风格的类型转换：</li>
+</ul>
+<pre tabindex="0"><code> // 错误写法
+ char* blockOfMemory = (char* ) malloc(data.size());
+
+ // 正确写法
+ char *blockOfMemory = reinterpret_cast&lt;char *&gt;(malloc(data.size()));
+</code></pre><ul>
+<li>不要硬把多行代码放在同一行；</li>
+<li>逻辑控制操作的执行体需换行:</li>
+</ul>
+<pre tabindex="0"><code> // 错误写法
+ if (foo) bar();
+
+ // 正确写法
+ if (foo)
+     bar();
+</code></pre><h2 id="大括号">
+  大括号
+  <a class="heading-link" href="#%e5%a4%a7%e6%8b%ac%e5%8f%b7">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li>大括号跟逻辑控制关键字（如if、switch等）放在同一行：</li>
+</ul>
+<pre tabindex="0"><code> // 错误写法
+ if (codec)
+ {
+ }
+ else
+ {
+ }
+
+ // 正确写法
+ if (codec) {
+ } else {
+ }
+</code></pre><ul>
+<li>特殊情况：函数实现（非lambda函数）和类声明时大括号都开新行写：</li>
+</ul>
+<pre tabindex="0"><code> static void foo(int g)
+ {
+     qDebug(&#34;foo: %i&#34;, g);
+ }
+
+ class Moo
+ {
+ };
+</code></pre><h2 id="switch语句">
+  switch语句
+  <a class="heading-link" href="#switch%e8%af%ad%e5%8f%a5">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li>case和switch关键字对齐（包括default）；</li>
+<li>每个case处理体都需要显式使用break或者使用 Q_FALLTHROUGH()以表示刻意不进行break，除非两个case可以直接合并在一起进行处理：.</li>
+</ul>
+<pre tabindex="0"><code> switch (myEnum) {
+ case Value1:
+   doSomething();
+   break;
+ case Value2:
+ case Value3:
+   doSomethingElse();
+   Q_FALLTHROUGH();
+ default:
+   defaultHandling();
+   break;
+ }
+</code></pre><h2 id="换行和折行">
+  换行和折行
+  <a class="heading-link" href="#%e6%8d%a2%e8%a1%8c%e5%92%8c%e6%8a%98%e8%a1%8c">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li>代码一行的内容不要太长，建议保证在100个字符以内，否则进行折行处理；</li>
+<li>注释同上；.</li>
+<li>逗号写在折行末尾，操作符写在折行开始：</li>
+</ul>
+<pre tabindex="0"><code> // 错误写法
+ if (longExpression +
+     otherLongExpression +
+     otherOtherLongExpression) {
+ }
+
+ // 正确写法
+ if (longExpression
+     + otherLongExpression
+     + otherOtherLongExpression) {
+ }
+</code></pre><h2 id="配置插件">
+  配置插件
+  <a class="heading-link" href="#%e9%85%8d%e7%bd%ae%e6%8f%92%e4%bb%b6">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ol>
+<li>在QtCreator中启用Beautifier插件：</li>
+</ol>
+<p><img alt="Enable Beautifier" src="//img/2019/07/enable-beautifier.png"></p>
+<ol start="2">
+<li>在QtCreator设置中配置Beautifier插件风格规则：</li>
+</ol>
+<p><img alt="Configure Beautifier" src="//img/2019/07/enable-beautifier-configuration.png"></p>
+<pre tabindex="0"><code># .astylerc 文件内容
+--style=kr 
+--indent=spaces=4 
+--align-pointer=name 
+--align-reference=name 
+--convert-tabs 
+--attach-namespaces
+--max-instatement-indent=120 
+--pad-header
+--pad-oper
+</code></pre><ol start="3">
+<li>设置Beautifier保存文件时自动风格化：</li>
+</ol>
+<p><img alt="Format on save" src="//img/2019/07/enable-format-on-save.png"></p>
+
+  </article>
+</section>
+
+  
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     John Doe 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>

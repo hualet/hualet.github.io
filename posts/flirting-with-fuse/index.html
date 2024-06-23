@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  深度数据盘和FUSE文件系统 · Think in Hualet
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Hualet Wang">
+<meta name="description" content="说起FUSE，大概很早之前就知道了，但是写文件系统这种东西，大概一辈子也没几次机会会用到，所以当时也没怎么研究，直到最近遇到一个“扭曲”的需求……
+这个需求是这样的。在深度系统的安装器中，有一个全盘安装的功能，这个功能看起来非常简单：扔一块全新的或者老旧的硬盘给安装器，只需一杯咖啡的功夫，你的系统也就能优雅地躺在你的硬盘上了。然而，其中有一个处心积虑，哦不，深思熟虑的细节设定，就是假如你硬盘够大，安装器就会给你多分出一个分区：数据盘。
+据说数据盘的主要作用是让用户存放数据文件，也就是以前用Windows的时候D盘或者E盘等的作用，放点图片、下点片之类的。用户重装系统的时候，也可以方便的做数据迁移。不过鉴于之前我们的一些客户对文件权限的设计不太理解，经常莫名其妙就出权限文件，所以，这个数据盘大概隐含了两个隐性需求：
+文件权限不要太严格； 文件权限不要太严格…… 第一次尝试 Link to heading 收到需求的你肯定想，Linux（类Unix）把用户权限、文件权限划分地这么好，虽然也不算天衣无缝吧，但是也是大神们深思熟虑的成果，退回到上古时代的没有文件权限这种事，简直就是历史的倒退么……然而作为一名优秀的程序员，怎么能不理解这种为了用户使用方便，宁愿自己背负骂名的行为呢，所以我们毅然选择了不抵抗政策。另外，为了这个盘可以被双系统的Windows读到，当时我们很自然就选择了NTFS作为数据盘的分区格式。
+然而，过了一段时间。
+社区用户：我的硬盘发热好厉害呀，是不是这个NTFS分区…… 商业伙伴：这个NTFS文件系统的有点不清真啊…… 这显然没有达到我们预期的目的嘛，必须想办法搞定啊。数据盘这个需求就开始了它的扭曲之旅。
+第二次尝试 Link to heading 如果不使用NTFS，那就在ext4上面做文章咯？在网络上搜索了半天，也没有发现什么好的方式，要么就是chmod -R xxx 这种，要么就是 chown……操作系统跟用户那可是一辈子的事情，这几种显然只适合做一锤子买卖的方式显然是不适合的。然后，我突然想到之前同事提到过的ACL（限于篇幅和主题，就不展开了），就研究了一下，果然还就能解决问题，两条命令：
+$ setfacl -d -m &#34;g:sudo:rwx&#34; /xxx $ setfacl -m &#34;g:sudo:rwx&#34; /xxx 其中的/xxx就是数据盘的挂载点，第一行命令设定挂载点文件夹的默认ACL规则为：所有sudo组的用户可以对文件夹有rwx操作权限，第二句设定挂载点文件夹的ACL规则为：所有sudo组的用户可以对文件夹有rwx操作权限。这两句话看起来好像没有什么区别，其实不同的地方在于第一行命令设定的是文件夹的默认ACL规则，而第二行命令设定的是文件夹本身的ACL规则。设定了默认规则以后文件夹里面新创建的文件或者文件夹就会继承这个规则，如果只设置文件夹的ACL规则，则新文件和子文件夹不会继承这些ACL规则；如果只设置文件夹的默认ACL规则，而不设置文件夹本身的ACL规则，则文件夹本身没有ACL规则生效。
+虽然这个设定感觉有点让人发晕，但是好歹功能都实现了呀，一切都看似那么美好。
+然而程序员的所有美好都怕测试这种物种，测试有一天突然发现：“咦？系统里面的A用户放在数据盘里面的文件怎么B用户无法访问？”程序员就多了个BUG……
+经过调试，发现一种神奇的现象：Linux（可能其他系统也是）对ACL的处理有点奇怪，假如在拥有ACL规则的对象（文件或者文件夹）上进行chmod操作，那么chmod 会对对象的ACL规则造成影响，影响的结果就是对象虽然有ACL规则，但是ACL的有效值会变成chmod要达成的效果。举个例子，假如文件原来的ACL规则如下：
+$ getfacl testacl # file: testacl # owner: hualet # group: hualet user::rw- group::r-- group:sudo:rwx mask::rwx other::r-- 文件的权限是644，但是sudo组的用户有rwx权限。这时候如果我们使用chmod 700 testacl修改一下文件的权限，再次查看文件的ACL会变成：
+$ getfacl testacl # file: testacl # owner: hualet # group: hualet user::rwx group::r-- #effective:--- group:sudo:rwx #effective:--- mask::--- other::--- 可以看到，group和group:sudo后面的有效值是---，即rwx权限全无，other也从原来的r--变成了---。">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="深度数据盘和FUSE文件系统">
+  <meta name="twitter:description" content="说起FUSE，大概很早之前就知道了，但是写文件系统这种东西，大概一辈子也没几次机会会用到，所以当时也没怎么研究，直到最近遇到一个“扭曲”的需求……
+这个需求是这样的。在深度系统的安装器中，有一个全盘安装的功能，这个功能看起来非常简单：扔一块全新的或者老旧的硬盘给安装器，只需一杯咖啡的功夫，你的系统也就能优雅地躺在你的硬盘上了。然而，其中有一个处心积虑，哦不，深思熟虑的细节设定，就是假如你硬盘够大，安装器就会给你多分出一个分区：数据盘。
+据说数据盘的主要作用是让用户存放数据文件，也就是以前用Windows的时候D盘或者E盘等的作用，放点图片、下点片之类的。用户重装系统的时候，也可以方便的做数据迁移。不过鉴于之前我们的一些客户对文件权限的设计不太理解，经常莫名其妙就出权限文件，所以，这个数据盘大概隐含了两个隐性需求：
+文件权限不要太严格； 文件权限不要太严格…… 第一次尝试 Link to heading 收到需求的你肯定想，Linux（类Unix）把用户权限、文件权限划分地这么好，虽然也不算天衣无缝吧，但是也是大神们深思熟虑的成果，退回到上古时代的没有文件权限这种事，简直就是历史的倒退么……然而作为一名优秀的程序员，怎么能不理解这种为了用户使用方便，宁愿自己背负骂名的行为呢，所以我们毅然选择了不抵抗政策。另外，为了这个盘可以被双系统的Windows读到，当时我们很自然就选择了NTFS作为数据盘的分区格式。
+然而，过了一段时间。
+社区用户：我的硬盘发热好厉害呀，是不是这个NTFS分区…… 商业伙伴：这个NTFS文件系统的有点不清真啊…… 这显然没有达到我们预期的目的嘛，必须想办法搞定啊。数据盘这个需求就开始了它的扭曲之旅。
+第二次尝试 Link to heading 如果不使用NTFS，那就在ext4上面做文章咯？在网络上搜索了半天，也没有发现什么好的方式，要么就是chmod -R xxx 这种，要么就是 chown……操作系统跟用户那可是一辈子的事情，这几种显然只适合做一锤子买卖的方式显然是不适合的。然后，我突然想到之前同事提到过的ACL（限于篇幅和主题，就不展开了），就研究了一下，果然还就能解决问题，两条命令：
+$ setfacl -d -m &#34;g:sudo:rwx&#34; /xxx $ setfacl -m &#34;g:sudo:rwx&#34; /xxx 其中的/xxx就是数据盘的挂载点，第一行命令设定挂载点文件夹的默认ACL规则为：所有sudo组的用户可以对文件夹有rwx操作权限，第二句设定挂载点文件夹的ACL规则为：所有sudo组的用户可以对文件夹有rwx操作权限。这两句话看起来好像没有什么区别，其实不同的地方在于第一行命令设定的是文件夹的默认ACL规则，而第二行命令设定的是文件夹本身的ACL规则。设定了默认规则以后文件夹里面新创建的文件或者文件夹就会继承这个规则，如果只设置文件夹的ACL规则，则新文件和子文件夹不会继承这些ACL规则；如果只设置文件夹的默认ACL规则，而不设置文件夹本身的ACL规则，则文件夹本身没有ACL规则生效。
+虽然这个设定感觉有点让人发晕，但是好歹功能都实现了呀，一切都看似那么美好。
+然而程序员的所有美好都怕测试这种物种，测试有一天突然发现：“咦？系统里面的A用户放在数据盘里面的文件怎么B用户无法访问？”程序员就多了个BUG……
+经过调试，发现一种神奇的现象：Linux（可能其他系统也是）对ACL的处理有点奇怪，假如在拥有ACL规则的对象（文件或者文件夹）上进行chmod操作，那么chmod 会对对象的ACL规则造成影响，影响的结果就是对象虽然有ACL规则，但是ACL的有效值会变成chmod要达成的效果。举个例子，假如文件原来的ACL规则如下：
+$ getfacl testacl # file: testacl # owner: hualet # group: hualet user::rw- group::r-- group:sudo:rwx mask::rwx other::r-- 文件的权限是644，但是sudo组的用户有rwx权限。这时候如果我们使用chmod 700 testacl修改一下文件的权限，再次查看文件的ACL会变成：
+$ getfacl testacl # file: testacl # owner: hualet # group: hualet user::rwx group::r-- #effective:--- group:sudo:rwx #effective:--- mask::--- other::--- 可以看到，group和group:sudo后面的有效值是---，即rwx权限全无，other也从原来的r--变成了---。">
+
+<meta property="og:url" content="http://localhost:1313/posts/flirting-with-fuse/">
+  <meta property="og:site_name" content="Think in Hualet">
+  <meta property="og:title" content="深度数据盘和FUSE文件系统">
+  <meta property="og:description" content="说起FUSE，大概很早之前就知道了，但是写文件系统这种东西，大概一辈子也没几次机会会用到，所以当时也没怎么研究，直到最近遇到一个“扭曲”的需求……
+这个需求是这样的。在深度系统的安装器中，有一个全盘安装的功能，这个功能看起来非常简单：扔一块全新的或者老旧的硬盘给安装器，只需一杯咖啡的功夫，你的系统也就能优雅地躺在你的硬盘上了。然而，其中有一个处心积虑，哦不，深思熟虑的细节设定，就是假如你硬盘够大，安装器就会给你多分出一个分区：数据盘。
+据说数据盘的主要作用是让用户存放数据文件，也就是以前用Windows的时候D盘或者E盘等的作用，放点图片、下点片之类的。用户重装系统的时候，也可以方便的做数据迁移。不过鉴于之前我们的一些客户对文件权限的设计不太理解，经常莫名其妙就出权限文件，所以，这个数据盘大概隐含了两个隐性需求：
+文件权限不要太严格； 文件权限不要太严格…… 第一次尝试 Link to heading 收到需求的你肯定想，Linux（类Unix）把用户权限、文件权限划分地这么好，虽然也不算天衣无缝吧，但是也是大神们深思熟虑的成果，退回到上古时代的没有文件权限这种事，简直就是历史的倒退么……然而作为一名优秀的程序员，怎么能不理解这种为了用户使用方便，宁愿自己背负骂名的行为呢，所以我们毅然选择了不抵抗政策。另外，为了这个盘可以被双系统的Windows读到，当时我们很自然就选择了NTFS作为数据盘的分区格式。
+然而，过了一段时间。
+社区用户：我的硬盘发热好厉害呀，是不是这个NTFS分区…… 商业伙伴：这个NTFS文件系统的有点不清真啊…… 这显然没有达到我们预期的目的嘛，必须想办法搞定啊。数据盘这个需求就开始了它的扭曲之旅。
+第二次尝试 Link to heading 如果不使用NTFS，那就在ext4上面做文章咯？在网络上搜索了半天，也没有发现什么好的方式，要么就是chmod -R xxx 这种，要么就是 chown……操作系统跟用户那可是一辈子的事情，这几种显然只适合做一锤子买卖的方式显然是不适合的。然后，我突然想到之前同事提到过的ACL（限于篇幅和主题，就不展开了），就研究了一下，果然还就能解决问题，两条命令：
+$ setfacl -d -m &#34;g:sudo:rwx&#34; /xxx $ setfacl -m &#34;g:sudo:rwx&#34; /xxx 其中的/xxx就是数据盘的挂载点，第一行命令设定挂载点文件夹的默认ACL规则为：所有sudo组的用户可以对文件夹有rwx操作权限，第二句设定挂载点文件夹的ACL规则为：所有sudo组的用户可以对文件夹有rwx操作权限。这两句话看起来好像没有什么区别，其实不同的地方在于第一行命令设定的是文件夹的默认ACL规则，而第二行命令设定的是文件夹本身的ACL规则。设定了默认规则以后文件夹里面新创建的文件或者文件夹就会继承这个规则，如果只设置文件夹的ACL规则，则新文件和子文件夹不会继承这些ACL规则；如果只设置文件夹的默认ACL规则，而不设置文件夹本身的ACL规则，则文件夹本身没有ACL规则生效。
+虽然这个设定感觉有点让人发晕，但是好歹功能都实现了呀，一切都看似那么美好。
+然而程序员的所有美好都怕测试这种物种，测试有一天突然发现：“咦？系统里面的A用户放在数据盘里面的文件怎么B用户无法访问？”程序员就多了个BUG……
+经过调试，发现一种神奇的现象：Linux（可能其他系统也是）对ACL的处理有点奇怪，假如在拥有ACL规则的对象（文件或者文件夹）上进行chmod操作，那么chmod 会对对象的ACL规则造成影响，影响的结果就是对象虽然有ACL规则，但是ACL的有效值会变成chmod要达成的效果。举个例子，假如文件原来的ACL规则如下：
+$ getfacl testacl # file: testacl # owner: hualet # group: hualet user::rw- group::r-- group:sudo:rwx mask::rwx other::r-- 文件的权限是644，但是sudo组的用户有rwx权限。这时候如果我们使用chmod 700 testacl修改一下文件的权限，再次查看文件的ACL会变成：
+$ getfacl testacl # file: testacl # owner: hualet # group: hualet user::rwx group::r-- #effective:--- group:sudo:rwx #effective:--- mask::--- other::--- 可以看到，group和group:sudo后面的有效值是---，即rwx权限全无，other也从原来的r--变成了---。">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2019-03-10T14:11:28+08:00">
+    <meta property="article:modified_time" content="2019-03-10T14:11:28+08:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/posts/flirting-with-fuse/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      Think in Hualet
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/blogroll/">Blogroll</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/posts/flirting-with-fuse/">
+              深度数据盘和FUSE文件系统
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2019-03-10T14:11:28&#43;08:00">
+                三月 10, 2019
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <p>说起FUSE，大概很早之前就知道了，但是写文件系统这种东西，大概一辈子也没几次机会会用到，所以当时也没怎么研究，直到最近遇到一个“扭曲”的需求……</p>
+<p>这个需求是这样的。在深度系统的安装器中，有一个全盘安装的功能，这个功能看起来非常简单：扔一块全新的或者老旧的硬盘给安装器，只需一杯咖啡的功夫，你的系统也就能优雅地躺在你的硬盘上了。然而，其中有一个处心积虑，哦不，深思熟虑的细节设定，就是假如你硬盘够大，安装器就会给你多分出一个分区：数据盘。</p>
+<p>据说数据盘的主要作用是让用户存放数据文件，也就是以前用Windows的时候D盘或者E盘等的作用，放点图片、下点片之类的。用户重装系统的时候，也可以方便的做数据迁移。不过鉴于之前我们的一些客户对文件权限的设计不太理解，经常莫名其妙就出权限文件，所以，这个数据盘大概隐含了两个隐性需求：</p>
+<ol>
+<li>文件权限不要太严格；</li>
+<li>文件权限不要太严格……</li>
+</ol>
+<h2 id="第一次尝试">
+  第一次尝试
+  <a class="heading-link" href="#%e7%ac%ac%e4%b8%80%e6%ac%a1%e5%b0%9d%e8%af%95">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>收到需求的你肯定想，Linux（类Unix）把用户权限、文件权限划分地这么好，虽然也不算天衣无缝吧，但是也是大神们深思熟虑的成果，退回到上古时代的没有文件权限这种事，简直就是历史的倒退么……然而作为一名优秀的程序员，怎么能不理解这种为了用户使用方便，宁愿自己背负骂名的行为呢，所以我们毅然选择了不抵抗政策。另外，为了这个盘可以被双系统的Windows读到，当时我们很自然就选择了<code>NTFS</code>作为数据盘的分区格式。</p>
+<p>然而，过了一段时间。</p>
+<pre tabindex="0"><code>
+社区用户：我的硬盘发热好厉害呀，是不是这个NTFS分区……
+
+商业伙伴：这个NTFS文件系统的有点不清真啊……
+</code></pre><p>这显然没有达到我们预期的目的嘛，必须想办法搞定啊。数据盘这个需求就开始了它的扭曲之旅。</p>
+<h2 id="第二次尝试">
+  第二次尝试
+  <a class="heading-link" href="#%e7%ac%ac%e4%ba%8c%e6%ac%a1%e5%b0%9d%e8%af%95">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>如果不使用<code>NTFS</code>，那就在<code>ext4</code>上面做文章咯？在网络上搜索了半天，也没有发现什么好的方式，要么就是<code>chmod -R  xxx</code> 这种，要么就是 <code>chown</code>……操作系统跟用户那可是一辈子的事情，这几种显然只适合做一锤子买卖的方式显然是不适合的。然后，我突然想到之前同事提到过的ACL（限于篇幅和主题，就不展开了），就研究了一下，果然还就能解决问题，两条命令：</p>
+<pre tabindex="0"><code>$ setfacl -d -m &#34;g:sudo:rwx&#34; /xxx
+$ setfacl -m &#34;g:sudo:rwx&#34; /xxx
+</code></pre><p>其中的<code>/xxx</code>就是数据盘的挂载点，第一行命令设定挂载点文件夹的默认ACL规则为：所有<code>sudo</code>组的用户可以对文件夹有<code>rwx</code>操作权限，第二句设定挂载点文件夹的ACL规则为：所有<code>sudo</code>组的用户可以对文件夹有<code>rwx</code>操作权限。这两句话看起来好像没有什么区别，其实不同的地方在于第一行命令设定的是文件夹的默认ACL规则，而第二行命令设定的是文件夹本身的ACL规则。设定了默认规则以后文件夹里面新创建的文件或者文件夹就会继承这个规则，如果只设置文件夹的ACL规则，则新文件和子文件夹不会继承这些ACL规则；如果只设置文件夹的默认ACL规则，而不设置文件夹本身的ACL规则，则文件夹本身没有ACL规则生效。</p>
+<p>虽然这个设定感觉有点让人发晕，但是好歹功能都实现了呀，一切都看似那么美好。</p>
+<p>然而程序员的所有美好都怕测试这种物种，测试有一天突然发现：“咦？系统里面的A用户放在数据盘里面的文件怎么B用户无法访问？”程序员就多了个BUG……</p>
+<p>经过调试，发现一种神奇的现象：Linux（可能其他系统也是）对ACL的处理有点奇怪，假如在拥有ACL规则的对象（文件或者文件夹）上进行<code>chmod</code>操作，那么<code>chmod</code> 会对对象的ACL规则造成影响，影响的结果就是对象虽然有ACL规则，但是ACL的有效值会变成<code>chmod</code>要达成的效果。举个例子，假如文件原来的ACL规则如下：</p>
+<pre tabindex="0"><code>$ getfacl testacl 
+# file: testacl
+# owner: hualet
+# group: hualet
+user::rw-
+group::r--
+group:sudo:rwx
+mask::rwx
+other::r--
+</code></pre><p>文件的权限是<code>644</code>，但是<code>sudo</code>组的用户有<code>rwx</code>权限。这时候如果我们使用<code>chmod 700 testacl</code>修改一下文件的权限，再次查看文件的ACL会变成：</p>
+<pre tabindex="0"><code>$ getfacl testacl                
+# file: testacl
+# owner: hualet
+# group: hualet
+user::rwx
+group::r--                      #effective:---
+group:sudo:rwx                  #effective:---
+mask::---
+other::---
+</code></pre><p>可以看到，<code>group</code>和<code>group:sudo</code>后面的有效值是<code>---</code>，即<code>rwx</code>权限全无，<code>other</code>也从原来的<code>r--</code>变成了<code>---</code>。</p>
+<p>说好的ACL各种强大呢，怎么还是打不过<code>chmod</code>……但转念仔细一想，这种处理看似很奇特，但是实际上也有深思熟虑在里面的：这样设定的好处就是知道ACL存在的人可以使用ACL，而不知道ACL存在的人使用<code>chmod</code>的功能也能保证是正常的，这对于提升系统的兼容性还是有必要的。</p>
+<p>回到上面的解谜题，A用户拷贝文件到数据盘的时候，文件管理器（cp也一样）会优先考虑保留文件的权限，这个操作类似创建文件后执行<code>chmod</code>操作，所以也就出现了测试报的那种问题。</p>
+<p>这就是数据盘需求第二次扭曲的过程。</p>
+<h2 id="fuse">
+  FUSE
+  <a class="heading-link" href="#fuse">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>所以又有大神提出了FUSE。</p>
+<p>经过了两三轮扭曲，感觉数据盘这个需求已经有点”物是人非“了，但是本着“技术多尝试一点，以后肯定能用到”的想法，我还是借着这个机会“把玩“了一下很久之前就想玩玩儿的FUSE。</p>
+<p>先给不知道FUSE的同学科普一下，FUSE（Filesystem in Userspace）就是用户空间的文件系统，它的出现让非内核开发者开发自己的文件系统成为可能，非特权用户不需要获取特权就可以挂载自己的文件系统。对于开发者来说，FUSE更多是一个开发框架，用来开发和实现用户空间系统，这个框架主要分为三个部分：内核模块、libfuse和文件系统守护进程，它们之间的关系如下图所示：</p>
+<p><img alt="FUSE_structure" src="/img/2019/03/FUSE_structure.svg"></p>
+<p>图中的<code>./hello</code>就是文件系统守护进程，<code>/tmp/fuse</code>则是这个文件系统的挂载点。文件系统工作在用户空间，通过libfuse跟内核中的FUSE模块进程通信，代理所有用户对挂载点内文件的访问请求，从而实现特殊的文件系统功能需求。</p>
+<p>举个例子，<code>sshfs</code>就是一种用户空间文件系统，用来将ssh服务器上的一个文件夹挂载到本地使用。它的使用方式特别简单，只需执行命令：<code>sshfs [user@]host:[dir] mountpoint</code>，这样你在<code>mountpoint</code>下看到的文件的文件就是你ssh服务器上相应文件夹的文件，你再本地做得修改也都会在你的ssh服务器上体现出来。</p>
+<p>因为libfuse使用起来非常方便，所以有不少有意思的文件系统都是基于FUSE完成的（见<a href="https://github.com/libfuse/libfuse/wiki/Filesystems"  class="external-link" target="_blank" rel="noopener">FUSE Filesystems</a>）。类似上面的<code>sshfs</code>可能更像是开发者的一个玩具，但是FUSE家族也不缺乏一些重量级的文件系统，像<code>ZFS</code>和<code>NTFS</code>等也是基于FUSE实现的。这么说并不是在FUSE完美无瑕，实际上很多人批评FUSE的性能比较差，据<a href="https://www.usenix.org/system/files/conference/fast17/fast17-vangoor.pdf"  class="external-link" target="_blank" rel="noopener">To FUSE or Not to FUSE: Performance of User-Space File Systems</a>这篇论文测算，FUSE文件系统在吞吐量上比原生的文件系统要低83%，而CPU占用则要高31%。</p>
+<p>“To FUSE or Not to FUSE”，这是一个问题。要效率还是要性能，只能具体场景具体分析了。</p>
+<p>（未完待续）</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+        
+        
+
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     Hualet Wang 
+    ·
+    
+     <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-121092907-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-121092907-1');
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>

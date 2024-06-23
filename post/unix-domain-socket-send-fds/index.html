@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  通过 Unix Domain Socket 传递文件描述符 · johndoe
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="John Doe">
+<meta name="description" content="Unix Domain Socket 是 Unix 系统下重要的本地进程间通信（IPC）机制之一，在 DDE、GNOME、KDE 等 Linux 桌面环境中常见的进程间通信方式 DBus 有一种实现方式就是基于 Unix Domain Socket 做的。虽然一直知道它的大名，也一直知道 Unix Domain Socket 可以用来传递文件描述符，但是碍于以前经验和眼界不足，加上没有深入去了解，完全不知道能传递文件描述符是多么强大的能力和必要性。
+首先，我想着文件描述符不就是一个数字么，哪个 IPC 不能传递数字呢？完全没有思考到文件描述符是只在进程范围内有效，同样一个文件描述符放在不同的进程完全就不是一回事儿。这时候你肯定想，既然传递文件描述符这么麻烦，为啥非要传递文件描述符呢，使用文件名不也是一样的么？那么恭喜你，你也有更我一样在践行陶渊明老前辈看事物“不求甚解”的作风。传递文件描述符还是有它的必要性的，一方面，文件描述符代表的不只是一个文件，它还包含了文件打开的状态，比如 seek 的位置等，有点进程之于可执行程序的意思，拿到文件描述符也就拿到了这些动态的信息；另一方面，文件描述符不只对应于本地文件，它为了一众可读写对象提供了统一的读写接口，包含什么呢？本地文件、（匿名）管道、标准输入输出、甚至于 Socket 本身等……可以让你完全不关心文件描述符背后的实现是什么而方便实现自己的逻辑代码。
+想通了以上道理，又有了以前似曾相识的感慨“古人诚不欺我”——前人留下的东西，必然有一定的合理性。这也是为什么我比较排斥看见一个软件不满意就立即重新造，尤其是能流传很广或者流程时间很长的软件，里面很多看起来不必要的东西，可能有其存在的合理性，最好的做法是尝试去改进，改进的过程了解其历史、学习其精髓，等自己胸有成竹的时候再下手重造不迟。额，跑题了……
+回到正题，之所以前段时间突然研究了一下 Socket 传递文件描述符的东西，是遇到这样一个需求：一个进程将自己的标准输入、标准输出和标准错误输出映射到另外一个进程相应的位置。带着对 Unix Domain Socket 的朦胧认识，写了一个简单的实现原型：
+// outlet.c #include &lt;sys/socket.h&gt; #include &lt;sys/un.h&gt; #include &lt;string.h&gt; #include &lt;stdio.h&gt; #include &lt;errno.h&gt; #include &lt;unistd.h&gt; #define SOCKET_NAME &#34;/tmp/connection-uds-fd&#34; int make_connection() { int fd; int connection_fd; int result; struct sockaddr_un sun; fd = socket(PF_UNIX, SOCK_STREAM, 0); sun.sun_family = AF_UNIX; strncpy(sun.">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="通过 Unix Domain Socket 传递文件描述符">
+  <meta name="twitter:description" content="Unix Domain Socket 是 Unix 系统下重要的本地进程间通信（IPC）机制之一，在 DDE、GNOME、KDE 等 Linux 桌面环境中常见的进程间通信方式 DBus 有一种实现方式就是基于 Unix Domain Socket 做的。虽然一直知道它的大名，也一直知道 Unix Domain Socket 可以用来传递文件描述符，但是碍于以前经验和眼界不足，加上没有深入去了解，完全不知道能传递文件描述符是多么强大的能力和必要性。
+首先，我想着文件描述符不就是一个数字么，哪个 IPC 不能传递数字呢？完全没有思考到文件描述符是只在进程范围内有效，同样一个文件描述符放在不同的进程完全就不是一回事儿。这时候你肯定想，既然传递文件描述符这么麻烦，为啥非要传递文件描述符呢，使用文件名不也是一样的么？那么恭喜你，你也有更我一样在践行陶渊明老前辈看事物“不求甚解”的作风。传递文件描述符还是有它的必要性的，一方面，文件描述符代表的不只是一个文件，它还包含了文件打开的状态，比如 seek 的位置等，有点进程之于可执行程序的意思，拿到文件描述符也就拿到了这些动态的信息；另一方面，文件描述符不只对应于本地文件，它为了一众可读写对象提供了统一的读写接口，包含什么呢？本地文件、（匿名）管道、标准输入输出、甚至于 Socket 本身等……可以让你完全不关心文件描述符背后的实现是什么而方便实现自己的逻辑代码。
+想通了以上道理，又有了以前似曾相识的感慨“古人诚不欺我”——前人留下的东西，必然有一定的合理性。这也是为什么我比较排斥看见一个软件不满意就立即重新造，尤其是能流传很广或者流程时间很长的软件，里面很多看起来不必要的东西，可能有其存在的合理性，最好的做法是尝试去改进，改进的过程了解其历史、学习其精髓，等自己胸有成竹的时候再下手重造不迟。额，跑题了……
+回到正题，之所以前段时间突然研究了一下 Socket 传递文件描述符的东西，是遇到这样一个需求：一个进程将自己的标准输入、标准输出和标准错误输出映射到另外一个进程相应的位置。带着对 Unix Domain Socket 的朦胧认识，写了一个简单的实现原型：
+// outlet.c #include &lt;sys/socket.h&gt; #include &lt;sys/un.h&gt; #include &lt;string.h&gt; #include &lt;stdio.h&gt; #include &lt;errno.h&gt; #include &lt;unistd.h&gt; #define SOCKET_NAME &#34;/tmp/connection-uds-fd&#34; int make_connection() { int fd; int connection_fd; int result; struct sockaddr_un sun; fd = socket(PF_UNIX, SOCK_STREAM, 0); sun.sun_family = AF_UNIX; strncpy(sun.">
+
+<meta property="og:url" content="http://localhost:1313/post/unix-domain-socket-send-fds/">
+  <meta property="og:site_name" content="johndoe">
+  <meta property="og:title" content="通过 Unix Domain Socket 传递文件描述符">
+  <meta property="og:description" content="Unix Domain Socket 是 Unix 系统下重要的本地进程间通信（IPC）机制之一，在 DDE、GNOME、KDE 等 Linux 桌面环境中常见的进程间通信方式 DBus 有一种实现方式就是基于 Unix Domain Socket 做的。虽然一直知道它的大名，也一直知道 Unix Domain Socket 可以用来传递文件描述符，但是碍于以前经验和眼界不足，加上没有深入去了解，完全不知道能传递文件描述符是多么强大的能力和必要性。
+首先，我想着文件描述符不就是一个数字么，哪个 IPC 不能传递数字呢？完全没有思考到文件描述符是只在进程范围内有效，同样一个文件描述符放在不同的进程完全就不是一回事儿。这时候你肯定想，既然传递文件描述符这么麻烦，为啥非要传递文件描述符呢，使用文件名不也是一样的么？那么恭喜你，你也有更我一样在践行陶渊明老前辈看事物“不求甚解”的作风。传递文件描述符还是有它的必要性的，一方面，文件描述符代表的不只是一个文件，它还包含了文件打开的状态，比如 seek 的位置等，有点进程之于可执行程序的意思，拿到文件描述符也就拿到了这些动态的信息；另一方面，文件描述符不只对应于本地文件，它为了一众可读写对象提供了统一的读写接口，包含什么呢？本地文件、（匿名）管道、标准输入输出、甚至于 Socket 本身等……可以让你完全不关心文件描述符背后的实现是什么而方便实现自己的逻辑代码。
+想通了以上道理，又有了以前似曾相识的感慨“古人诚不欺我”——前人留下的东西，必然有一定的合理性。这也是为什么我比较排斥看见一个软件不满意就立即重新造，尤其是能流传很广或者流程时间很长的软件，里面很多看起来不必要的东西，可能有其存在的合理性，最好的做法是尝试去改进，改进的过程了解其历史、学习其精髓，等自己胸有成竹的时候再下手重造不迟。额，跑题了……
+回到正题，之所以前段时间突然研究了一下 Socket 传递文件描述符的东西，是遇到这样一个需求：一个进程将自己的标准输入、标准输出和标准错误输出映射到另外一个进程相应的位置。带着对 Unix Domain Socket 的朦胧认识，写了一个简单的实现原型：
+// outlet.c #include &lt;sys/socket.h&gt; #include &lt;sys/un.h&gt; #include &lt;string.h&gt; #include &lt;stdio.h&gt; #include &lt;errno.h&gt; #include &lt;unistd.h&gt; #define SOCKET_NAME &#34;/tmp/connection-uds-fd&#34; int make_connection() { int fd; int connection_fd; int result; struct sockaddr_un sun; fd = socket(PF_UNIX, SOCK_STREAM, 0); sun.sun_family = AF_UNIX; strncpy(sun.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2018-10-28T21:08:45+08:00">
+    <meta property="article:modified_time" content="2018-10-28T21:08:45+08:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/post/unix-domain-socket-send-fds/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      johndoe
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/contact/">Contact me</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/pt-br/">🇧🇷</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container page">
+  <article>
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="http://localhost:1313/post/unix-domain-socket-send-fds/">
+          通过 Unix Domain Socket 传递文件描述符
+        </a>
+      </h1>
+    </header>
+
+    <p>Unix Domain Socket 是 Unix 系统下重要的本地进程间通信（IPC）机制之一，在 DDE、GNOME、KDE 等 Linux 桌面环境中常见的进程间通信方式 DBus 有一种实现方式就是基于 Unix Domain Socket 做的。虽然一直知道它的大名，也一直知道 Unix Domain Socket 可以用来传递文件描述符，但是碍于以前经验和眼界不足，加上没有深入去了解，完全不知道能传递文件描述符是多么强大的能力和必要性。</p>
+<p>首先，我想着文件描述符不就是一个数字么，哪个 IPC 不能传递数字呢？完全没有思考到文件描述符是只在进程范围内有效，同样一个文件描述符放在不同的进程完全就不是一回事儿。这时候你肯定想，既然传递文件描述符这么麻烦，为啥非要传递文件描述符呢，使用文件名不也是一样的么？那么恭喜你，你也有更我一样在践行陶渊明老前辈看事物“不求甚解”的作风。传递文件描述符还是有它的必要性的，一方面，文件描述符代表的不只是一个文件，它还包含了文件打开的状态，比如 seek 的位置等，有点进程之于可执行程序的意思，拿到文件描述符也就拿到了这些动态的信息；另一方面，文件描述符不只对应于本地文件，它为了一众可读写对象提供了统一的读写接口，包含什么呢？本地文件、（匿名）管道、标准输入输出、甚至于 Socket 本身等……可以让你完全不关心文件描述符背后的实现是什么而方便实现自己的逻辑代码。</p>
+<p>想通了以上道理，又有了以前似曾相识的感慨“古人诚不欺我”——前人留下的东西，必然有一定的合理性。这也是为什么我比较排斥看见一个软件不满意就立即重新造，尤其是能流传很广或者流程时间很长的软件，里面很多看起来不必要的东西，可能有其存在的合理性，最好的做法是尝试去改进，改进的过程了解其历史、学习其精髓，等自己胸有成竹的时候再下手重造不迟。额，跑题了……</p>
+<p>回到正题，之所以前段时间突然研究了一下 Socket 传递文件描述符的东西，是遇到这样一个需求：一个进程将自己的标准输入、标准输出和标准错误输出映射到另外一个进程相应的位置。带着对 Unix Domain Socket 的朦胧认识，写了一个简单的实现原型：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// outlet.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/un.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define SOCKET_NAME &#34;/tmp/connection-uds-fd&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">make_connection</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">connection_fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">sockaddr_un</span> <span class="n">sun</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">fd</span> <span class="o">=</span> <span class="nf">socket</span><span class="p">(</span><span class="n">PF_UNIX</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">sun</span><span class="p">.</span><span class="n">sun_family</span> <span class="o">=</span> <span class="n">AF_UNIX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">strncpy</span><span class="p">(</span><span class="n">sun</span><span class="p">.</span><span class="n">sun_path</span><span class="p">,</span> <span class="n">SOCKET_NAME</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">sun</span><span class="p">.</span><span class="n">sun_path</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">=</span> <span class="nf">bind</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">sun</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">sun</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">listen</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">connection_fd</span> <span class="o">=</span> <span class="nf">accept</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>    
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">connection_fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">send_fds</span><span class="p">(</span><span class="kt">int</span> <span class="n">socket_fd</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">msghdr</span> <span class="n">msg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">cmsghdr</span> <span class="o">*</span><span class="n">cmsg</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">io</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="nf">CMSG_SPACE</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">io</span><span class="p">))];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">iovec</span> <span class="n">iov</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">dummy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">msghdr</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">iov</span><span class="p">.</span><span class="n">iov_base</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dummy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iov</span><span class="p">.</span><span class="n">iov_len</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">msg</span><span class="p">.</span><span class="n">msg_iov</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">iov</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">msg</span><span class="p">.</span><span class="n">msg_iovlen</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">msg</span><span class="p">.</span><span class="n">msg_control</span> <span class="o">=</span> <span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">msg</span><span class="p">.</span><span class="n">msg_controllen</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">cmsg</span> <span class="o">=</span> <span class="nf">CMSG_FIRSTHDR</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmsg</span><span class="o">-&gt;</span><span class="n">cmsg_len</span> <span class="o">=</span> <span class="nf">CMSG_LEN</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">io</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmsg</span><span class="o">-&gt;</span><span class="n">cmsg_level</span> <span class="o">=</span> <span class="n">SOL_SOCKET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmsg</span><span class="o">-&gt;</span><span class="n">cmsg_type</span> <span class="o">=</span> <span class="n">SCM_RIGHTS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">memcpy</span><span class="p">(</span><span class="nf">CMSG_DATA</span><span class="p">(</span><span class="n">cmsg</span><span class="p">),</span> <span class="n">io</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">io</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">msg</span><span class="p">.</span><span class="n">msg_controllen</span> <span class="o">=</span> <span class="n">cmsg</span><span class="o">-&gt;</span><span class="n">cmsg_len</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size</span> <span class="o">=</span> <span class="nf">sendmsg</span><span class="p">(</span><span class="n">socket_fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// printf(&#34;%d %d\n&#34;, size, errno);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="k">const</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">connection_fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;write from outlet</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">connection_fd</span> <span class="o">=</span> <span class="nf">make_connection</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">send_fds</span><span class="p">(</span><span class="n">connection_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// inner.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/un.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define SOCKET_NAME &#34;/tmp/connection-uds-fd&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">connect_socket</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">sockaddr_un</span> <span class="n">sun</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">fd</span> <span class="o">=</span> <span class="nf">socket</span><span class="p">(</span><span class="n">PF_UNIX</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">sun</span><span class="p">.</span><span class="n">sun_family</span> <span class="o">=</span> <span class="n">AF_UNIX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">strncpy</span><span class="p">(</span><span class="n">sun</span><span class="p">.</span><span class="n">sun_path</span><span class="p">,</span> <span class="n">SOCKET_NAME</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">sun</span><span class="p">.</span><span class="n">sun_path</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">connect</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sun</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">sun</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">receive_fds</span><span class="p">(</span><span class="kt">int</span> <span class="n">socket_fd</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">dummy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fds</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">iovec</span> <span class="n">iov</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iov</span><span class="p">.</span><span class="n">iov_base</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dummy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">iov</span><span class="p">.</span><span class="n">iov_len</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="nf">CMSG_SPACE</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">fds</span><span class="p">))];</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">msghdr</span> <span class="n">msg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">msg</span><span class="p">.</span><span class="n">msg_iov</span>        <span class="o">=</span> <span class="o">&amp;</span><span class="n">iov</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">msg</span><span class="p">.</span><span class="n">msg_iovlen</span>     <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">msg</span><span class="p">.</span><span class="n">msg_control</span>    <span class="o">=</span> <span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">msg</span><span class="p">.</span><span class="n">msg_controllen</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">cmsghdr</span> <span class="o">*</span><span class="n">cmsg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmsg</span>             <span class="o">=</span> <span class="nf">CMSG_FIRSTHDR</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmsg</span><span class="o">-&gt;</span><span class="n">cmsg_len</span>   <span class="o">=</span> <span class="nf">CMSG_LEN</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">fds</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmsg</span><span class="o">-&gt;</span><span class="n">cmsg_level</span> <span class="o">=</span> <span class="n">SOL_SOCKET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cmsg</span><span class="o">-&gt;</span><span class="n">cmsg_type</span>  <span class="o">=</span> <span class="n">SCM_RIGHTS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">memcpy</span><span class="p">(</span><span class="nf">CMSG_DATA</span><span class="p">(</span><span class="n">cmsg</span><span class="p">),</span> <span class="n">fds</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">fds</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">size</span> <span class="o">=</span> <span class="nf">recvmsg</span><span class="p">(</span><span class="n">socket_fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// printf(&#34;%d \n&#34;, size);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="nf">memcpy</span><span class="p">(</span><span class="n">fds</span><span class="p">,</span> <span class="nf">CMSG_DATA</span><span class="p">(</span><span class="n">cmsg</span><span class="p">),</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">fds</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d %d %d&#34;</span><span class="p">,</span> <span class="n">fds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fds</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">msg_buf</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">strcpy</span><span class="p">(</span><span class="n">msg_buf</span><span class="p">,</span> <span class="s">&#34;write from inner</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">write</span><span class="p">(</span><span class="n">fds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">msg_buf</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">msg_buf</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="k">const</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">socket_fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fds</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">socket_fd</span> <span class="o">=</span> <span class="nf">connect_socket</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">receive_fds</span><span class="p">(</span><span class="n">socket_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>其中，outlet 是“贡献”标准输入输出的进程，inner 是“抢占” outlet 标准输入输出的进程。整体上代码还比较好理解，只是如果需要发文文件描述符，需要注意 <code>send_fds</code> 函数中 <code>cmsg-&gt;cmsg_type = SCM_RIGHTS;</code> 一行，必须制定 <code>cmsg_type</code> 为 <code>SCM_RIGHTS</code>。</p>
+<p>分别编译两个程序文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gcc -o outlet outlet.c
+</span></span><span class="line"><span class="cl">$ gcc -o inner inner.c
+</span></span></code></pre></div><p>先执行 outlet，先输出 “write from outlet” 后阻塞，等待 inner 进程的连接：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./outlet 
+</span></span><span class="line"><span class="cl">$ write from outlet
+</span></span></code></pre></div><p>然后再启动 inner 进程，inner 进程输出“4 5 6”，并在 outlet 的标准输出输出 “write from inner“：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./inner
+</span></span><span class="line"><span class="cl">$ <span class="m">4</span> <span class="m">5</span> <span class="m">6</span>
+</span></span><span class="line"><span class="cl">$ 
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./outlet
+</span></span><span class="line"><span class="cl">$ write from outlet
+</span></span><span class="line"><span class="cl">$ write from inner
+</span></span></code></pre></div><p>这样就大功告成了。</p>
+<p>inner 之所以输出 ”4 5 6“ 是比较好奇传递过来的文件描述符到底是长啥样的，这行打印看代码可以知道是打印了接收到的文件描述符的值，也就是创建了几个新的文件描述符么——就像侦探推理一样，没有揭开谜底前各种好奇，一旦揭开谜底了反倒趣味全无了。</p>
+<blockquote>
+<p>P.S.  <a href="http://man7.org/linux/man-pages/man7/unix.7.html"  class="external-link" target="_blank" rel="noopener">unix(7)</a> 中其实交代了传递文件描述符的效果跟 dup2 差不多的，还怪自己平常没有好好 RTFM 啊：</p>
+<pre tabindex="0"><code>SCM_RIGHTS
+              Send or receive a set of open file descriptors from another
+              process.  The data portion contains an integer array of the
+              file descriptors.  The passed file descriptors behave as
+              though they have been created with dup(2).
+</code></pre></blockquote>
+
+  </article>
+</section>
+
+  
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     John Doe 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>
