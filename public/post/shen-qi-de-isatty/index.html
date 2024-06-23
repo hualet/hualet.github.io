@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  神奇的isatty · johndoe
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="John Doe">
+<meta name="description" content="前些日子才从apt-get命令系列换成更为时尚的apt系列，作为一个debian系发行版——deepin的开发者，我表示很汗颜……新的apt命令除了在功能上将apt-get、apt-cache等几个命令统一到了一个命令上外，更是有了不错的TUI，如文档所说：
+The `apt` command is meant to be pleasant for end users and does not need to be backward compatible like apt-get(8). 毕竟，还多了进度条呢…… 😂
+不过这不是今天要说的重点，换到apt以后，把apt操作的一些结果跟管道结合一起用，经常会收到警告，例如：
+(ssh) hualet@hualet-PC : ~ [0] % apt search deepin | grep -i superstar WARNING: apt does not have a stable CLI interface. Use with caution in scripts. CLI的输出也算是API要保持stable么？汗颜again……dtk作为一个系统级的开发库都还没有到stable的状态、某in公司的CTO写得命令行工具，第二天接口就全变了😂……敬畏之余，困惑我的倒不是这个警告的内容，毕竟新的东西都不保证稳定么，但是apt是怎么知道它的输出被连到管道了呢？
+一直没空处理，直到昨天，又一次遇到了，遂记下，晚上思来想去没什么想法，遂请教前文提到的不靠谱CTO，丫直接甩过来一句：
+“istty检测output啊，很多命令行程序都会根据这个做不同的反应”
+我：“man istty没有结果啊“
+他：”你man page没装全吧？“
+我默默敲下sudo apt install manpages-dev，显示已经安装了……
+我：“装全了啊，我Google一下吧”
+他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。
+我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
+我：“你是不是记错了，有isatty，unistd.h里面的……”
+他：“恩额”
+就是这么不靠谱一人……">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="神奇的isatty">
+  <meta name="twitter:description" content="前些日子才从apt-get命令系列换成更为时尚的apt系列，作为一个debian系发行版——deepin的开发者，我表示很汗颜……新的apt命令除了在功能上将apt-get、apt-cache等几个命令统一到了一个命令上外，更是有了不错的TUI，如文档所说：
+The `apt` command is meant to be pleasant for end users and does not need to be backward compatible like apt-get(8). 毕竟，还多了进度条呢…… 😂
+不过这不是今天要说的重点，换到apt以后，把apt操作的一些结果跟管道结合一起用，经常会收到警告，例如：
+(ssh) hualet@hualet-PC : ~ [0] % apt search deepin | grep -i superstar WARNING: apt does not have a stable CLI interface. Use with caution in scripts. CLI的输出也算是API要保持stable么？汗颜again……dtk作为一个系统级的开发库都还没有到stable的状态、某in公司的CTO写得命令行工具，第二天接口就全变了😂……敬畏之余，困惑我的倒不是这个警告的内容，毕竟新的东西都不保证稳定么，但是apt是怎么知道它的输出被连到管道了呢？
+一直没空处理，直到昨天，又一次遇到了，遂记下，晚上思来想去没什么想法，遂请教前文提到的不靠谱CTO，丫直接甩过来一句：
+“istty检测output啊，很多命令行程序都会根据这个做不同的反应”
+我：“man istty没有结果啊“
+他：”你man page没装全吧？“
+我默默敲下sudo apt install manpages-dev，显示已经安装了……
+我：“装全了啊，我Google一下吧”
+他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。
+我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
+我：“你是不是记错了，有isatty，unistd.h里面的……”
+他：“恩额”
+就是这么不靠谱一人……">
+
+<meta property="og:url" content="http://localhost:1313/post/shen-qi-de-isatty/">
+  <meta property="og:site_name" content="johndoe">
+  <meta property="og:title" content="神奇的isatty">
+  <meta property="og:description" content="前些日子才从apt-get命令系列换成更为时尚的apt系列，作为一个debian系发行版——deepin的开发者，我表示很汗颜……新的apt命令除了在功能上将apt-get、apt-cache等几个命令统一到了一个命令上外，更是有了不错的TUI，如文档所说：
+The `apt` command is meant to be pleasant for end users and does not need to be backward compatible like apt-get(8). 毕竟，还多了进度条呢…… 😂
+不过这不是今天要说的重点，换到apt以后，把apt操作的一些结果跟管道结合一起用，经常会收到警告，例如：
+(ssh) hualet@hualet-PC : ~ [0] % apt search deepin | grep -i superstar WARNING: apt does not have a stable CLI interface. Use with caution in scripts. CLI的输出也算是API要保持stable么？汗颜again……dtk作为一个系统级的开发库都还没有到stable的状态、某in公司的CTO写得命令行工具，第二天接口就全变了😂……敬畏之余，困惑我的倒不是这个警告的内容，毕竟新的东西都不保证稳定么，但是apt是怎么知道它的输出被连到管道了呢？
+一直没空处理，直到昨天，又一次遇到了，遂记下，晚上思来想去没什么想法，遂请教前文提到的不靠谱CTO，丫直接甩过来一句：
+“istty检测output啊，很多命令行程序都会根据这个做不同的反应”
+我：“man istty没有结果啊“
+他：”你man page没装全吧？“
+我默默敲下sudo apt install manpages-dev，显示已经安装了……
+我：“装全了啊，我Google一下吧”
+他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。
+我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
+我：“你是不是记错了，有isatty，unistd.h里面的……”
+他：“恩额”
+就是这么不靠谱一人……">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2017-08-29T21:26:48+08:00">
+    <meta property="article:modified_time" content="2017-08-29T21:26:48+08:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/post/shen-qi-de-isatty/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      johndoe
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/contact/">Contact me</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/pt-br/">🇧🇷</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container page">
+  <article>
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="http://localhost:1313/post/shen-qi-de-isatty/">
+          神奇的isatty
+        </a>
+      </h1>
+    </header>
+
+    <p>前些日子才从apt-get命令系列换成更为时尚的apt系列，作为一个debian系发行版——deepin的开发者，我表示很汗颜……新的apt命令除了在功能上将apt-get、apt-cache等几个命令统一到了一个命令上外，更是有了不错的TUI，如文档所说：</p>
+<pre><code>The `apt` command is meant to be pleasant for end users and does not need to be backward compatible like apt-get(8).
+</code></pre>
+<p>毕竟，还多了进度条呢…… 😂</p>
+<p>不过这不是今天要说的重点，换到apt以后，把apt操作的一些结果跟管道结合一起用，经常会收到警告，例如：</p>
+<pre><code>(ssh) hualet@hualet-PC : ~
+[0] % apt search deepin | grep -i superstar
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+</code></pre>
+<p>CLI的输出也算是API要保持stable么？汗颜again……dtk作为一个系统级的开发库都还没有到stable的状态、某in公司的CTO写得命令行工具，第二天接口就全变了😂……敬畏之余，困惑我的倒不是这个警告的内容，毕竟新的东西都不保证稳定么，但是apt是怎么知道它的输出被连到管道了呢？</p>
+<p>一直没空处理，直到昨天，又一次遇到了，遂记下，晚上思来想去没什么想法，遂请教前文提到的不靠谱CTO，丫直接甩过来一句：</p>
+<p>“istty检测output啊，很多命令行程序都会根据这个做不同的反应”</p>
+<p>我：“man istty没有结果啊“</p>
+<p>他：”你man page没装全吧？“</p>
+<p>我默默敲下sudo apt install manpages-dev，显示已经安装了……</p>
+<p>我：“装全了啊，我Google一下吧”</p>
+<p>他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。</p>
+<p>我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义</p>
+<p>我：“你是不是记错了，有isatty，unistd.h里面的……”</p>
+<p>他：“恩额”</p>
+<p>就是这么不靠谱一人……</p>
+<p>知道了isatty，写了一个程序测试一下：</p>
+<pre><code>#include&lt;unistd.h&gt;
+#include&lt;stdio.h&gt;
+
+int main(int argc, char** argv) {
+  printf(&quot;%d&quot;, isatty(1)); // 1 是特殊的fd，代表标准输出
+}
+</code></pre>
+<p>没挂管道的话输出是1，挂了管道输出是0。就是这么神奇，只怪自己对POSIX的标准函数都这么生疏，再次汗颜……是时候翻翻TUPE了。</p>
+<p>有兴趣看isatty是什么原理的，可以看看apple的<a href="https://opensource.apple.com/source/Libc/Libc-167/gen.subproj/isatty.c"  class="external-link" target="_blank" rel="noopener">实现</a>。</p>
+<p>参考链接：</p>
+<p>[1], <a href="https://superuser.com/a/932170"  class="external-link" target="_blank" rel="noopener">How does isatty() get the information from the terminal?</a></p>
+
+  </article>
+</section>
+
+  
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     John Doe 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>

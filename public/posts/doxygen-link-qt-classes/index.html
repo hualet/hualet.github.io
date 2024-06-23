@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  给 Doxygen 生成的文档中 Qt 的引用添加链接 · Think in Hualet
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Hualet Wang">
+<meta name="description" content="额……这个标题怎么改读着都不怎么顺口，不过不用在意这些细节，问题不大 :)
+上篇文章提到了 如何给DTK添加文档 ，给同事讲的时候有同事提出来最好能自动给对 Qt 的引用加上链接，我当时拍胸脯说文档里面 Qt 的类和方法随便引用，到时候一定让生成的文档可以链接到 Qt 的文档上。其实，到啥时候我也说不准……所以，还是研究了一下，翻了半天的 Stack Overflow 和 其他一些资料才搞清楚要怎么做到，这里记录一下。
+如何在文档中添加外部文档的链接呢？官方文档 说得其实挺简单的： TAGFILES ！最开始没有仔细看文档，理解歪了，以为 tags 文件是一个文档压缩包，添加到 TAGFILES 这项后面生成文档的时候自动下载，然后自动根据索引添加引用链接到文档中。所以，根据 doxygen generated documentation with auto-generated links to qt project 这篇文章，Doxyfile 配置文件写了：
+TAGFILES = qtcore.tags=http://doc.qt.io/qt-5/ \ qtgui.tags=http://doc.qt.io/qt-5/ \ qtwidgets.tags=http://doc.qt.io/qt-5/ \ qtxml.tags=http://doc.qt.io/qt-5/ \ qtnetwork.tags=http://doc.qt.io/qt-5/ 生成文档，怎么都不生效…… WTF ?!
+继续 Google ，发现一个提交， 里面的
+for i in core svg xmlpatterns; do curl -fsSLO &#34;https://doc.qt.io/qt-5/qt$i.tags&#34;; done; 引起了我的注意，恍然大悟：
+原来这个 tags 文件就是索引文件，需要预先下载下来，之所以有 = 加上一个网址，是因为 tags 中只有类名到文档名的映射，并没有规定使用某种协议以及host。">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="给 Doxygen 生成的文档中 Qt 的引用添加链接">
+  <meta name="twitter:description" content="额……这个标题怎么改读着都不怎么顺口，不过不用在意这些细节，问题不大 :)
+上篇文章提到了 如何给DTK添加文档 ，给同事讲的时候有同事提出来最好能自动给对 Qt 的引用加上链接，我当时拍胸脯说文档里面 Qt 的类和方法随便引用，到时候一定让生成的文档可以链接到 Qt 的文档上。其实，到啥时候我也说不准……所以，还是研究了一下，翻了半天的 Stack Overflow 和 其他一些资料才搞清楚要怎么做到，这里记录一下。
+如何在文档中添加外部文档的链接呢？官方文档 说得其实挺简单的： TAGFILES ！最开始没有仔细看文档，理解歪了，以为 tags 文件是一个文档压缩包，添加到 TAGFILES 这项后面生成文档的时候自动下载，然后自动根据索引添加引用链接到文档中。所以，根据 doxygen generated documentation with auto-generated links to qt project 这篇文章，Doxyfile 配置文件写了：
+TAGFILES = qtcore.tags=http://doc.qt.io/qt-5/ \ qtgui.tags=http://doc.qt.io/qt-5/ \ qtwidgets.tags=http://doc.qt.io/qt-5/ \ qtxml.tags=http://doc.qt.io/qt-5/ \ qtnetwork.tags=http://doc.qt.io/qt-5/ 生成文档，怎么都不生效…… WTF ?!
+继续 Google ，发现一个提交， 里面的
+for i in core svg xmlpatterns; do curl -fsSLO &#34;https://doc.qt.io/qt-5/qt$i.tags&#34;; done; 引起了我的注意，恍然大悟：
+原来这个 tags 文件就是索引文件，需要预先下载下来，之所以有 = 加上一个网址，是因为 tags 中只有类名到文档名的映射，并没有规定使用某种协议以及host。">
+
+<meta property="og:url" content="http://localhost:1313/posts/doxygen-link-qt-classes/">
+  <meta property="og:site_name" content="Think in Hualet">
+  <meta property="og:title" content="给 Doxygen 生成的文档中 Qt 的引用添加链接">
+  <meta property="og:description" content="额……这个标题怎么改读着都不怎么顺口，不过不用在意这些细节，问题不大 :)
+上篇文章提到了 如何给DTK添加文档 ，给同事讲的时候有同事提出来最好能自动给对 Qt 的引用加上链接，我当时拍胸脯说文档里面 Qt 的类和方法随便引用，到时候一定让生成的文档可以链接到 Qt 的文档上。其实，到啥时候我也说不准……所以，还是研究了一下，翻了半天的 Stack Overflow 和 其他一些资料才搞清楚要怎么做到，这里记录一下。
+如何在文档中添加外部文档的链接呢？官方文档 说得其实挺简单的： TAGFILES ！最开始没有仔细看文档，理解歪了，以为 tags 文件是一个文档压缩包，添加到 TAGFILES 这项后面生成文档的时候自动下载，然后自动根据索引添加引用链接到文档中。所以，根据 doxygen generated documentation with auto-generated links to qt project 这篇文章，Doxyfile 配置文件写了：
+TAGFILES = qtcore.tags=http://doc.qt.io/qt-5/ \ qtgui.tags=http://doc.qt.io/qt-5/ \ qtwidgets.tags=http://doc.qt.io/qt-5/ \ qtxml.tags=http://doc.qt.io/qt-5/ \ qtnetwork.tags=http://doc.qt.io/qt-5/ 生成文档，怎么都不生效…… WTF ?!
+继续 Google ，发现一个提交， 里面的
+for i in core svg xmlpatterns; do curl -fsSLO &#34;https://doc.qt.io/qt-5/qt$i.tags&#34;; done; 引起了我的注意，恍然大悟：
+原来这个 tags 文件就是索引文件，需要预先下载下来，之所以有 = 加上一个网址，是因为 tags 中只有类名到文档名的映射，并没有规定使用某种协议以及host。">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2018-09-28T16:42:40+08:00">
+    <meta property="article:modified_time" content="2018-09-28T16:42:40+08:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/posts/doxygen-link-qt-classes/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      Think in Hualet
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/blogroll/">Blogroll</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/posts/doxygen-link-qt-classes/">
+              给 Doxygen 生成的文档中 Qt 的引用添加链接
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2018-09-28T16:42:40&#43;08:00">
+                九月 28, 2018
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <p>额……这个标题怎么改读着都不怎么顺口，不过不用在意这些细节，问题不大 :)</p>
+<p>上篇文章提到了 <a href="https://hualet.org/blog/2018/09/26/%E5%A6%82%E4%BD%95%E7%BB%99-dtk-%E6%B7%BB%E5%8A%A0%E6%96%87%E6%A1%A3/"  class="external-link" target="_blank" rel="noopener">如何给DTK添加文档</a> ，给同事讲的时候有同事提出来最好能自动给对 Qt 的引用加上链接，我当时拍胸脯说文档里面 Qt 的类和方法随便引用，到时候一定让生成的文档可以链接到 Qt 的文档上。其实，到啥时候我也说不准……所以，还是研究了一下，翻了半天的 Stack Overflow 和 其他一些资料才搞清楚要怎么做到，这里记录一下。</p>
+<p>如何在文档中添加外部文档的链接呢？<a href="https://www.stack.nl/~dimitri/doxygen/manual/external.html"  class="external-link" target="_blank" rel="noopener">官方文档</a> 说得其实挺简单的： <code>TAGFILES</code> ！最开始没有仔细看文档，理解歪了，以为 tags 文件是一个文档压缩包，添加到 <code>TAGFILES</code> 这项后面生成文档的时候自动下载，然后自动根据索引添加引用链接到文档中。所以，根据 <a href="https://stackoverflow.com/questions/22244779/doxygen-generated-documentation-with-auto-generated-links-to-qt-project"  class="external-link" target="_blank" rel="noopener">doxygen generated documentation with auto-generated links to qt project</a> 这篇文章，Doxyfile 配置文件写了：</p>
+<pre tabindex="0"><code>TAGFILES = qtcore.tags=http://doc.qt.io/qt-5/ \
+qtgui.tags=http://doc.qt.io/qt-5/ \
+qtwidgets.tags=http://doc.qt.io/qt-5/ \
+qtxml.tags=http://doc.qt.io/qt-5/ \
+qtnetwork.tags=http://doc.qt.io/qt-5/
+</code></pre><p>生成文档，怎么都不生效…… WTF ?!</p>
+<p>继续 Google ，发现一个<a href="https://github.com/pencil2d/pencil/pull/893/files"  class="external-link" target="_blank" rel="noopener">提交</a>， 里面的</p>
+<pre tabindex="0"><code>for i in core svg xmlpatterns; do
+    curl -fsSLO &#34;https://doc.qt.io/qt-5/qt$i.tags&#34;;
+done;
+</code></pre><p>引起了我的注意，恍然大悟：</p>
+<p><strong>原来这个 tags 文件就是索引文件，需要预先下载下来，之所以有 = 加上一个网址，是因为 tags 中只有类名到文档名的映射，并没有规定使用某种协议以及host。</strong></p>
+<p>不过 Qt 这些 tags 文件链接还真是难找，貌似没有任何正式的文档说明如何下载，真不知道这些人是怎么找到的。</p>
+<p>把文件下载下来，放到 <a href="https://github.com/linuxdeepin/deepin-tool-kit/tree/master/Docs/"  class="external-link" target="_blank" rel="noopener">Docs</a> ，然后修改 Doxyfile：</p>
+<pre tabindex="0"><code>TAGFILES = Docs/qtcore.tags=https://doc.qt.io/qt-5/ \
+Docs/qtgui.tags=https://doc.qt.io/qt-5/ \
+Docs/qtwidgets.tags=https://doc.qt.io/qt-5/ \
+</code></pre><p>重新生成文档就能在文档中看到 Qt 引用变成超链接了（<a href="https://github.com/linuxdeepin/deepin-tool-kit/commit/85e8a3f4a3ad541a62caa348c5a3b7fd01714fef"  class="external-link" target="_blank" rel="noopener">commit</a>）。</p>
+<p>现在，除了 Qt 官网打开比较满以外就没啥问题了。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://www.stack.nl/~dimitri/doxygen/manual/external.html"  class="external-link" target="_blank" rel="noopener">Linking to external documentation</a></li>
+<li><a href="http://blog.qt.io/blog/2014/08/13/qt-weekly-17-linking-qt-classes-in-documentation-generated-with-doxygen/"  class="external-link" target="_blank" rel="noopener">Qt Weekly #17: Linking Qt Classes in Documentation Generated with Doxygen</a></li>
+<li><a href="https://stackoverflow.com/questions/22244779/doxygen-generated-documentation-with-auto-generated-links-to-qt-project"  class="external-link" target="_blank" rel="noopener">doxygen generated documentation with auto-generated links to qt project</a></li>
+<li><a href="https://stackoverflow.com/questions/34209425/don-t-see-linked-qt-classes-in-doxygen"  class="external-link" target="_blank" rel="noopener">Don` t see (linked) Qt classes in Doxygen</a></li>
+</ul>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+        
+        
+
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     Hualet Wang 
+    ·
+    
+     <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-121092907-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-121092907-1');
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>

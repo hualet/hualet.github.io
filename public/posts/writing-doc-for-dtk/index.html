@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  如何给 DTK 添加文档 · Think in Hualet
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Hualet Wang">
+<meta name="description" content="背景 Link to heading 经过几年的摸爬滚打，DTK 作为构建 deepin 全家桶的基石，一直被说的主要有两个毛病：
+内部人员觉得它不够稳； 外部人员觉得它无从下手； 第一个问题主要原因是 DTK 在最开始的时候缺失的东西太多，各种剧烈的变化同时进行，但是又没有比较好的版本控制和接口管理，所以经常是这个应用要用新版本，新版本删除了一个废弃的接口，用了旧接口的应用就崩了。由于最近 DTK 的变化日趋平稳，以及有了基本的版本控制，第一个问题渐渐淡出了人们的视野。
+第二个问题外部人员无从下手的原因是 DTK 在开发过程中并没有留下接口文档，所以目前想使用 DTK，内部靠得是口口相传，外部靠的是阅读源码，完全的石器时代……甚至连社区的小伙伴都看不下去了，自己做了一个《Deepin开发指南》 。
+是时候给DTK添加一下文档了！
+工具选择 Link to heading 其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。
+用什么文档工具呢？ DTK 是基于 Qt 之上的开发库，最自然的想法是使用 QDoc，但是据使用 QDoc 搭建了 dde-file-manager 的 Github Pages 的 @BLumia 同学说 QDoc 对国际化的支持不是特别好，我们按道理是要支持中英双语文档的，遂放弃。除了 QDoc 以外，文档生成工具就是 Doxygen、还有一个KDE 项目自己的文档工具 KApiDox ，它们三者之间是什么关系呢？Doxygen 从 QDoc 上 fork 出来的，KApiDox 是基于 Doxygen 的封装……我没有怎么看 KApiDox ，所以就选择了 Doxygen 。
+如何写 Link to heading 下面就是规则部分了。
+1. 文档注释位置 Link to heading 为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="如何给 DTK 添加文档">
+  <meta name="twitter:description" content="背景 Link to heading 经过几年的摸爬滚打，DTK 作为构建 deepin 全家桶的基石，一直被说的主要有两个毛病：
+内部人员觉得它不够稳； 外部人员觉得它无从下手； 第一个问题主要原因是 DTK 在最开始的时候缺失的东西太多，各种剧烈的变化同时进行，但是又没有比较好的版本控制和接口管理，所以经常是这个应用要用新版本，新版本删除了一个废弃的接口，用了旧接口的应用就崩了。由于最近 DTK 的变化日趋平稳，以及有了基本的版本控制，第一个问题渐渐淡出了人们的视野。
+第二个问题外部人员无从下手的原因是 DTK 在开发过程中并没有留下接口文档，所以目前想使用 DTK，内部靠得是口口相传，外部靠的是阅读源码，完全的石器时代……甚至连社区的小伙伴都看不下去了，自己做了一个《Deepin开发指南》 。
+是时候给DTK添加一下文档了！
+工具选择 Link to heading 其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。
+用什么文档工具呢？ DTK 是基于 Qt 之上的开发库，最自然的想法是使用 QDoc，但是据使用 QDoc 搭建了 dde-file-manager 的 Github Pages 的 @BLumia 同学说 QDoc 对国际化的支持不是特别好，我们按道理是要支持中英双语文档的，遂放弃。除了 QDoc 以外，文档生成工具就是 Doxygen、还有一个KDE 项目自己的文档工具 KApiDox ，它们三者之间是什么关系呢？Doxygen 从 QDoc 上 fork 出来的，KApiDox 是基于 Doxygen 的封装……我没有怎么看 KApiDox ，所以就选择了 Doxygen 。
+如何写 Link to heading 下面就是规则部分了。
+1. 文档注释位置 Link to heading 为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。">
+
+<meta property="og:url" content="http://localhost:1313/posts/writing-doc-for-dtk/">
+  <meta property="og:site_name" content="Think in Hualet">
+  <meta property="og:title" content="如何给 DTK 添加文档">
+  <meta property="og:description" content="背景 Link to heading 经过几年的摸爬滚打，DTK 作为构建 deepin 全家桶的基石，一直被说的主要有两个毛病：
+内部人员觉得它不够稳； 外部人员觉得它无从下手； 第一个问题主要原因是 DTK 在最开始的时候缺失的东西太多，各种剧烈的变化同时进行，但是又没有比较好的版本控制和接口管理，所以经常是这个应用要用新版本，新版本删除了一个废弃的接口，用了旧接口的应用就崩了。由于最近 DTK 的变化日趋平稳，以及有了基本的版本控制，第一个问题渐渐淡出了人们的视野。
+第二个问题外部人员无从下手的原因是 DTK 在开发过程中并没有留下接口文档，所以目前想使用 DTK，内部靠得是口口相传，外部靠的是阅读源码，完全的石器时代……甚至连社区的小伙伴都看不下去了，自己做了一个《Deepin开发指南》 。
+是时候给DTK添加一下文档了！
+工具选择 Link to heading 其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。
+用什么文档工具呢？ DTK 是基于 Qt 之上的开发库，最自然的想法是使用 QDoc，但是据使用 QDoc 搭建了 dde-file-manager 的 Github Pages 的 @BLumia 同学说 QDoc 对国际化的支持不是特别好，我们按道理是要支持中英双语文档的，遂放弃。除了 QDoc 以外，文档生成工具就是 Doxygen、还有一个KDE 项目自己的文档工具 KApiDox ，它们三者之间是什么关系呢？Doxygen 从 QDoc 上 fork 出来的，KApiDox 是基于 Doxygen 的封装……我没有怎么看 KApiDox ，所以就选择了 Doxygen 。
+如何写 Link to heading 下面就是规则部分了。
+1. 文档注释位置 Link to heading 为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2018-09-26T17:10:14+08:00">
+    <meta property="article:modified_time" content="2018-09-26T17:10:14+08:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/posts/writing-doc-for-dtk/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      Think in Hualet
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/blogroll/">Blogroll</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/posts/writing-doc-for-dtk/">
+              如何给 DTK 添加文档
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2018-09-26T17:10:14&#43;08:00">
+                九月 26, 2018
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <h2 id="背景">
+  背景
+  <a class="heading-link" href="#%e8%83%8c%e6%99%af">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>经过几年的摸爬滚打，DTK 作为构建 deepin 全家桶的基石，一直被说的主要有两个毛病：</p>
+<ol>
+<li>内部人员觉得它不够稳；</li>
+<li>外部人员觉得它无从下手；</li>
+</ol>
+<p>第一个问题主要原因是 DTK 在最开始的时候缺失的东西太多，各种剧烈的变化同时进行，但是又没有比较好的版本控制和接口管理，所以经常是这个应用要用新版本，新版本删除了一个废弃的接口，用了旧接口的应用就崩了。由于最近 DTK 的变化日趋平稳，以及有了基本的版本控制，第一个问题渐渐淡出了人们的视野。</p>
+<p>第二个问题外部人员无从下手的原因是 DTK 在开发过程中并没有留下接口文档，所以目前想使用 DTK，内部靠得是口口相传，外部靠的是阅读源码，完全的石器时代……甚至连社区的小伙伴都看不下去了，自己做了一个<a href="http://deepin.lolimay.cn/"  class="external-link" target="_blank" rel="noopener">《Deepin开发指南》</a> 。</p>
+<p>是时候给DTK添加一下文档了！</p>
+<h2 id="工具选择">
+  工具选择
+  <a class="heading-link" href="#%e5%b7%a5%e5%85%b7%e9%80%89%e6%8b%a9">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。</p>
+<p>用什么文档工具呢？ DTK 是基于 Qt 之上的开发库，最自然的想法是使用 QDoc，但是据使用 QDoc 搭建了 <a href="https://github.com/linuxdeepin/dde-file-manager"  class="external-link" target="_blank" rel="noopener">dde-file-manager</a> 的 <a href="https://linuxdeepin.github.io/dde-file-manager/"  class="external-link" target="_blank" rel="noopener">Github Pages</a> 的 @BLumia 同学说 QDoc 对国际化的支持不是特别好，我们按道理是要支持中英双语文档的，遂放弃。除了 QDoc 以外，文档生成工具就是 Doxygen、还有一个KDE 项目自己的文档工具 KApiDox ，它们三者之间是什么关系呢？Doxygen 从 QDoc 上 fork 出来的，KApiDox 是基于 Doxygen 的封装……我没有怎么看 KApiDox ，所以就选择了 Doxygen 。</p>
+<h2 id="如何写">
+  如何写
+  <a class="heading-link" href="#%e5%a6%82%e4%bd%95%e5%86%99">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>下面就是规则部分了。</p>
+<h3 id="1-文档注释位置">
+  1. 文档注释位置
+  <a class="heading-link" href="#1-%e6%96%87%e6%a1%a3%e6%b3%a8%e9%87%8a%e4%bd%8d%e7%bd%ae">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p>为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。</p>
+<h3 id="2-多语言">
+  2. 多语言
+  <a class="heading-link" href="#2-%e5%a4%9a%e8%af%ad%e8%a8%80">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p>按照 Doxygen 多语言处理的方式，需要在中文文档前添加 <code>\~chinese</code> 命令，在英文文档前添加 <code>\~english</code> 命令，这样设置 Doxyfile 中 <code>OUTPUT_LANGUAGE=Chinese</code>之后，就只会包含中文文档，而不会夹杂英文了，如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cm">/*!
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~english \brief DApplication::loadTranslator loads translate file form
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~english system or application data path;
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~english \param localeFallback, a list of fallback locale you want load.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~english \return load success
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \brief DApplication::loadTranslator 加载程序的翻译文件。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 使用这个函数需要保证翻译文件必须正确命名: 例如程序名叫 dde-dock，
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 那么翻译文件在中文locale下的名称必须是 dde-dock_zh_CN.qm；翻译文件还需要放置
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 在特定的位置，此函数会按照优先级顺序在以下目录中查找翻译文件：
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 1. ~/.local/share/APPNAME/translations;
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 2. /usr/local/share/APPNAME/translations;
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 3. /usr/share/APPNAME/translations;
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \param localeFallback 指定了回退的locale列表，默认只有系统locale。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \return 加载成功返回 true，否则返回 false。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span></code></pre></div><h3 id="3-一般的格式">
+  3. 一般的格式
+  <a class="heading-link" href="#3-%e4%b8%80%e8%88%ac%e7%9a%84%e6%a0%bc%e5%bc%8f">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<h4 id="函数">
+  函数
+  <a class="heading-link" href="#%e5%87%bd%e6%95%b0">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>格式如下，函数简介第一句需要包含完整的主谓宾（<code>\brief</code>命令后的简介，如无特殊说明，均照此要求），如 “setSingleInstance 用于将程序设置成单实例“。</p>
+<pre tabindex="0"><code>\brief 函数名 函数简介
+函数详细作用描述
+\param 参数名 参数作用介绍
+\return 返回值说明
+</code></pre><p>例如:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \brief DApplication::setSingleInstance setSingleInstance 用于将程序
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 设置成单实例。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \param key 是确定程序唯一性的ID，一般使用程序的二进制名称即可。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \note 一般情况下单实例的实现使用 QSystemSemaphore，如果你的程序需要在沙箱
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 环境如 flatpak 中运行，可选的一套方案是通过 DTK_DBUS_SINGLEINSTANCE 这个
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 编译宏来控制单实例使用 DBus 方案。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \return 设置成功返回 true，否则返回 false。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span></code></pre></div><p>输出：</p>
+<p><img alt="function" src="/img/2018/09/26/function.png"></p>
+<h4 id="类">
+  类
+  <a class="heading-link" href="#%e7%b1%bb">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>因为类的声明一般都在头文件中，所以在源文件中写类的文档注释时需要注意，放在相应 Private 类的函数实现之后，格式如下：</p>
+<pre tabindex="0"><code>\class 类名
+\brief 类简介
+类详细作用描述
+</code></pre><p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cm">/*!
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \class DApplication
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \brief DApplication 是 DTK 中用于替换 QCoreApplication 相关功能实现的类。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 继承自 QApplication，并在此之上添加了一些特殊的设定，如：
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese - 在 FORCE_RASTER_WIDGETS 宏生效的情况下，默认设置 Qt::AA_ForceRasterWidgets 以减少 glx 相关库的加载，减少程序启动时间；
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese - 自动根据 applicationName 和 系统 locale 加载对应的翻译文件；
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese - 会根据系统gsettings中 com.deepin.dde.dapplication 的 qpixmapCacheLimit 值来设置 QPixmapCache::cacheLimit；
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese - 方便地通过 setSingleInstance 来实现程序的单实例。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \sa loadTranslator, setSingleInstance.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span></code></pre></div><p>输出：<img alt="class" src="/img/2018/09/26/class.png"></p>
+<h4 id="结构体">
+  结构体
+  <a class="heading-link" href="#%e7%bb%93%e6%9e%84%e4%bd%93">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>结构体出声明关键字为 <code>\struct</code> 外，其余与类格式要求相同。</p>
+<h4 id="枚举">
+  枚举
+  <a class="heading-link" href="#%e6%9e%9a%e4%b8%be">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>枚举的声明也是一般都在头文件中，所以在源文件中写类的文档注释时需要注意，放在所属类的文档注释之后，格式如下：</p>
+<pre tabindex="0"><code>\enum 枚举名
+\brief 枚举简介
+枚举主要作用详细介绍
+\var 枚举名 枚举值 枚举值说明
+</code></pre><p>需要注意枚举值使用 <code>\var</code> 命令来声明，命令之后需要先跟上枚举名，再写枚举值。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cm">/*!
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \enum DApplication::SingleScope
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese DApplication::SingleScope 定义了 DApplication 单实例的效应范围。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \var DApplication::SingleScope DApplication::UserScope
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 代表单实例的范围为用户范围，即同一个用户会话中不允许其他实例出现。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \var DApplication::SingleScope DApplication::SystemScope
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 代表单实例的范围为系统范围，当前系统内只允许一个程序实例运行。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span></code></pre></div><p>输出：</p>
+<p><img alt="enum" src="/img/2018/09/26/enum.png"></p>
+<h4 id="属性">
+  属性
+  <a class="heading-link" href="#%e5%b1%9e%e6%80%a7">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>Doxygen 可以自动识别到 Qt 中的属性，也可以使用 <code>\property</code> 命令给属性添加文档，但是属性并不会自动关联到相应的 accessor（ getter 和 setter ） 函数，这里暂不处理，属性的文档注释写到属性的 getter 函数之上，getter 和 setter 函数可以不写文档。</p>
+<p>格式如下：</p>
+<pre tabindex="0"><code>\property 属性名
+\brief 属性名简介
+</code></pre><p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cm">/*!
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \property DApplication::visibleMenuIcon
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \brief visibleMenuIcon 属性代表了程序中菜单项是否显示图标。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span></code></pre></div><p>输出：</p>
+<p><img alt="property" src="/img/2018/09/26/property.png"></p>
+<h4 id="信号">
+  信号
+  <a class="heading-link" href="#%e4%bf%a1%e5%8f%b7">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h4>
+<p>Doxygen 可以自动识别到 Qt 的信号，我们在源文件写信号的文档时，需要使用 <code>\fn</code> 命令来给信号添加对应的文档，位置应放置在所属类的文档注释下面。格式如下：</p>
+<pre tabindex="0"><code>\fn 信号名
+\brief 信号简介
+</code></pre><p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cm">/*!
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \fn DApplication::newInstanceStarted()
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \brief newInstanceStarted 信号会在程序的一个新实例启动的时候被触发。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \fn DApplication::iconThemeChanged()
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \brief iconThemeChanged 信号会在系统图标主题发生改变的时候被触发。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span></code></pre></div><p>输出：</p>
+<p><img alt="signal" src="/img/2018/09/26/signal.png"></p>
+<h3 id="4-其他一些用法">
+  4. 其他一些用法
+  <a class="heading-link" href="#4-%e5%85%b6%e4%bb%96%e4%b8%80%e4%ba%9b%e7%94%a8%e6%b3%95">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p>因为写文档大家都是新手，所以其他高级用法就没有做什么特殊说明和要求了，文档中引用本类、其他类或者函数只需要写上相应的名称即可，非常简单。另外，也非常鼓励使用 <code>\sa</code> 和 <code>\example</code> 等标签来加强文档的便捷性和可读性。</p>
+<blockquote>
+<p>注：引用 Qt 相关类和函数的方式跟引用本地函数没有不同，只是需要配置一下 Doxygen ，这篇文章暂时略过，会有单独的文章补充说明，写文档的时候尽情引用便是。</p>
+</blockquote>
+<h2 id="工具">
+  工具
+  <a class="heading-link" href="#%e5%b7%a5%e5%85%b7">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>推荐使用 QtCreator 进行文档编写，QtCreator 对 Doxygen 代码注释有自动补全的功能，有三种形式：</p>
+<ul>
+<li><code>///</code></li>
+<li><code>//!</code></li>
+<li><code>/*!</code></li>
+</ul>
+<p>在函数名、类名等声明上一行输入以上几种注释格式并按下回车，QtCreator 会自动按照函数的语法信息生成 <code>\brief</code> 、<code>\param</code>  和 <code>\return</code>　等指令和响应的参数，可以说非常方便了。</p>
+<p>不过，鉴于 deepin 内部开发主要写中文文档，手写 <code>\~chinese </code>的工作量实在太大，所以修改了一个版本的QtCreator ，作补全时会自动添加 <code>\~chinese</code> 标签。开发团队都可以在”不清真deb包“这个共享目录中找到响应的 deb 包。</p>
+<h2 id="集成">
+  集成
+  <a class="heading-link" href="#%e9%9b%86%e6%88%90">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>曾经有同学问 <a href="https://github.com/linuxdeepin/deepin-tool-kit"  class="external-link" target="_blank" rel="noopener">deepin-tool-kit</a>  这个项目是干啥用的，这里刚好解释一下：</p>
+<p>DTK 原来是在 deepin-tool-kit 这个项目里面的，发展壮大以后分家了：dtkcore、dtkwidget 和 dtkwm，所以现在这个项目主要是用来做文档管理用的，所有 dtk 的子项目都作为 submodule 放在这个项目内进行（文档的）版本控制，这个项目也配置了 Doxygen ，就可以在这个项目里面统一做所有 dtk 子项目的文档生成了。</p>
+<p>所以，文档生成主要是在 deepin-tool-kit 这个项目中进行，以后持续集成之类的也会在这个项目上进行配置。</p>
+<h3 id="本地测试">
+  本地测试
+  <a class="heading-link" href="#%e6%9c%ac%e5%9c%b0%e6%b5%8b%e8%af%95">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p>如果需要在编写文档的过程中进行本地测试，如在 dtkwidget 项目中，有两种方式：</p>
+<ol>
+<li>通过各种手段把修改的 dtkwidget 项目放置到 deepin-tool-kit 项目中；</li>
+<li>简单地做一个 Doxygen 的临时配置。</li>
+</ol>
+<p>然后使用 <code>doxygen</code> 命令生成文档进行测试即可。</p>
+<p>第一种方式稍微麻烦点，但是很简单，就不多说了。</p>
+<p>第二种方式也只需要简单几步：</p>
+<ol>
+<li>在项目源码目录运行 <code>doxygen -g</code> 生成一个 Doxyfile 配置文件；</li>
+<li>修改 Doxyfile 中 <code>OUTPUT_LANGUAGE=Chinese</code>，<code>INPUT=./src</code>，<code>RECURSIVE=YES</code>，<code>OUTPUT_DIR=docs</code>；</li>
+<li>然后运行 <code>doxygen</code>，即可在 docs/html 目录中找到生成的文档，打开 index.html 即可查看。</li>
+</ol>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+        
+        
+
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     Hualet Wang 
+    ·
+    
+     <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-121092907-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-121092907-1');
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  自制 Profiler 第一部分 · johndoe
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="John Doe">
+<meta name="description" content="​	最近对性能剖析的技术颇感兴趣。好不容易来了三分钟热度，自然不能浪费，因此在余热消失之前研究并实践了其中一部分细节，对于其中一些知识点，个人感觉对于自身编程能力提升还是比较有益的，因此在这里写出来，抛砖引玉。
+Linux profiler简介 Link to heading ​	性能剖析的工具，其实在Linux平台还是挺多的，比如小巧实用的strace、ltrace、latrace，大名鼎鼎的google-perftools、gprof、valgrind，以及瑞士军刀型的linux-perf等等，它们主要分为三个阵营，一个是针对程序执行的性能进行剖析，对程序执行的热点进行分析，如*trace、gprof这些工具；另一个是针对程序运行过程中内存的使用进行剖析，方便针对性地做内存优化，如valgrind；最后一部分就是“脚踏两条船”的，两个我都做，比如google-perftools、linux-perf这些，我们这个系列主要集中在“针对程序执行的性能进行剖析”方面。
+Profiler的本质 Link to heading ​	要自制Profiler，首先要知道Profiler的本质是什么。简单来说，Profiler的本质其实就是在程序执行的过程中对程序正在“做什么”进行搜集和统计，如何搜集呢？无非两种：
+Instrumentaion - 程序主动Profiler告诉它在做什么； Sampling - Profiler自己间断性地去看程序在做什么； 前者的实现主要依靠程序运行时提供的某些钩子机制、代码插桩等方式，例如gprof主要是依靠 gcc 在编译程序的时候”夹带私货“来达到程序运行的时候主动提供给gprof采样样本，来达到事后分析的目的[1]。这种方式相对来说虽然比较可靠、准确，但是对于无法控制编译条件的程序就比较无可奈何了。
+后者的实现则主要是定期对程序当前执行的指令和对程序执行的函数堆栈进行回溯（unwind）来尽量还原程序执行的过程，例如google-perftools就是采用这种方式，这种情况下，采样的周期就显得尤为重要。
+​	对比以上两种方式，我们果断采用第二种。
+​	PS: 这里需要说明一下的是，利用ptrace系统调用完成工作的strace和ltrace，虽然不依赖编译器夹带私货，但是相当于依赖了内核的“钩子”，不属于sampling的范围；同样，latrace则是依赖了ld的LD_AUDIT“钩子”，也不属于sampling的范围。
+Profiler启动 Link to heading ​	那么问题又来了，ptrace没得用，我们怎么去获取被剖析程序的执行状态呢？总不至于profiler要搞成root权限的吧？答案是：不，内核管天管地，总管不到程序自己偷看自己的数据吧？我们想办法把我们的代码塞到被剖析程序中去就可以了！
+​	刚才提到了ld的LD_AUDIT，这次就轮到它的兄弟——大名鼎鼎的LD_PRELOAD——登场了。想法是这样的，我们的profiler其实只需要在程序开始的时候执行一个定时器，以后每次定时器执行的时候去抓取我们的样本就OK了，所以我们完全可以把自己伪装成一个人畜无害的动态库，等到别个程序有意无意加载到我们，哼哼……事实上，很多profiler都是采取类似的策略，比如google-perftools，再比如heaptrack等等。
+编码实战 Link to heading ​	废话少说，放码过来！
+​	我们在QtCreator中创建一个动态库项目 simple-profiler，主类 SimpleProfiler。首先，我们需要设置好我们的定时器：
+void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;m_tick, nullptr); if ( ret != 0) { fprintf(stderr, &#34;failed to enable profiler: %s&#34;, strerror(errno)); } } 根据 setitimer 的man文档，计时器主要有三种类型：">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="自制 Profiler 第一部分">
+  <meta name="twitter:description" content="​	最近对性能剖析的技术颇感兴趣。好不容易来了三分钟热度，自然不能浪费，因此在余热消失之前研究并实践了其中一部分细节，对于其中一些知识点，个人感觉对于自身编程能力提升还是比较有益的，因此在这里写出来，抛砖引玉。
+Linux profiler简介 Link to heading ​	性能剖析的工具，其实在Linux平台还是挺多的，比如小巧实用的strace、ltrace、latrace，大名鼎鼎的google-perftools、gprof、valgrind，以及瑞士军刀型的linux-perf等等，它们主要分为三个阵营，一个是针对程序执行的性能进行剖析，对程序执行的热点进行分析，如*trace、gprof这些工具；另一个是针对程序运行过程中内存的使用进行剖析，方便针对性地做内存优化，如valgrind；最后一部分就是“脚踏两条船”的，两个我都做，比如google-perftools、linux-perf这些，我们这个系列主要集中在“针对程序执行的性能进行剖析”方面。
+Profiler的本质 Link to heading ​	要自制Profiler，首先要知道Profiler的本质是什么。简单来说，Profiler的本质其实就是在程序执行的过程中对程序正在“做什么”进行搜集和统计，如何搜集呢？无非两种：
+Instrumentaion - 程序主动Profiler告诉它在做什么； Sampling - Profiler自己间断性地去看程序在做什么； 前者的实现主要依靠程序运行时提供的某些钩子机制、代码插桩等方式，例如gprof主要是依靠 gcc 在编译程序的时候”夹带私货“来达到程序运行的时候主动提供给gprof采样样本，来达到事后分析的目的[1]。这种方式相对来说虽然比较可靠、准确，但是对于无法控制编译条件的程序就比较无可奈何了。
+后者的实现则主要是定期对程序当前执行的指令和对程序执行的函数堆栈进行回溯（unwind）来尽量还原程序执行的过程，例如google-perftools就是采用这种方式，这种情况下，采样的周期就显得尤为重要。
+​	对比以上两种方式，我们果断采用第二种。
+​	PS: 这里需要说明一下的是，利用ptrace系统调用完成工作的strace和ltrace，虽然不依赖编译器夹带私货，但是相当于依赖了内核的“钩子”，不属于sampling的范围；同样，latrace则是依赖了ld的LD_AUDIT“钩子”，也不属于sampling的范围。
+Profiler启动 Link to heading ​	那么问题又来了，ptrace没得用，我们怎么去获取被剖析程序的执行状态呢？总不至于profiler要搞成root权限的吧？答案是：不，内核管天管地，总管不到程序自己偷看自己的数据吧？我们想办法把我们的代码塞到被剖析程序中去就可以了！
+​	刚才提到了ld的LD_AUDIT，这次就轮到它的兄弟——大名鼎鼎的LD_PRELOAD——登场了。想法是这样的，我们的profiler其实只需要在程序开始的时候执行一个定时器，以后每次定时器执行的时候去抓取我们的样本就OK了，所以我们完全可以把自己伪装成一个人畜无害的动态库，等到别个程序有意无意加载到我们，哼哼……事实上，很多profiler都是采取类似的策略，比如google-perftools，再比如heaptrack等等。
+编码实战 Link to heading ​	废话少说，放码过来！
+​	我们在QtCreator中创建一个动态库项目 simple-profiler，主类 SimpleProfiler。首先，我们需要设置好我们的定时器：
+void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;m_tick, nullptr); if ( ret != 0) { fprintf(stderr, &#34;failed to enable profiler: %s&#34;, strerror(errno)); } } 根据 setitimer 的man文档，计时器主要有三种类型：">
+
+<meta property="og:url" content="http://localhost:1313/post/poor-mans-profiler-part1/">
+  <meta property="og:site_name" content="johndoe">
+  <meta property="og:title" content="自制 Profiler 第一部分">
+  <meta property="og:description" content="​	最近对性能剖析的技术颇感兴趣。好不容易来了三分钟热度，自然不能浪费，因此在余热消失之前研究并实践了其中一部分细节，对于其中一些知识点，个人感觉对于自身编程能力提升还是比较有益的，因此在这里写出来，抛砖引玉。
+Linux profiler简介 Link to heading ​	性能剖析的工具，其实在Linux平台还是挺多的，比如小巧实用的strace、ltrace、latrace，大名鼎鼎的google-perftools、gprof、valgrind，以及瑞士军刀型的linux-perf等等，它们主要分为三个阵营，一个是针对程序执行的性能进行剖析，对程序执行的热点进行分析，如*trace、gprof这些工具；另一个是针对程序运行过程中内存的使用进行剖析，方便针对性地做内存优化，如valgrind；最后一部分就是“脚踏两条船”的，两个我都做，比如google-perftools、linux-perf这些，我们这个系列主要集中在“针对程序执行的性能进行剖析”方面。
+Profiler的本质 Link to heading ​	要自制Profiler，首先要知道Profiler的本质是什么。简单来说，Profiler的本质其实就是在程序执行的过程中对程序正在“做什么”进行搜集和统计，如何搜集呢？无非两种：
+Instrumentaion - 程序主动Profiler告诉它在做什么； Sampling - Profiler自己间断性地去看程序在做什么； 前者的实现主要依靠程序运行时提供的某些钩子机制、代码插桩等方式，例如gprof主要是依靠 gcc 在编译程序的时候”夹带私货“来达到程序运行的时候主动提供给gprof采样样本，来达到事后分析的目的[1]。这种方式相对来说虽然比较可靠、准确，但是对于无法控制编译条件的程序就比较无可奈何了。
+后者的实现则主要是定期对程序当前执行的指令和对程序执行的函数堆栈进行回溯（unwind）来尽量还原程序执行的过程，例如google-perftools就是采用这种方式，这种情况下，采样的周期就显得尤为重要。
+​	对比以上两种方式，我们果断采用第二种。
+​	PS: 这里需要说明一下的是，利用ptrace系统调用完成工作的strace和ltrace，虽然不依赖编译器夹带私货，但是相当于依赖了内核的“钩子”，不属于sampling的范围；同样，latrace则是依赖了ld的LD_AUDIT“钩子”，也不属于sampling的范围。
+Profiler启动 Link to heading ​	那么问题又来了，ptrace没得用，我们怎么去获取被剖析程序的执行状态呢？总不至于profiler要搞成root权限的吧？答案是：不，内核管天管地，总管不到程序自己偷看自己的数据吧？我们想办法把我们的代码塞到被剖析程序中去就可以了！
+​	刚才提到了ld的LD_AUDIT，这次就轮到它的兄弟——大名鼎鼎的LD_PRELOAD——登场了。想法是这样的，我们的profiler其实只需要在程序开始的时候执行一个定时器，以后每次定时器执行的时候去抓取我们的样本就OK了，所以我们完全可以把自己伪装成一个人畜无害的动态库，等到别个程序有意无意加载到我们，哼哼……事实上，很多profiler都是采取类似的策略，比如google-perftools，再比如heaptrack等等。
+编码实战 Link to heading ​	废话少说，放码过来！
+​	我们在QtCreator中创建一个动态库项目 simple-profiler，主类 SimpleProfiler。首先，我们需要设置好我们的定时器：
+void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;m_tick, nullptr); if ( ret != 0) { fprintf(stderr, &#34;failed to enable profiler: %s&#34;, strerror(errno)); } } 根据 setitimer 的man文档，计时器主要有三种类型：">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2018-05-13T14:42:41+08:00">
+    <meta property="article:modified_time" content="2018-05-13T14:42:41+08:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/post/poor-mans-profiler-part1/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      johndoe
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/contact/">Contact me</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/pt-br/">🇧🇷</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container page">
+  <article>
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="http://localhost:1313/post/poor-mans-profiler-part1/">
+          自制 Profiler 第一部分
+        </a>
+      </h1>
+    </header>
+
+    <p>​	最近对性能剖析的技术颇感兴趣。好不容易来了三分钟热度，自然不能浪费，因此在余热消失之前研究并实践了其中一部分细节，对于其中一些知识点，个人感觉对于自身编程能力提升还是比较有益的，因此在这里写出来，抛砖引玉。</p>
+<h2 id="linux-profiler简介">
+  Linux profiler简介
+  <a class="heading-link" href="#linux-profiler%e7%ae%80%e4%bb%8b">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>​	性能剖析的工具，其实在Linux平台还是挺多的，比如小巧实用的strace、ltrace、latrace，大名鼎鼎的google-perftools、gprof、valgrind，以及瑞士军刀型的linux-perf等等，它们主要分为三个阵营，一个是针对程序执行的性能进行剖析，对程序执行的热点进行分析，如*trace、gprof这些工具；另一个是针对程序运行过程中内存的使用进行剖析，方便针对性地做内存优化，如valgrind；最后一部分就是“脚踏两条船”的，两个我都做，比如google-perftools、linux-perf这些，我们这个系列主要集中在“针对程序执行的性能进行剖析”方面。</p>
+<h2 id="profiler的本质">
+  Profiler的本质
+  <a class="heading-link" href="#profiler%e7%9a%84%e6%9c%ac%e8%b4%a8">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>​	要自制Profiler，首先要知道Profiler的本质是什么。简单来说，Profiler的本质其实就是在程序执行的过程中对程序正在“做什么”进行搜集和统计，如何搜集呢？无非两种：</p>
+<ol>
+<li>Instrumentaion - 程序主动Profiler告诉它在做什么；</li>
+<li>Sampling - Profiler自己间断性地去看程序在做什么；</li>
+</ol>
+<p>前者的实现主要依靠程序运行时提供的某些钩子机制、代码插桩等方式，例如gprof主要是依靠 gcc 在编译程序的时候”夹带私货“来达到程序运行的时候主动提供给gprof采样样本，来达到事后分析的目的[1]。这种方式相对来说虽然比较可靠、准确，但是对于无法控制编译条件的程序就比较无可奈何了。</p>
+<p>后者的实现则主要是定期对程序当前执行的指令和对程序执行的函数堆栈进行回溯（unwind）来尽量还原程序执行的过程，例如google-perftools就是采用这种方式，这种情况下，采样的周期就显得尤为重要。</p>
+<p>​	对比以上两种方式，我们果断采用第二种。</p>
+<p>​	PS: 这里需要说明一下的是，利用ptrace系统调用完成工作的strace和ltrace，虽然不依赖编译器夹带私货，但是相当于依赖了内核的“钩子”，不属于sampling的范围；同样，latrace则是依赖了ld的LD_AUDIT“钩子”，也不属于sampling的范围。</p>
+<h2 id="profiler启动">
+  Profiler启动
+  <a class="heading-link" href="#profiler%e5%90%af%e5%8a%a8">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>​	那么问题又来了，ptrace没得用，我们怎么去获取被剖析程序的执行状态呢？总不至于profiler要搞成root权限的吧？答案是：不，内核管天管地，总管不到程序自己偷看自己的数据吧？我们想办法把我们的代码塞到被剖析程序中去就可以了！</p>
+<p>​	刚才提到了ld的LD_AUDIT，这次就轮到它的兄弟——大名鼎鼎的LD_PRELOAD——登场了。想法是这样的，我们的profiler其实只需要在程序开始的时候执行一个定时器，以后每次定时器执行的时候去抓取我们的样本就OK了，所以我们完全可以把自己伪装成一个人畜无害的动态库，等到别个程序有意无意加载到我们，哼哼……事实上，很多profiler都是采取类似的策略，比如google-perftools，再比如heaptrack等等。</p>
+<h2 id="编码实战">
+  编码实战
+  <a class="heading-link" href="#%e7%bc%96%e7%a0%81%e5%ae%9e%e6%88%98">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>​	废话少说，放码过来！</p>
+<p>​	我们在QtCreator中创建一个动态库项目 simple-profiler，主类 SimpleProfiler。首先，我们需要设置好我们的定时器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">SimpleProfiler</span><span class="o">::</span><span class="n">enableProfile</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">setitimer</span><span class="p">(</span><span class="n">ITIMER_PROF</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_tick</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;failed to enable profiler: %s&#34;</span><span class="p">,</span> <span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>根据 <code>setitimer</code> 的man文档，计时器主要有三种类型：</p>
+<ul>
+<li><code>ITIMER_REAL</code> 这个计时器是根据墙上时间进行倒计时，最终触发 <code>SIGALRM</code> 信号；</li>
+<li><code>ITIMER_VIRTUAL</code> 这个计时器是根据进程花费在用户空间的 CPU 时间进行倒计时的，最终触发 <code>SIGVTALRM</code> 信号；</li>
+<li><code>ITIMER_PROF</code> 这个计时器是根据进程话费在用户空间和内核空间的 CPU 时间进行倒计时的，最终触发  <code>SIGPROF</code> 信号；</li>
+</ul>
+<p>个人认为，假如都是用在 profiler 上的话，第一种计时器用来查找程序执行慢（某个函数有IO等情况）的瓶颈比较有效果；后两种计时器用来查找程序 CPU 占用瓶颈比较有效果。不过使用第一种计时器的话，对被追踪程序的执行影响相较于后两者就比较大了，所以这里采用第三种计时器。</p>
+<p>​	<code>setitimer</code> 的第二个参数 <code>m_tick</code> 是 <code>SimpleProfiler</code> 类的一个成员，类型是： <code>struct itimerval</code>，在 <code>SimpleProfiler::setupProfileTimer</code> 中初始化：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">SimpleProfiler</span><span class="o">::</span><span class="n">setupProfileTimer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="n">m_tick</span><span class="p">.</span><span class="n">it_value</span><span class="p">.</span><span class="n">tv_sec</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="n">m_tick</span><span class="p">.</span><span class="n">it_value</span><span class="p">.</span><span class="n">tv_usec</span> <span class="o">=</span> <span class="n">m_sampleInterval</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="n">m_tick</span><span class="p">.</span><span class="n">it_interval</span><span class="p">.</span><span class="n">tv_sec</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="n">m_tick</span><span class="p">.</span><span class="n">it_interval</span><span class="p">.</span><span class="n">tv_usec</span> <span class="o">=</span> <span class="n">m_sampleInterval</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>​	其中，<code>m_sampleInterval</code> 固定在 10000，因此上面计时器的配置相当于是 10ms 后开启计时器，每 10ms 触发一次 SIGPROF 信号。</p>
+<p>​	再看我们的信号处理：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">SigProfHandler</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="n">siginfo_t</span><span class="o">*</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_instace</span><span class="p">.</span><span class="n">disableProfile</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Doing sampling here. </span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">_instace</span><span class="p">.</span><span class="n">enableProfile</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">SimpleProfiler</span><span class="o">::</span><span class="n">setupSignal</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="nc">sigaction</span> <span class="n">action</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">action</span><span class="p">.</span><span class="n">sa_sigaction</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span> <span class="n">siginfo_t</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&gt;</span><span class="p">(</span><span class="n">SigProfHandler</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sigfillset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">action</span><span class="p">.</span><span class="n">sa_mask</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">action</span><span class="p">.</span><span class="n">sa_flags</span> <span class="o">=</span> <span class="n">SA_SIGINFO</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sigaction</span><span class="p">(</span><span class="n">SIGPROF</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">action</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>​	这里之所以不使用 <code>signal</code> 函数是因为如果程序有多个线程，某一个线程触发 signal handler 的时候，其他线程会不会被暂停执行是没有统一定义的，所以不同的系统的反应可能不一致，你必须对 signal handler 做特殊处理，比如加锁等，才能保证这个函数的正确性；但是 <code>sigaction</code> 函数却能保证一致性。而我们的程序，按照我们的伟大理想，是要对不同线程进行区分剖析的，所以这里使用 <code>sigaction</code> ，一劳永逸。</p>
+<p>​	同时，我们需要注意在我们的 <code>SigProfHandler</code> 中先把我们的 profiler 禁用掉（<code>_instance</code> 是 <code>SimpleProfiler</code>的一个实例），执行完我们的采样以后（现在是 <code>printf</code> 站位），再打开。否则，我们的 profiler 很可能会把自己的很多动作也算到采样中，增加太多的误差。</p>
+<p>​	现在，我们只需要一步就能完成我们 profiler 的第一个版本了：在我们主类的构造函数中开始profile，并且初始化一个 <code>SimpleProfiler</code> 类的全局对象，全局对象会在程序加载的过程中被初始化，这样只要被剖析的程序一加载我们的动态库，我们的 profiler 就开始跑了，美滋滋。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">SimpleProfiler</span> <span class="n">_instace</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">SimpleProfiler</span><span class="o">::</span><span class="n">SimpleProfiler</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setupSignal</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setupProfileTimer</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">enableProfile</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="tracee-程序">
+  tracee 程序
+  <a class="heading-link" href="#tracee-%e7%a8%8b%e5%ba%8f">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>​	为了方便测试，我们自制了一个被剖析程序，其实就是使用 QtCreator 创建一个 <code>Qt Widgets Application</code> 项目，然后设定一个计时器，执行一点耗费 CPU 的函数，假如我们最终版的 profiler 可以找到这个函数，就相当于我们达成了自制 profiler 的小目标：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">Widget</span><span class="o">::</span><span class="n">Widget</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">:</span> <span class="n">QWidget</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">QTimer</span> <span class="o">*</span><span class="n">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QTimer</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">timer</span><span class="o">-&gt;</span><span class="n">setSingleShot</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">connect</span><span class="p">(</span><span class="n">timer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QTimer</span><span class="o">::</span><span class="n">timeout</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Widget</span><span class="o">::</span><span class="n">consumeCPU</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">timer</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Widget</span><span class="o">::</span><span class="n">consumeCPU</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">j</span> <span class="o">+=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">QApplication</span> <span class="n">a</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Widget</span> <span class="n">w</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="连接和测试">
+  连接和测试
+  <a class="heading-link" href="#%e8%bf%9e%e6%8e%a5%e5%92%8c%e6%b5%8b%e8%af%95">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>​	我们只需要简单地在 tracee 的项目文件中加入以下行，就可以让tracee程序加载我们的 profiler 了：</p>
+<pre tabindex="0"><code>QMAKE_RPATHDIR += $$OUT_PWD/../src
+LIBS += -L$$OUT_PWD/../src/ -lsimple-profiler
+</code></pre><p>其中的<code>src</code>目录即我们动态库项目的地址。</p>
+<p>​	按说这时候执行 tracee 程序，我们就能看到一大堆 <code>Doing sampling here.</code>的输出了，但是这里有两个比较坑的地方，很可能导致你的程序在执行的时候并没有任何输出：</p>
+<ul>
+<li>首先是 QtCreator 比较坑爹，假如你用 <code>qDebug</code> 输出的话，会很及时的输出到 <code>Application Output</code> 面板，但是用 <code>printf</code> 就是不行。我猜测可能是因为 QtCreator 使用<code>QProcess</code> 处理子程序输出的时候有问题之类的；</li>
+<li>另外一个是跟我们之前使用 <code>ITIMER_PROF</code>有关，因为我最开始的时候 tracee 程序并没有 <code>consumeCPU</code> 这个函数，导致显示出窗口以后进程主要的状态就是等待 IO （X11 事件），怎么也触发不到这个计时器，当时被搞得好沮丧。</li>
+</ul>
+<p>好了，这里只需要到程序编译目录，手动执行 ./tracee 就可以看到一大堆 <code>Doing sampling here.</code> 的输出了，不过现在我们的 tracee 程序是修改了pro文件，主动加载了我们的动态库，怎么做到不修改源程序就达到目的呢？很简单，刚才说了使用 <code>LD_PRELOAD</code> 嘛:</p>
+<pre tabindex="0"><code>LD_PRELOAD=../src/libsimple-profiler.so ./tracee
+</code></pre><p>测试效果灰常好。 喜滋滋！</p>
+<p>代码地址： <a href="https://github.com/hualet/simple-profiler/tree/part1"  class="external-link" target="_blank" rel="noopener">https://github.com/hualet/simple-profiler/tree/part1</a></p>
+<p>其余的下一篇继续 :P</p>
+<h2 id="参考链接">
+  参考链接
+  <a class="heading-link" href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>[1] <a href="https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html"  class="external-link" target="_blank" rel="noopener">GCC Instrumentation Options</a></p>
+<p>[2] <a href="https://blog.csdn.net/challeng_everything/article/details/45460091"  class="external-link" target="_blank" rel="noopener">C++全局对象的初始化和析构</a></p>
+
+  </article>
+</section>
+
+  
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     John Doe 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>

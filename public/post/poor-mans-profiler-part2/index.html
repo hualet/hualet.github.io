@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  自制 Profiler 第二部分——调用栈回溯 · johndoe
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="John Doe">
+<meta name="description" content="书接上篇，我们现在已经能在其他程序中执行我们自己的代码，并且也做到了以固定的频率去执行采样代码（我们的printf），但是如何采样还是一个问题，这篇文章会就这这个问题继续探讨接下去我们面临的挑战——调用栈回溯。
+为什么要获取函数调用栈？一方面是因为profiler除了要分析程序存在的性能问题，即函数执行热点以外，还需要帮助我们可怜的程序员找到问题的原因，这时候能提供问题函数的堆栈信息就非常必要了；另一方面，我们上一篇文章其实说了，是为了通过堆栈信息尽量还原程序的执行过程：试想一个程序执行的过程是 main-&gt;funca-&gt;funcb-&gt;funcc，我们第一次采样 main-&gt;funca，第二次采样 main-&gt;funca-&gt;funcb-&gt;funcc，假如我们没有堆栈信息，我们只会统计一次 funca 和一次funcc，但是这并不能反应事实，相反，我们有堆栈信息的话，就会把 funca 、funcb 和 funcc 各计数一次，更能反应实际的执行过程。
+概念 Link to heading 函数调用栈（Call Stack）和相应的栈帧（Stack Frame）我们其实都不陌生：在使用 gdb 调试程序的时候，bt（backtrace）命令打印出来的就是函数调用栈；而函数调用栈列表中的每一项则代表一个栈帧，我们执行 frame 命令跳转到某一个栈帧，其实就是一次回溯的过程。
+想要在内存中解析出我们想要的函数调用栈，首先我们需要知道的就是一个程序的stack 段里面各个栈帧是如何布局的，要搞清楚这个，我们还需要了解一个概念叫：调用约定（Calling Convention），调用约定主要约定了（好绕）：
+函数的参数是如何传递的，是全都放到寄存器，还是全都放在 stack 段，还是混用两者； 函数的参数是按什么顺序放置到内存中的； 函数中的本地变量是如何分配的； 子函数调用是如何返回的； 子函数的栈帧是如何清理的； 等等 所以，调用约定基本上决定了函数调用中每个栈帧的产生、压栈、出栈对内存布局的影响，而这个约定是因架构和平台而异的。我们这里只关注x86 平台下的 cdecl 约定。
+在这个约定下，假如我们有一个函数 DrawSqure 调用了 DrawLine （例子来自Wikipedia），那么程序内存布局中的 stack 段就应该是类似下图所示：
+每个函数调用即创建一个栈帧，每个栈帧一次压入 stack 中。
+其中，Stack Pointer(esp) 永远指向栈顶， Frame Pointer(ebp) 指向当前栈帧的中一个固定的地方（基地址）；函数参数以从右往左的顺序依次压栈，然后是压入Return Address ，它是当前函数（或者栈帧）执行完成后，程序要继续执行的指令地址， 同时压入父函数的栈帧基地址（Saved EBP），它是当前函数执行完成以后，Stack Pointer 和 Frame Pointer 将会指向的地方，基于这个地址，程序指令可以方便地访问函数本地变量（ebp负向偏移）和函数参数（ebp正向偏移）。
+结合上面两张图，其实可以看出，每个栈帧其实都保存了上一个栈帧的基地址，因此所有的栈帧最终组成了一个链表，这也就是我们能拿到函数堆栈的理论基础了。
+（注：上面只是粗略的讲解，参考链接 [1] 非常详细的描述了函数调用的过程中栈帧、stack 段和esp、ebp寄存器的变化，如果感兴趣，可以详细了解一下。）
+参考方案 Link to heading 看完上面一大串概念以后，我们发现如果我们要按照函数约定的方式去获取函数调用堆栈，可以，但是太过蛋疼，而且不跨平台，很难受。 所以秉承不要重复造轮子的优良传统，我们发现有几个方式可以简单地获取到函数调用栈：">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="自制 Profiler 第二部分——调用栈回溯">
+  <meta name="twitter:description" content="书接上篇，我们现在已经能在其他程序中执行我们自己的代码，并且也做到了以固定的频率去执行采样代码（我们的printf），但是如何采样还是一个问题，这篇文章会就这这个问题继续探讨接下去我们面临的挑战——调用栈回溯。
+为什么要获取函数调用栈？一方面是因为profiler除了要分析程序存在的性能问题，即函数执行热点以外，还需要帮助我们可怜的程序员找到问题的原因，这时候能提供问题函数的堆栈信息就非常必要了；另一方面，我们上一篇文章其实说了，是为了通过堆栈信息尽量还原程序的执行过程：试想一个程序执行的过程是 main-&gt;funca-&gt;funcb-&gt;funcc，我们第一次采样 main-&gt;funca，第二次采样 main-&gt;funca-&gt;funcb-&gt;funcc，假如我们没有堆栈信息，我们只会统计一次 funca 和一次funcc，但是这并不能反应事实，相反，我们有堆栈信息的话，就会把 funca 、funcb 和 funcc 各计数一次，更能反应实际的执行过程。
+概念 Link to heading 函数调用栈（Call Stack）和相应的栈帧（Stack Frame）我们其实都不陌生：在使用 gdb 调试程序的时候，bt（backtrace）命令打印出来的就是函数调用栈；而函数调用栈列表中的每一项则代表一个栈帧，我们执行 frame 命令跳转到某一个栈帧，其实就是一次回溯的过程。
+想要在内存中解析出我们想要的函数调用栈，首先我们需要知道的就是一个程序的stack 段里面各个栈帧是如何布局的，要搞清楚这个，我们还需要了解一个概念叫：调用约定（Calling Convention），调用约定主要约定了（好绕）：
+函数的参数是如何传递的，是全都放到寄存器，还是全都放在 stack 段，还是混用两者； 函数的参数是按什么顺序放置到内存中的； 函数中的本地变量是如何分配的； 子函数调用是如何返回的； 子函数的栈帧是如何清理的； 等等 所以，调用约定基本上决定了函数调用中每个栈帧的产生、压栈、出栈对内存布局的影响，而这个约定是因架构和平台而异的。我们这里只关注x86 平台下的 cdecl 约定。
+在这个约定下，假如我们有一个函数 DrawSqure 调用了 DrawLine （例子来自Wikipedia），那么程序内存布局中的 stack 段就应该是类似下图所示：
+每个函数调用即创建一个栈帧，每个栈帧一次压入 stack 中。
+其中，Stack Pointer(esp) 永远指向栈顶， Frame Pointer(ebp) 指向当前栈帧的中一个固定的地方（基地址）；函数参数以从右往左的顺序依次压栈，然后是压入Return Address ，它是当前函数（或者栈帧）执行完成后，程序要继续执行的指令地址， 同时压入父函数的栈帧基地址（Saved EBP），它是当前函数执行完成以后，Stack Pointer 和 Frame Pointer 将会指向的地方，基于这个地址，程序指令可以方便地访问函数本地变量（ebp负向偏移）和函数参数（ebp正向偏移）。
+结合上面两张图，其实可以看出，每个栈帧其实都保存了上一个栈帧的基地址，因此所有的栈帧最终组成了一个链表，这也就是我们能拿到函数堆栈的理论基础了。
+（注：上面只是粗略的讲解，参考链接 [1] 非常详细的描述了函数调用的过程中栈帧、stack 段和esp、ebp寄存器的变化，如果感兴趣，可以详细了解一下。）
+参考方案 Link to heading 看完上面一大串概念以后，我们发现如果我们要按照函数约定的方式去获取函数调用堆栈，可以，但是太过蛋疼，而且不跨平台，很难受。 所以秉承不要重复造轮子的优良传统，我们发现有几个方式可以简单地获取到函数调用栈：">
+
+<meta property="og:url" content="http://localhost:1313/post/poor-mans-profiler-part2/">
+  <meta property="og:site_name" content="johndoe">
+  <meta property="og:title" content="自制 Profiler 第二部分——调用栈回溯">
+  <meta property="og:description" content="书接上篇，我们现在已经能在其他程序中执行我们自己的代码，并且也做到了以固定的频率去执行采样代码（我们的printf），但是如何采样还是一个问题，这篇文章会就这这个问题继续探讨接下去我们面临的挑战——调用栈回溯。
+为什么要获取函数调用栈？一方面是因为profiler除了要分析程序存在的性能问题，即函数执行热点以外，还需要帮助我们可怜的程序员找到问题的原因，这时候能提供问题函数的堆栈信息就非常必要了；另一方面，我们上一篇文章其实说了，是为了通过堆栈信息尽量还原程序的执行过程：试想一个程序执行的过程是 main-&gt;funca-&gt;funcb-&gt;funcc，我们第一次采样 main-&gt;funca，第二次采样 main-&gt;funca-&gt;funcb-&gt;funcc，假如我们没有堆栈信息，我们只会统计一次 funca 和一次funcc，但是这并不能反应事实，相反，我们有堆栈信息的话，就会把 funca 、funcb 和 funcc 各计数一次，更能反应实际的执行过程。
+概念 Link to heading 函数调用栈（Call Stack）和相应的栈帧（Stack Frame）我们其实都不陌生：在使用 gdb 调试程序的时候，bt（backtrace）命令打印出来的就是函数调用栈；而函数调用栈列表中的每一项则代表一个栈帧，我们执行 frame 命令跳转到某一个栈帧，其实就是一次回溯的过程。
+想要在内存中解析出我们想要的函数调用栈，首先我们需要知道的就是一个程序的stack 段里面各个栈帧是如何布局的，要搞清楚这个，我们还需要了解一个概念叫：调用约定（Calling Convention），调用约定主要约定了（好绕）：
+函数的参数是如何传递的，是全都放到寄存器，还是全都放在 stack 段，还是混用两者； 函数的参数是按什么顺序放置到内存中的； 函数中的本地变量是如何分配的； 子函数调用是如何返回的； 子函数的栈帧是如何清理的； 等等 所以，调用约定基本上决定了函数调用中每个栈帧的产生、压栈、出栈对内存布局的影响，而这个约定是因架构和平台而异的。我们这里只关注x86 平台下的 cdecl 约定。
+在这个约定下，假如我们有一个函数 DrawSqure 调用了 DrawLine （例子来自Wikipedia），那么程序内存布局中的 stack 段就应该是类似下图所示：
+每个函数调用即创建一个栈帧，每个栈帧一次压入 stack 中。
+其中，Stack Pointer(esp) 永远指向栈顶， Frame Pointer(ebp) 指向当前栈帧的中一个固定的地方（基地址）；函数参数以从右往左的顺序依次压栈，然后是压入Return Address ，它是当前函数（或者栈帧）执行完成后，程序要继续执行的指令地址， 同时压入父函数的栈帧基地址（Saved EBP），它是当前函数执行完成以后，Stack Pointer 和 Frame Pointer 将会指向的地方，基于这个地址，程序指令可以方便地访问函数本地变量（ebp负向偏移）和函数参数（ebp正向偏移）。
+结合上面两张图，其实可以看出，每个栈帧其实都保存了上一个栈帧的基地址，因此所有的栈帧最终组成了一个链表，这也就是我们能拿到函数堆栈的理论基础了。
+（注：上面只是粗略的讲解，参考链接 [1] 非常详细的描述了函数调用的过程中栈帧、stack 段和esp、ebp寄存器的变化，如果感兴趣，可以详细了解一下。）
+参考方案 Link to heading 看完上面一大串概念以后，我们发现如果我们要按照函数约定的方式去获取函数调用堆栈，可以，但是太过蛋疼，而且不跨平台，很难受。 所以秉承不要重复造轮子的优良传统，我们发现有几个方式可以简单地获取到函数调用栈：">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2018-05-14T14:19:37+08:00">
+    <meta property="article:modified_time" content="2018-05-14T14:19:37+08:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/post/poor-mans-profiler-part2/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      johndoe
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/contact/">Contact me</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/pt-br/">🇧🇷</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container page">
+  <article>
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="http://localhost:1313/post/poor-mans-profiler-part2/">
+          自制 Profiler 第二部分——调用栈回溯
+        </a>
+      </h1>
+    </header>
+
+    <p>书接上篇，我们现在已经能在其他程序中执行我们自己的代码，并且也做到了以固定的频率去执行采样代码（我们的<code>printf</code>），但是如何采样还是一个问题，这篇文章会就这这个问题继续探讨接下去我们面临的挑战——调用栈回溯。</p>
+<p>为什么要获取函数调用栈？一方面是因为profiler除了要分析程序存在的性能问题，即函数执行热点以外，还需要帮助我们可怜的程序员找到问题的原因，这时候能提供问题函数的堆栈信息就非常必要了；另一方面，我们上一篇文章其实说了，是为了通过堆栈信息尽量还原程序的执行过程：试想一个程序执行的过程是 main-&gt;funca-&gt;funcb-&gt;funcc，我们第一次采样 main-&gt;funca，第二次采样 main-&gt;funca-&gt;funcb-&gt;funcc，假如我们没有堆栈信息，我们只会统计一次 funca 和一次funcc，但是这并不能反应事实，相反，我们有堆栈信息的话，就会把 funca 、funcb 和 funcc 各计数一次，更能反应实际的执行过程。</p>
+<h2 id="概念">
+  概念
+  <a class="heading-link" href="#%e6%a6%82%e5%bf%b5">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>函数调用栈（Call Stack）和相应的栈帧（Stack Frame）我们其实都不陌生：在使用 gdb 调试程序的时候，bt（backtrace）命令打印出来的就是函数调用栈；而函数调用栈列表中的每一项则代表一个栈帧，我们执行 frame 命令跳转到某一个栈帧，其实就是一次回溯的过程。</p>
+<p>想要在内存中解析出我们想要的函数调用栈，首先我们需要知道的就是一个程序的stack 段里面各个栈帧是如何布局的，要搞清楚这个，我们还需要了解一个概念叫：<a href="https://en.wikipedia.org/wiki/Calling_convention"  class="external-link" target="_blank" rel="noopener">调用约定</a>（Calling Convention），调用约定主要约定了（好绕）：</p>
+<ul>
+<li>函数的参数是如何传递的，是全都放到寄存器，还是全都放在 stack 段，还是混用两者；</li>
+<li>函数的参数是按什么顺序放置到内存中的；</li>
+<li>函数中的本地变量是如何分配的；</li>
+<li>子函数调用是如何返回的；</li>
+<li>子函数的栈帧是如何清理的；</li>
+<li>等等</li>
+</ul>
+<p>所以，调用约定基本上决定了函数调用中每个栈帧的产生、压栈、出栈对内存布局的影响，而这个约定是因架构和平台而异的。我们这里只关注x86 平台下的 <a href="https://en.wikipedia.org/wiki/X86_calling_conventions#cdecl"  class="external-link" target="_blank" rel="noopener">cdecl</a> 约定。</p>
+<p>在这个约定下，假如我们有一个函数 <code>DrawSqure</code> 调用了 <code>DrawLine</code> （例子来自<a href="https://en.wikipedia.org/wiki/Call_stack"  class="external-link" target="_blank" rel="noopener">Wikipedia</a>），那么程序内存布局中的 stack 段就应该是类似下图所示：</p>
+<p><img alt="call stack" src="/img/2018/05/14/Call_stack_layout.svg"></p>
+<p>每个函数调用即创建一个栈帧，每个栈帧一次压入 stack 中。</p>
+<p>其中，<code>Stack Pointer</code>(<code>esp</code>) 永远指向栈顶， <code>Frame Pointer</code>(<code>ebp</code>) 指向当前栈帧的中一个固定的地方（基地址）；函数参数以从右往左的顺序依次压栈，然后是压入<code>Return Address</code> ，它是当前函数（或者栈帧）执行完成后，程序要继续执行的指令地址， 同时压入父函数的栈帧基地址（<code>Saved EBP</code>），它是当前函数执行完成以后，<code>Stack Pointer</code> 和 <code>Frame Pointer</code> 将会指向的地方，基于这个地址，程序指令可以方便地访问函数本地变量（<code>ebp</code>负向偏移）和函数参数（<code>ebp</code>正向偏移）。</p>
+<p><img alt="stack info" src="/img/2018/05/14/stackIntro.png"></p>
+<p>结合上面两张图，其实可以看出，每个栈帧其实都保存了上一个栈帧的基地址，因此所有的栈帧最终组成了一个链表，这也就是我们能拿到函数堆栈的理论基础了。</p>
+<p>（注：上面只是粗略的讲解，参考链接 [1] 非常详细的描述了函数调用的过程中栈帧、stack 段和<code>esp</code>、<code>ebp</code>寄存器的变化，如果感兴趣，可以详细了解一下。）</p>
+<h2 id="参考方案">
+  参考方案
+  <a class="heading-link" href="#%e5%8f%82%e8%80%83%e6%96%b9%e6%a1%88">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>看完上面一大串概念以后，我们发现如果我们要按照函数约定的方式去获取函数调用堆栈，可以，但是太过蛋疼，而且不跨平台，很难受。 所以秉承不要重复造轮子的优良传统，我们发现有几个方式可以简单地获取到函数调用栈：</p>
+<ol>
+<li>神奇的 <code>__builtin_return_address</code> 宏；</li>
+<li><code>glibc</code> 的 <code>backtrace</code> 和 <code>backtrace_symbols</code>；</li>
+<li><code>libunwind</code></li>
+</ol>
+<p>第一种方案看起来很神奇，你在程序中可以很方便地通过</p>
+<pre tabindex="0"><code>printf(&#34;%p&#34;, __builtin_return_address(1))
+</code></pre><p>打印父函数的地址，将 <code>1</code> 换成 <code>2</code>就可以打印爷爷函数的地址，依次类推。但是它有两个很致命的问题，一个是这个宏的参数不能使用变量；另外一个是你无法知道调用栈啥时候到头了，就是你增加参数的值两次、三次发现都能好好工作，等到你把参数换成可能<code>4</code>的时候，你的程序“咔嚓”就崩溃了……可能是因为访问到了栈顶以上的内存地址？鬼知道……</p>
+<p>第二种方式有一个例子：</p>
+<pre tabindex="0"><code>#include&lt;stdio.h&gt;
+#include&lt;stdint.h&gt;
+#include&lt;execinfo.h&gt;
+
+#define SIZE 100
+
+void print_backtrace()
+{
+	int size;
+	void *buffer[SIZE];
+
+	size = backtrace(buffer, SIZE);
+
+	char** stack = backtrace_symbols(buffer, size);
+	for (int i = 0; i &lt; size; i++) {
+		printf(&#34;%s \n&#34;, stack[i]);
+	}
+}
+
+int func_one(int a)
+{
+	print_backtrace();
+
+	return a + 3;
+}
+
+int func_two(int a, int b)
+{
+	int c = func_one(a);
+
+	return c + a;
+}
+
+int main(int argc, char** argv)
+{
+	func_two(1, 2);
+	return 0;
+}
+</code></pre><p>需要在给  <code>gcc</code> 或者 <code>g++</code> 编译的时候加一个 <code>-rdynamic</code> 的参数[3]，输出结果：</p>
+<pre tabindex="0"><code>./test-backtrace(print_backtrace+0x1f) [0x55d7f0ee9939] 
+./test-backtrace(func_one+0x15) [0x55d7f0ee99ac] 
+./test-backtrace(func_two+0x18) [0x55d7f0ee99cc] 
+./test-backtrace(main+0x1e) [0x55d7f0ee99f7] 
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf1) [0x7f7c5aae22b1] 
+./test-backtrace(_start+0x2a) [0x55d7f0ee983a] 
+</code></pre><p>都依赖编译加参数了，这不是我们的风格嘛，显然不能接受。</p>
+<p>第三种方案 <code>libunwind</code> 是目前比较流行的方案，连 <code>linux-perf</code> 都在用它，靠谱到我都想用！</p>
+<h2 id="编码实战">
+  编码实战
+  <a class="heading-link" href="#%e7%bc%96%e7%a0%81%e5%ae%9e%e6%88%98">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>又到了码代码的时候了，不过因为 <code>libunwind</code> 使用起来非常简单，我们只需要一个函数即可：</p>
+<pre tabindex="0"><code>void Backtrace()
+{
+    unw_cursor_t cursor;
+    unw_context_t context;
+    
+    // context 封装了当前机器状态的参数值，例如不同寄存器的值等
+    // cursor 相当于是栈帧的迭代器
+    unw_getcontext(&amp;context);
+    unw_init_local(&amp;cursor, &amp;context);
+    
+    // 一帧一帧地回溯，直到没有可用父栈帧
+    while (unw_step(&amp;cursor) &gt; 0) {
+        unw_word_t offset, pc;
+        // IP (instruction pointer) 就是上面个我们提到 Return address 所指向的地址
+        unw_get_reg(&amp;cursor, UNW_REG_IP, &amp;pc); 
+        if (pc == 0) {
+            break;
+        }
+        printf(&#34;0x%lx \n&#34;, pc);
+        
+        // 通过函数指针，获取函数对应的名称
+        char sym[256];
+        if (unw_get_proc_name(&amp;cursor, sym, sizeof(sym), &amp;offset) == 0) {
+            printf(&#34; (%s+0x%lx)\n&#34;, sym, offset); 
+        } else {
+            printf(&#34; -- error: unable to obtain symbol name for this frame\n&#34;);
+        }
+    }
+}
+</code></pre><p>透过一个 <code>unw_cursor_t</code> 我们每次回溯一帧，直到没有可用的父栈帧，在每一个栈帧中，获取到当前栈帧的 <code>Return address</code> 区域所指向的函数地址，这样就构成了我们最终想要的函数栈。</p>
+<p>这个时候别忘了在我们的项目上加载 <code>libunwind</code>  这个库：</p>
+<pre tabindex="0"><code>CONFIG += link_pkgconfig
+PKGCONFIG += libunwind
+</code></pre><p>然后，用这个函数替换我们原来的占位打印：</p>
+<pre tabindex="0"><code>void SigProfHandler(int, siginfo_t*, void*)
+{
+    _instace.disableProfile();
+
+    // printf(&#34;Doing sampling here.&#34;);
+    Backtrace();
+
+    _instace.enableProfile();
+}
+</code></pre><p>就可以打印出函数调用栈了：</p>
+<pre tabindex="0"><code>0x7f773eb79011:  (_Z14SigProfHandleriP9siginfo_tPv+0x27)
+0x7f773d66f0c0:  (__restore_rt+0x0)
+0x557a9c3969e4:  (_ZN6Widget10consumeCPUEv+0x2e)
+0x557a9c3970ec:  (_ZN9QtPrivate11FunctorCallINS_11IndexesListIJEEENS_4ListIJEEEvM6WidgetFvvEE4callES7_PS5_PPv+0x6b)
+0x557a9c39707e:  (_ZN9QtPrivate15FunctionPointerIM6WidgetFvvEE4callINS_4ListIJEEEvEEvS3_PS1_PPv+0x42)
+0x557a9c396fe8:  (_ZN9QtPrivate11QSlotObjectIM6WidgetFvvENS_4ListIJEEEvE4implEiPNS_15QSlotObjectBaseEP7QObjectPPvPb+0x75)
+0x7f773dd8781c:  (_ZN11QMetaObject8activateEP7QObjectiiPPv+0x99c)
+0x7f773dd93dd8:  (_ZN6QTimer10timerEventEP11QTimerEvent+0x28)
+0x7f773dd8826b:  (_ZN7QObject5eventEP6QEvent+0x7b)
+0x7f773e67728c:  (_ZN19QApplicationPrivate13notify_helperEP7QObjectP6QEvent+0x9c)
+0x7f773e67c37f:  (_ZN12QApplication6notifyEP7QObjectP6QEvent+0x23f)
+0x7f773dd5c268:  (_ZN16QCoreApplication15notifyInternal2EP7QObjectP6QEvent+0x108)
+0x7f773ddadbde:  (_ZN14QTimerInfoList14activateTimersEv+0x4de)
+0x7f773ddae101:  (_ZN14QTimerInfoList14activateTimersEv+0xa01)
+0x7f773c2ef887:  (g_main_context_dispatch+0x287)
+0x7f773c2efab8:  (g_main_context_dispatch+0x4b8)
+0x7f773c2efb5c:  (g_main_context_iteration+0x2c)
+0x7f773ddaec3f:  (_ZN20QEventDispatcherGlib13processEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE+0x5f)
+0x7f773dd5a53a:  (_ZN10QEventLoop4execE6QFlagsINS_17ProcessEventsFlagEE+0xea)
+0x7f773dd625ed:  (_ZN16QCoreApplication4execEv+0x8d)
+0x557a9c3967a5:  (main+0x4b)
+0x7f773ca452b1:  (__libc_start_main+0xf1)
+0x557a9c39667a:  (_start+0x2a)
+</code></pre><p>不过那些函数名称是怎么搞得？当然是著名的 <a href="https://en.wikipedia.org/wiki/Name_mangling"  class="external-link" target="_blank" rel="noopener">C++ mangling</a> 了，使用命令行工具 <code>c++filt</code> 可以方便地进行“解密”工作：</p>
+<pre tabindex="0"><code>$&gt; c++filt _ZN10QEventLoop4execE6QFlagsINS_17ProcessEventsFlagEE
+$&gt; QEventLoop::exec(QFlags&lt;QEventLoop::ProcessEventsFlag&gt;)
+</code></pre><p>在代码里面我们可以借助于  <code>libstdc++</code> 提供的 <code>cxxabi.h</code> 的 <code>API</code>  来实现 demangling：</p>
+<pre tabindex="0"><code>char sym[256];
+if (unw_get_proc_name(&amp;cursor, sym, sizeof(sym), &amp;offset) == 0) {
+    char* nameptr = sym;
+    int status;
+    char* demangled = abi::__cxa_demangle(sym, nullptr, nullptr, &amp;status);
+    if (status == 0) {
+        nameptr = demangled;
+    }
+    printf(&#34; (%s+0x%lx)\n&#34;, nameptr, offset);
+    free(demangled);
+} else {
+    printf(&#34; -- error: unable to obtain symbol name for this frame\n&#34;);
+}
+</code></pre><p>这时候再看函数调用栈打印就比较完美了。</p>
+<pre tabindex="0"><code>0x7fc6ef4350fe:  (SigProfHandler(int, siginfo_t*, void*)+0x27)
+0x7fc6edf2b0c0:  (__restore_rt+0x0)
+0x5581be96575b:  (Widget::consumeCPU()+0x25)
+0x5581be965b16:  (QtPrivate::FunctorCall&lt;QtPrivate::IndexesList&lt;&gt;, QtPrivate::List&lt;&gt;, void, void (Widget::*)()&gt;::call(void (Widget::*)(), Widget*, void**)+0x6b)
+0x5581be965aa8:  (void QtPrivate::FunctionPointer&lt;void (Widget::*)()&gt;::call&lt;QtPrivate::List&lt;&gt;, void&gt;(void (Widget::*)(), Widget*, void**)+0x42)
+0x5581be965a12:  (QtPrivate::QSlotObject&lt;void (Widget::*)(), QtPrivate::List&lt;&gt;, void&gt;::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*)+0x75)
+0x7fc6ee64381c:  (QMetaObject::activate(QObject*, int, int, void**)+0x99c)
+0x7fc6ee64fdd8:  (QTimer::timerEvent(QTimerEvent*)+0x28)
+0x7fc6ee64426b:  (QObject::event(QEvent*)+0x7b)
+0x7fc6eef3328c:  (QApplicationPrivate::notify_helper(QObject*, QEvent*)+0x9c)
+0x7fc6eef3837f:  (QApplication::notify(QObject*, QEvent*)+0x23f)
+0x7fc6ee618268:  (QCoreApplication::notifyInternal2(QObject*, QEvent*)+0x108)
+0x7fc6ee669bde:  (QTimerInfoList::activateTimers()+0x4de)
+0x7fc6ee66a139:  (QTimerInfoList::activateTimers()+0xa39)
+0x7fc6ecbab887:  (g_main_context_dispatch+0x287)
+0x7fc6ecbabab8:  (g_main_context_dispatch+0x4b8)
+0x7fc6ecbabb5c:  (g_main_context_iteration+0x2c)
+0x7fc6ee66ac3f:  (QEventDispatcherGlib::processEvents(QFlags&lt;QEventLoop::ProcessEventsFlag&gt;)+0x5f)
+0x7fc6ee61653a:  (QEventLoop::exec(QFlags&lt;QEventLoop::ProcessEventsFlag&gt;)+0xea)
+0x7fc6ee61e5ed:  (QCoreApplication::exec()+0x8d)
+0x5581be965525:  (main+0x4b)
+0x7fc6ed3012b1:  (__libc_start_main+0xf1)
+0x5581be9653fa:  (_start+0x2a)
+</code></pre><p>再仔细看一眼，输出的一个函数是我们的信号处理函数，这个不奇怪，但是第二个 <code>__restore_rt</code>  是什么鬼？</p>
+<p>另外，其实上面代码中通过函数地址获取函数名称的地方是比较耗时的，所以如果我们每次采样都做这个操作是比较坑的，会严重影响 tracee 程序的执行效率，我们只能在采样的时候先记录这些函数地址，事后进行统计操作的时候再解析到函数的名称。为什么通过函数地址获取函数名称这么耗时呢？</p>
+<p>连同上一个问题，我们会在后续的两篇中给出答案。</p>
+<p>本篇代码地址： <a href="https://github.com/hualet/simple-profiler/tree/part2"  class="external-link" target="_blank" rel="noopener">https://github.com/hualet/simple-profiler/tree/part2</a></p>
+<h2 id="参考链接">
+  参考链接
+  <a class="heading-link" href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>[1] <a href="https://manybutfinite.com/post/journey-to-the-stack/"  class="external-link" target="_blank" rel="noopener">Journey to the stack, Part I</a></p>
+<p>[2] <a href="https://eli.thegreenplace.net/2015/programmatic-access-to-the-call-stack-in-c/"  class="external-link" target="_blank" rel="noopener">Programmatic access to the call stack in C++</a></p>
+<p>[3] <a href="https://stackoverflow.com/questions/6934659/how-to-make-backtrace-backtrace-symbols-print-the-function-names"  class="external-link" target="_blank" rel="noopener">How to make backtrace()/backtrace_symbols() print the function names?</a></p>
+
+  </article>
+</section>
+
+  
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     John Doe 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>

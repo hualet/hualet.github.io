@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+  Fix First Boot Setup Crash · johndoe
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="John Doe">
+<meta name="description" content="第一步安装好后 保存环境开始安装
+hostname: Name or service not known xauth: (stdin):1: bad display name &ldquo;localhost.localdomain:0&rdquo; in &ldquo;add&rdquo; command
+X.Org X Server 1.19.6 Release Date: 2017-12-20 X Protocol Version 11, Revision 0 Build Operating System: Linux 4.15.0-42deepin-generic x86_64 Debian Current Operating System: Linux localhost.localdomain 4.15.0-30deepin-generic #31 SMP Fri Nov 30 04:29:02 UTC 2018 x86_64 Kernel command line: BOOT_IMAGE=/boot/vmlinuz-4.15.0-30deepin-generic root=UUID=53d6851c-77a8-47c8-9947-72df4f62f4ea ro splash quiet DEEPIN_GFXMODE=1,1152x864,1600x1200,1280x1024,1024x768 Build Date: 12 May 2019 04:37:50AM xorg-server 2:1.19.6-2deepin (https://www.debian.org/support) Current version of pixman: 0.">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Fix First Boot Setup Crash">
+  <meta name="twitter:description" content="第一步安装好后 保存环境开始安装
+hostname: Name or service not known xauth: (stdin):1: bad display name “localhost.localdomain:0” in “add” command
+X.Org X Server 1.19.6 Release Date: 2017-12-20 X Protocol Version 11, Revision 0 Build Operating System: Linux 4.15.0-42deepin-generic x86_64 Debian Current Operating System: Linux localhost.localdomain 4.15.0-30deepin-generic #31 SMP Fri Nov 30 04:29:02 UTC 2018 x86_64 Kernel command line: BOOT_IMAGE=/boot/vmlinuz-4.15.0-30deepin-generic root=UUID=53d6851c-77a8-47c8-9947-72df4f62f4ea ro splash quiet DEEPIN_GFXMODE=1,1152x864,1600x1200,1280x1024,1024x768 Build Date: 12 May 2019 04:37:50AM xorg-server 2:1.19.6-2deepin (https://www.debian.org/support) Current version of pixman: 0.">
+
+<meta property="og:url" content="http://www.example.com/post/fix-first-boot-setup-crash/">
+  <meta property="og:site_name" content="johndoe">
+  <meta property="og:title" content="Fix First Boot Setup Crash">
+  <meta property="og:description" content="第一步安装好后 保存环境开始安装
+hostname: Name or service not known xauth: (stdin):1: bad display name “localhost.localdomain:0” in “add” command
+X.Org X Server 1.19.6 Release Date: 2017-12-20 X Protocol Version 11, Revision 0 Build Operating System: Linux 4.15.0-42deepin-generic x86_64 Debian Current Operating System: Linux localhost.localdomain 4.15.0-30deepin-generic #31 SMP Fri Nov 30 04:29:02 UTC 2018 x86_64 Kernel command line: BOOT_IMAGE=/boot/vmlinuz-4.15.0-30deepin-generic root=UUID=53d6851c-77a8-47c8-9947-72df4f62f4ea ro splash quiet DEEPIN_GFXMODE=1,1152x864,1600x1200,1280x1024,1024x768 Build Date: 12 May 2019 04:37:50AM xorg-server 2:1.19.6-2deepin (https://www.debian.org/support) Current version of pixman: 0.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2019-05-31T15:41:49+08:00">
+    <meta property="article:modified_time" content="2019-05-31T15:41:49+08:00">
+
+
+
+
+<link rel="canonical" href="http://www.example.com/post/fix-first-boot-setup-crash/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.min.38c4552ac40f9ae3408bad40358f654ebd8804412fe74ed56f2d6c8a7af82dd3.css" integrity="sha256-OMRVKsQPmuNAi61ANY9lTr2IBEEv507Vby1sinr4LdM=" crossorigin="anonymous" media="screen" />
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css" integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin="anonymous" media="screen" />
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://www.example.com/">
+      johndoe
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/contact/">Contact me</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/pt-br/">🇧🇷</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container page">
+  <article>
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="http://www.example.com/post/fix-first-boot-setup-crash/">
+          Fix First Boot Setup Crash
+        </a>
+      </h1>
+    </header>
+
+    <p>第一步安装好后 保存环境开始安装</p>
+<blockquote>
+<p>hostname: Name or service not known
+xauth: (stdin):1:  bad display name &ldquo;localhost.localdomain:0&rdquo; in &ldquo;add&rdquo; command</p>
+<p>X.Org X Server 1.19.6
+Release Date: 2017-12-20
+X Protocol Version 11, Revision 0
+Build Operating System: Linux 4.15.0-42deepin-generic x86_64 Debian
+Current Operating System: Linux localhost.localdomain 4.15.0-30deepin-generic #31 SMP Fri Nov 30 04:29:02 UTC 2018 x86_64
+Kernel command line: BOOT_IMAGE=/boot/vmlinuz-4.15.0-30deepin-generic root=UUID=53d6851c-77a8-47c8-9947-72df4f62f4ea ro splash quiet DEEPIN_GFXMODE=1,1152x864,1600x1200,1280x1024,1024x768
+Build Date: 12 May 2019  04:37:50AM
+xorg-server 2:1.19.6-2deepin (<a href="https://www.debian.org/support"  class="external-link" target="_blank" rel="noopener">https://www.debian.org/support</a>)
+Current version of pixman: 0.34.0
+Before reporting problems, check <a href="http://wiki.x.org"  class="external-link" target="_blank" rel="noopener">http://wiki.x.org</a>
+to make sure that you have the latest version.
+Markers: (&ndash;) probed, (**) from config file, (==) default setting,
+(++) from command line, (!!) notice, (II) informational,
+(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+(==) Log file: &ldquo;/var/log/Xorg.0.log&rdquo;, Time: Fri May 31 07:49:33 2019
+(==) Using config directory: &ldquo;/etc/X11/xorg.conf.d&rdquo;
+(==) Using system config directory &ldquo;/usr/share/X11/xorg.conf.d&rdquo;
+VMware: No 3D enabled (0, Success).
+xinit: Unable to run program &ldquo;/usr/bin/xterm&rdquo;: No such file or directory
+Specify a program on the command line or make sure that /usr/bin
+is in your path.</p>
+<p>xinit: connection to X server lost</p>
+<p>waiting for X server to shut down (II) Server terminated successfully (0). Closing log file.</p>
+<p>xauth: (argv):1:  bad display name &ldquo;localhost.localdomain:0&rdquo; in &ldquo;remove&rdquo; command</p>
+</blockquote>
+<p>xeyes -&gt;  No protocol specified</p>
+<p>os/auth.c  CheckAuthorization</p>
+<p>看看启动失败的时候 /var/run/lightdm/run 文件创建了没有。</p>
+<p>env &gt; /tmp/env_list</p>
+<p>xauth list &gt; /tmp/auth_list</p>
+<p>libxcb 加打印</p>
+<p>xtrace</p>
+<p>startx -&gt; enable_xauth=0  可以成功</p>
+<p>生成 cookie 创建 Xauthority  跟 lightdm 是等价的</p>
+<p>startx xinit lightdm 三者的关系</p>
+<p>在 pkexec 中添加 xhost &gt; /tmp/host_list</p>
+<p>打印为空</p>
+<p>display-setup-script -&gt; xhost + &amp;&gt; /tmp/xhost.log</p>
+<pre tabindex="0"><code>No protocol specified
+xhost: unable to open display &#34;:0&#34;
+</code></pre><p>仿佛被Xorg嘲讽：我都没同意你进来呢，你就敢把其他人放进来？</p>
+<p>对比前后的日志，看到 xauth list 内容不一样</p>
+<p>good -&gt; localhost.localdomain  bad -&gt; localhost</p>
+<p>看看 lightdm 是怎么写这个 authority 文件的</p>
+<p>根据 lightdm.log 中 Writing X server authority to  -&gt; x-server-local.c write_authority_file</p>
+<p>-&gt; xserver_get_authority -&gt; xserver_set_authority -&gt; create_x_server -&gt;</p>
+<p>x_authority_new_local_cookie  -&gt; gethostname</p>
+<ul>
+<li>man Xorg</li>
+<li>man Xserver</li>
+<li>man Xsecutiry</li>
+<li>man xhost</li>
+<li>man xauth</li>
+</ul>
+<p>localhost.localdomain vs localhost</p>
+
+  </article>
+</section>
+
+  
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     John Doe 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js" integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  deepin 开发者规范 · johndoe
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="John Doe">
+<meta name="description" content="为了保证研发项目的规范化，避免不一致造成的效率低下，特在此规范中对项目目录、README、代码风格、版权信息和版本控制等方面进行了一定约束，公司内部及合作项目均需按此规范进行。
+项目目录 Link to heading 一般情况下，项目目录结构按照下表说明进行创建和管理，对于复杂项目由开发经理按需以此为基础调整项目目录结构：
+目录名 说明 src/ 存放项目源代码文件。 3rdparty/ 存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。 tests/ 单元测试存放目录。 docs/ 用于存放帮助手册、man等文件。 tools/ 项目用到的工具和脚本。 po/ 存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。 misc/ 项目需要使用到的数据文件或者不属于前面任一类型的文件。 .desktop 项目的desktop文件，如有多个可以放在misc目录中。 README 项目的说明文档，用于说明项目的概要情况。 LICENSE 项目采用的授权协议。 Makefile 构建脚本，同类型的还有pro文件CMakeLists.txt文件等。 README Link to heading 每个项目必需包含该README文件，README文件内需包含如下内容：
+项目描述 依赖（包括编译依赖和运行时依赖） 构建和安装 项目目录说明 获取帮助（开发项目要求） 参与开发（开源项目要求） 授权协议说明 参考模板如下：
+# Project Name Project description. ## Dependencies ### Build dependencies - Qt &gt;= 5.6 ### Runtime dependencies - git ## Installation ### Build ​```` $ mkdir build $ cd build $ qmake .">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="deepin 开发者规范">
+  <meta name="twitter:description" content="为了保证研发项目的规范化，避免不一致造成的效率低下，特在此规范中对项目目录、README、代码风格、版权信息和版本控制等方面进行了一定约束，公司内部及合作项目均需按此规范进行。
+项目目录 Link to heading 一般情况下，项目目录结构按照下表说明进行创建和管理，对于复杂项目由开发经理按需以此为基础调整项目目录结构：
+目录名 说明 src/ 存放项目源代码文件。 3rdparty/ 存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。 tests/ 单元测试存放目录。 docs/ 用于存放帮助手册、man等文件。 tools/ 项目用到的工具和脚本。 po/ 存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。 misc/ 项目需要使用到的数据文件或者不属于前面任一类型的文件。 .desktop 项目的desktop文件，如有多个可以放在misc目录中。 README 项目的说明文档，用于说明项目的概要情况。 LICENSE 项目采用的授权协议。 Makefile 构建脚本，同类型的还有pro文件CMakeLists.txt文件等。 README Link to heading 每个项目必需包含该README文件，README文件内需包含如下内容：
+项目描述 依赖（包括编译依赖和运行时依赖） 构建和安装 项目目录说明 获取帮助（开发项目要求） 参与开发（开源项目要求） 授权协议说明 参考模板如下：
+# Project Name Project description. ## Dependencies ### Build dependencies - Qt &gt;= 5.6 ### Runtime dependencies - git ## Installation ### Build ​```` $ mkdir build $ cd build $ qmake .">
+
+<meta property="og:url" content="http://localhost:1313/post/dev-conventions/">
+  <meta property="og:site_name" content="johndoe">
+  <meta property="og:title" content="deepin 开发者规范">
+  <meta property="og:description" content="为了保证研发项目的规范化，避免不一致造成的效率低下，特在此规范中对项目目录、README、代码风格、版权信息和版本控制等方面进行了一定约束，公司内部及合作项目均需按此规范进行。
+项目目录 Link to heading 一般情况下，项目目录结构按照下表说明进行创建和管理，对于复杂项目由开发经理按需以此为基础调整项目目录结构：
+目录名 说明 src/ 存放项目源代码文件。 3rdparty/ 存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。 tests/ 单元测试存放目录。 docs/ 用于存放帮助手册、man等文件。 tools/ 项目用到的工具和脚本。 po/ 存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。 misc/ 项目需要使用到的数据文件或者不属于前面任一类型的文件。 .desktop 项目的desktop文件，如有多个可以放在misc目录中。 README 项目的说明文档，用于说明项目的概要情况。 LICENSE 项目采用的授权协议。 Makefile 构建脚本，同类型的还有pro文件CMakeLists.txt文件等。 README Link to heading 每个项目必需包含该README文件，README文件内需包含如下内容：
+项目描述 依赖（包括编译依赖和运行时依赖） 构建和安装 项目目录说明 获取帮助（开发项目要求） 参与开发（开源项目要求） 授权协议说明 参考模板如下：
+# Project Name Project description. ## Dependencies ### Build dependencies - Qt &gt;= 5.6 ### Runtime dependencies - git ## Installation ### Build ​```` $ mkdir build $ cd build $ qmake .">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2019-07-30T11:03:54+08:00">
+    <meta property="article:modified_time" content="2019-07-30T11:03:54+08:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/post/dev-conventions/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      johndoe
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projects</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/contact/">Contact me</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/pt-br/">🇧🇷</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container page">
+  <article>
+    <header>
+      <h1 class="title">
+        <a class="title-link" href="http://localhost:1313/post/dev-conventions/">
+          deepin 开发者规范
+        </a>
+      </h1>
+    </header>
+
+    <p>为了保证研发项目的规范化，避免不一致造成的效率低下，特在此规范中对项目目录、README、代码风格、版权信息和版本控制等方面进行了一定约束，公司内部及合作项目均需按此规范进行。</p>
+<h1 id="项目目录">
+  项目目录
+  <a class="heading-link" href="#%e9%a1%b9%e7%9b%ae%e7%9b%ae%e5%bd%95">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h1>
+<p>一般情况下，项目目录结构按照下表说明进行创建和管理，对于复杂项目由开发经理按需以此为基础调整项目目录结构：</p>
+<table>
+<thead>
+<tr>
+<th>目录名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>src/</td>
+<td>存放项目源代码文件。</td>
+</tr>
+<tr>
+<td>3rdparty/</td>
+<td>存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。</td>
+</tr>
+<tr>
+<td>tests/</td>
+<td>单元测试存放目录。</td>
+</tr>
+<tr>
+<td>docs/</td>
+<td>用于存放帮助手册、man等文件。</td>
+</tr>
+<tr>
+<td>tools/</td>
+<td>项目用到的工具和脚本。</td>
+</tr>
+<tr>
+<td>po/</td>
+<td>存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。</td>
+</tr>
+<tr>
+<td>misc/</td>
+<td>项目需要使用到的数据文件或者不属于前面任一类型的文件。</td>
+</tr>
+<tr>
+<td>.desktop</td>
+<td>项目的desktop文件，如有多个可以放在misc目录中。</td>
+</tr>
+<tr>
+<td>README</td>
+<td>项目的说明文档，用于说明项目的概要情况。</td>
+</tr>
+<tr>
+<td>LICENSE</td>
+<td>项目采用的授权协议。</td>
+</tr>
+<tr>
+<td>Makefile</td>
+<td>构建脚本，同类型的还有pro文件CMakeLists.txt文件等。</td>
+</tr>
+</tbody>
+</table>
+<h1 id="readme">
+  README
+  <a class="heading-link" href="#readme">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h1>
+<p>每个项目必需包含该README文件，README文件内需包含如下内容：</p>
+<ul>
+<li>项目描述</li>
+<li>依赖（包括编译依赖和运行时依赖）</li>
+<li>构建和安装</li>
+<li>项目目录说明</li>
+<li>获取帮助（开发项目要求）</li>
+<li>参与开发（开源项目要求）</li>
+<li>授权协议说明</li>
+</ul>
+<p>参考模板如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="gh"># Project Name
+</span></span></span><span class="line"><span class="cl"><span class="gh"></span>
+</span></span><span class="line"><span class="cl">Project description.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## Dependencies
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl"><span class="gu">### Build dependencies
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl"><span class="k">-</span> Qt &gt;= 5.6
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">### Runtime dependencies
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl"><span class="k">-</span> git 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## Installation
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl"><span class="gu">### Build
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl">​````
+</span></span><span class="line"><span class="cl">$ mkdir build
+</span></span><span class="line"><span class="cl">$ cd build
+</span></span><span class="line"><span class="cl">$ qmake ..
+</span></span><span class="line"><span class="cl">$ make
+</span></span><span class="line"><span class="cl">​````
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">### Install
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl">​```
+</span></span><span class="line"><span class="cl">$ sudo make install
+</span></span><span class="line"><span class="cl">​```
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">3.</span> Install:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">​````
+</span></span><span class="line"><span class="cl">$ sudo make install
+</span></span><span class="line"><span class="cl">​````
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## Getting help
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl">Any usage issues can ask for help via
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">Gitter</span>](<span class="na">https://gitter.im/orgs/linuxdeepin/rooms</span>)
+</span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">IRC channel</span>](<span class="na">https://webchat.freenode.net/?channels=deepin</span>)
+</span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">Forum</span>](<span class="na">https://bbs.deepin.org</span>)
+</span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">WiKi</span>](<span class="na">https://wiki.deepin.org/</span>)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## Getting involved
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl">We encourage you to report issues and contribute changes
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">Contribution guide for developers</span>](<span class="na">https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers-en</span>). (English)
+</span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">开发者代码贡献指南</span>](<span class="na">https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers</span>) (中文)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## License
+</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span><span class="line"><span class="cl">[Project name] is licensed under [<span class="nt">GPLv3</span>](<span class="na">LICENSE</span>).
+</span></span></code></pre></div><h1 id="代码风格">
+  代码风格
+  <a class="heading-link" href="#%e4%bb%a3%e7%a0%81%e9%a3%8e%e6%a0%bc">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h1>
+<p>Qt/C++ 代码风格规范详见：<a href="https://docs-blog.wh-redirect.deepin.cn/?p=2788"  class="external-link" target="_blank" rel="noopener">Qt/C++代码风格指南</a>；</p>
+<p>Golang 代码风格按官方风格，使用go fmt进行格式化，此处不再详述。</p>
+<h1 id="版权信息">
+  版权信息
+  <a class="heading-link" href="#%e7%89%88%e6%9d%83%e4%bf%a1%e6%81%af">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h1>
+<p>开源项目（DDE和应用）除开发库开源协议需具体安排外，其余项目均优先采用GPLv3协议进行开源；</p>
+<p>协议头模板：</p>
+<pre tabindex="0"><code>/*
+ * Copyright (C) 2019 ~ %YEAR% Deepin Technology Co., Ltd.
+ *
+ * Author:     %USER%
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+</code></pre><p>私有项目（网站项目等）无需LICENSE文件，在README文件的版权信息部分指明版权信息为公司所有：</p>
+<pre tabindex="0"><code>Copyright (C) 2019 Deepin Technology Co., Ltd.
+</code></pre><h1 id="版本管理">
+  版本管理
+  <a class="heading-link" href="#%e7%89%88%e6%9c%ac%e7%ae%a1%e7%90%86">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h1>
+<p>项目版本管理如无特殊要求，使用<code>git</code>作为项目版本管理软件。</p>
+<h2 id="1-代码提交">
+  1. 代码提交
+  <a class="heading-link" href="#1-%e4%bb%a3%e7%a0%81%e6%8f%90%e4%ba%a4">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>代码提交过程需遵循以下要求：</p>
+<ol>
+<li>
+<p>每个需尽量保证短小完整，如在一个提交内只修复一个问题、只完成一个功能，而不是一个提交内既有问题修复又有功能开发；</p>
+</li>
+<li>
+<p>提交信息格式为：</p>
+<pre tabindex="0"><code>提交类型(模块)：提交短描述
+空行
+提交长描述
+</code></pre><p>其中，提交类型主要包括fix（问题修复）、feat（功能开发）、build（构建修改）、docs（文档）、chore（其他）；模块部分可省略。</p>
+</li>
+<li>
+<p>代码提交后，需由项目组中其他开发人员审核加分后才能合并；</p>
+</li>
+</ol>
+<h2 id="2-分支命名规范">
+  2. 分支命名规范
+  <a class="heading-link" href="#2-%e5%88%86%e6%94%af%e5%91%bd%e5%90%8d%e8%a7%84%e8%8c%83">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>开发分支</p>
+<ul>
+<li>默认的开发为 <code>master</code> 分支，同时作为社区版的维护分支，所以要保证一定的稳定性，不能太过于激进；</li>
+<li>影响比较大的功能，开新分支进行开发，分支命名规则为 <code>dev/功能代号</code> ，如 <code>dev/hidpi</code> (一个项目的开发分支定期清理一下，不要超过5个)。</li>
+</ul>
+<p>维护分支</p>
+<ul>
+<li>社区版因为滚动更新的原因，维护分支为master分支；</li>
+<li>专业版维护分支命名规则为 <code>maintain/pro/专业版版本号</code>，各个项目在同一个专业版上使用同样的维护分支，如 <code>maintain/pro/15.5</code>。</li>
+</ul>
+<h2 id="3-其他要求">
+  3. 其他要求
+  <a class="heading-link" href="#3-%e5%85%b6%e4%bb%96%e8%a6%81%e6%b1%82">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li>推送至服务器的提交、tag等禁止修改，以避免协作者处出现不必要的问题。</li>
+</ul>
+<h1 id="软件配置">
+  软件配置
+  <a class="heading-link" href="#%e8%bd%af%e4%bb%b6%e9%85%8d%e7%bd%ae">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h1>
+<p>为了便于系统功能定制和统一同一软件在不同版本（社区版、专业版、服务器版等）下的deb包，对于软件中使用到的配置做出如下要求：</p>
+<ol>
+<li>操作系统软件配置项统一使用<code>gsettings</code>，禁止<code>json</code>、<code>ini</code> 和其他基于文本的配置文件；</li>
+<li>针对架构无法支持的功能，使用编译参数控制关闭；</li>
+<li>定制性的功能，包括功能开关、差异化配置等同上，统一使用<code>gsettings</code>，禁止使用编译选项；</li>
+<li>项目自身的<code>schema</code>文件存放于自己项目内，系统级的<code>override</code>文件统一存放于<code>deepin-desktop-schemas</code>项目中，并分服务器版（server）、专业版（pro）、社区版（community）进行维护。</li>
+</ol>
+
+  </article>
+</section>
+
+  
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     John Doe 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>
