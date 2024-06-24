@@ -156,25 +156,53 @@ url = "https://hualet.org/index.xml"
 rel = "alternate"
 type = "application/rss+xml"
 
-[languages.zh]
-languageName = ":zh-ch:"
+[languages.en]
+languageName = ":uk:"
 
-[[languages.zh.menu.main]]
+[[languages.en.menu.main]]
 name = "Blog"
 weight = 1
 url = "posts/"
 
-[[languages.zh.menu.main]]
+[[languages.en.menu.main]]
 name = "Blogroll"
 weight = 2
 url = "blogroll/"
 
-#[[languages.zh.menu.main]]
+#[[languages.en.menu.main]]
 #name = "Projects"
 #weight = 3
 #url = "projects/"
 
-[[languages.zh.menu.main]]
+[[languages.en.menu.main]]
 name = "About"
+weight = 3
+url = "about/"
+
+
+[languages.zh]
+languageName = ":cn:"
+
+[languages.zh.params]
+title = "我思故我在"
+info = ["开发者", "开源爱好者", "一位慈祥的老父亲"]
+
+[[languages.zh.menu.main]]
+name = "博客"
+weight = 1
+url = "posts/"
+
+[[languages.zh.menu.main]]
+name = "友链"
+weight = 2
+url = "blogroll/"
+
+#[[languages.zh.menu.main]]
+#name = "项目"
+#weight = 3
+#url = "projects/"
+
+[[languages.zh.menu.main]]
+name = "关于"
 weight = 3
 url = "about/"
