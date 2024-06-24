@@ -5,7 +5,7 @@ date: 2024-06-23T23:03:32+08:00
 
 
 
-<img src="/home/hualet/projects/hualet/hualet.github.io/static/img/2024/06/s29827208.jpg" alt="caption" style="zoom:25%;" />
+<img src="//img/2024/06/s29827208.jpg" alt="caption" style="zoom:25%;" />
 
 
 
