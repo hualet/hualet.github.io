@@ -226,11 +226,11 @@
       <description>文章翻译自 Peeking into Linux kernel-land using /proc filesystem for quick’n’dirty troubleshooting&#xA;这篇博客的内容完全是关于现代Linux内核的。换句话说，指的是与RHEL6一样使用的2.6.3x系列内核，而不是古老的RHEL5所使用的2.6.18内核（都什么鬼了？！），虽然大部分企业都还在使用RHEL5。另外，这篇文章也不会涉及内核调试器或者SystemTap脚本之类的东西，完全是最最简单地在有用的proc文件系统节点上执行“cat /proc/PID/xyz”这样的命令。&#xA;定位一个程序“运行缓慢”的问题 Link to heading 下面要举的这个例子是这样的：一个DBA反映说他们的find命令一直运行缓慢，半天都没有什么输出，他们想知道这是为什么。听到这个问题的时候我就大概有直觉造成这个问题的原因，但是他们还是想知道怎么系统地追踪这类问题，并找到解决方案。刚好出问题的现场还在……&#xA;还好，系统是运行在OEL6上的，内核比较新，确切地说是2.6.39 UEK2。&#xA;首先，让我们看看find进程是否还在：&#xA;[root@oel6 ~]# ps -ef | grep find root 27288 27245 4 11:57 pts/0 00:00:01 find . -type f root 27334 27315 0 11:57 pts/1 00:00:00 grep find 跑的好好的，PID是27288（请记好这个将会伴随整篇博客的数字）。&#xA;那么，我们就从最基础的开始分析它的瓶颈：如果它不是被什么操作卡住了（例如从cache中加载它所需要的内容），它应该是100%的CPU占用率；如果它的瓶颈在IO或者资源竞争，那么它应该是很低的CPU占用率，或者是%0。&#xA;我们先看下top：&#xA;[root@oel6 ~]# top -cbp 27288 top - 11:58:15 up 7 days, 3:38, 2 users, load average: 1.21, 0.65, 0.47 Tasks: 1 total, 0 running, 1 sleeping, 0 stopped, 0 zombie Cpu(s): 0.</description>
     </item>
     <item>
-      <title>About</title>
+      <title>Hualet</title>
       <link>https://www.hualet.org/about/</link>
       <pubDate>Thu, 14 Dec 2017 21:26:12 +0800</pubDate>
       <guid>https://www.hualet.org/about/</guid>
-      <description>about test</description>
+      <description>职业&#xA;开发操作系统 2013 年开始在 deepin 实习、转正，并随后到统信： 在deepin的过往 信念&#xA;以正和，以奇胜 得道多助，失道寡助 原则&#xA;不要随着年龄的增长而变得油腻 喜好&#xA;喜欢的人 聪明、悟性高、有活力 踏实、努力 有追求 喜欢的企业家 乔布斯 段永平、张一鸣、王兴、刘强东 杰克·韦尔奇、杰夫·贝索斯 技术栈&#xA;编程语言&#xA;Python： 熟悉/喜欢 C++： 不熟悉/不喜欢，主要是写Qt ELisp/Common Lisp： 学习过，代码即数据的精髓也忘得差不多了 QML： 曾经很熟悉，挺好用的 编程工具&#xA;git： 熟悉，有肌肉记忆 tmux： 熟悉，有肌肉记忆 GDB： 系统学过，使用偏基础，break/info/bt/frame之类的吧 perf/bpfcc/flamegraph： 使用perf优化程序性能 ELF/loader: 自制profiler系列 Emacs/Vim： 早期玩Emacs，还为此专门学习了ELisp/Common Lisp，做了很多配置，后来不怎么用了 后来用Vim，基本上不做配置，主要是方便查看/快速编辑文件/代码 图形框架&#xA;X11/Wayland Linux Gfx 图形栈（的配置 ） Linux系统构建&#xA;initramfs: 系统启动流程 systemd: bootchart、analyze、cgls service 配置、slice 配置 人工智能&#xA;看书、看教程，简单实践，不深入 基础设施&#xA;docker/podman/docker-compose Jenkins 管理&#xA;以团队为本、目标/结果导向 未完待续…… 产品</description>
     </item>
     <item>
       <title>15.5研发心得</title>
