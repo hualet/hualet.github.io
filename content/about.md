@@ -4,7 +4,7 @@ date: 2017-12-14T21:26:12+08:00
 ---
 
 - 职业
-  - 开发操作系统 
+  - 开发操作系统
     - 2013 年开始在 deepin 实习、转正，并随后到统信： [在deepin的过往](https://hualet.org/posts/10-years-anniversary/)
 - 信念
   - 以正和，以奇胜
@@ -18,9 +18,11 @@ date: 2017-12-14T21:26:12+08:00
     - 踏实、努力
     - 有追求
   - 喜欢的企业家
-    - 乔布斯
-    - 段永平、张一鸣、王兴、刘强东
+    - 乔布斯、张一鸣、王兴、刘强东
+    - 段永平
     - 杰克·韦尔奇、杰夫·贝索斯
+  - 喜欢的黑客
+    - [George Hotz](https://geohot.com/)
 
 - 技术栈
 
@@ -53,7 +55,7 @@ date: 2017-12-14T21:26:12+08:00
     - Linux Gfx 图形栈（的配置 ）
   - Linux系统构建
     - initramfs:  [系统启动流程](https://hualet.org/posts/linux-system-bootup/)
-    - systemd: 
+    - systemd:
       - bootchart、analyze、cgls
       - service 配置、slice 配置
   - 人工智能
