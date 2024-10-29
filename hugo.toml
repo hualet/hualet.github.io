@@ -10,7 +10,7 @@ favicon = "/img/favicon.ico"
 [services]
 [services.disqus]
 # Enable Disqus comments
-# shortname = "hualetblog"
+shortname = "hualetblog"
 
 [markup.highlight]
 noClasses = false
