@@ -3,10 +3,6 @@ title: "Hualet Wang"
 date: 2017-12-14T21:26:12+08:00
 ---
 
-<p align="left">
-  <img src="/img/avatar_clean.jpg" style="width:128;"/>
-</p>
-
 
 - 职业
   - 开发操作系统
