@@ -32,6 +32,7 @@ series = []
 - 融入了更多基于 Web 的元素
     - 附带的 Internet Explorer，还有应用程序如 Outlook Express、FrontPage Express 和 Microsoft Chat
 - 引入了 Windows 驱动程序模型（WDM）来帮助硬件支持
+- [DirectX](https://en.wikipedia.org/wiki/DirectX) （95开始提供， 98以后开始默认预装）
 
 ## Windows 2000 & Windows Me
 
