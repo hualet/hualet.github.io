@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <title>
+  Mac 软件生态在中国的发展研究 · Think in Hualet
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Hualet Wang">
+<meta name="description" content="国内主要软件在 Mac 上的适配情况 Link to heading 社交类 微信：20140226 发布 1.0 QQ：20080128 发布 1.0 Preview 1 浏览器 360 浏览器 20190118 发布 1.0 音乐类 QQ 音乐 20130114 发布 1.0，第一个版本的界面还挺 Mac（好看） 的 网易云音乐 201410xx 发布 1.0 （推测） 第一个版本的界面也还挺 Mac（好看）的 酷狗音乐 20130723 发布 1.0 虾米音乐 20130713 前后（推测） 视频类 爱奇异 不可考 腾讯视频 20170507 发布 1.0 搜狐视频 20130601 发布 0.1 测试版 优酷视频 不可考 暴风影音 20151015 发布 1.0 工具类 搜狗输入法 20110617 发布 1.0 有道词典 20111020 发布 1.">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Mac 软件生态在中国的发展研究">
+  <meta name="twitter:description" content="国内主要软件在 Mac 上的适配情况 Link to heading 社交类 微信：20140226 发布 1.0 QQ：20080128 发布 1.0 Preview 1 浏览器 360 浏览器 20190118 发布 1.0 音乐类 QQ 音乐 20130114 发布 1.0，第一个版本的界面还挺 Mac（好看） 的 网易云音乐 201410xx 发布 1.0 （推测） 第一个版本的界面也还挺 Mac（好看）的 酷狗音乐 20130723 发布 1.0 虾米音乐 20130713 前后（推测） 视频类 爱奇异 不可考 腾讯视频 20170507 发布 1.0 搜狐视频 20130601 发布 0.1 测试版 优酷视频 不可考 暴风影音 20151015 发布 1.0 工具类 搜狗输入法 20110617 发布 1.0 有道词典 20111020 发布 1.">
+
+<meta property="og:url" content="https://www.hualet.org/posts/macos_eco_cn/">
+  <meta property="og:site_name" content="Think in Hualet">
+  <meta property="og:title" content="Mac 软件生态在中国的发展研究">
+  <meta property="og:description" content="国内主要软件在 Mac 上的适配情况 Link to heading 社交类 微信：20140226 发布 1.0 QQ：20080128 发布 1.0 Preview 1 浏览器 360 浏览器 20190118 发布 1.0 音乐类 QQ 音乐 20130114 发布 1.0，第一个版本的界面还挺 Mac（好看） 的 网易云音乐 201410xx 发布 1.0 （推测） 第一个版本的界面也还挺 Mac（好看）的 酷狗音乐 20130723 发布 1.0 虾米音乐 20130713 前后（推测） 视频类 爱奇异 不可考 腾讯视频 20170507 发布 1.0 搜狐视频 20130601 发布 0.1 测试版 优酷视频 不可考 暴风影音 20151015 发布 1.0 工具类 搜狗输入法 20110617 发布 1.0 有道词典 20111020 发布 1.">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-16T23:20:30+08:00">
+    <meta property="article:modified_time" content="2024-11-16T23:20:30+08:00">
+
+
+
+
+<link rel="canonical" href="https://www.hualet.org/posts/macos_eco_cn/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.min.38c4552ac40f9ae3408bad40358f654ebd8804412fe74ed56f2d6c8a7af82dd3.css" integrity="sha256-OMRVKsQPmuNAi61ANY9lTr2IBEEv507Vby1sinr4LdM=" crossorigin="anonymous" media="screen" />
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css" integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin="anonymous" media="screen" />
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="https://www.hualet.org/">
+      Think in Hualet
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/blogroll/">友链</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">关于</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/en/">🇬🇧</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://www.hualet.org/posts/macos_eco_cn/">
+              Mac 软件生态在中国的发展研究
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2024-11-16T23:20:30&#43;08:00">
+                十一月 16, 2024
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa-solid fa-folder" aria-hidden="true"></i>
+    <a href="/categories/%E5%B8%82%E5%9C%BA%E7%A0%94%E7%A9%B6/">市场研究</a></div>
+
+          
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <h2 id="国内主要软件在-mac-上的适配情况">
+  国内主要软件在 Mac 上的适配情况
+  <a class="heading-link" href="#%e5%9b%bd%e5%86%85%e4%b8%bb%e8%a6%81%e8%bd%af%e4%bb%b6%e5%9c%a8-mac-%e4%b8%8a%e7%9a%84%e9%80%82%e9%85%8d%e6%83%85%e5%86%b5">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li>社交类
+<ul>
+<li>微信：<a href="https://weixin.qq.com/cgi-bin/readtemplate?t=weixin_faq_list"  class="external-link" target="_blank" rel="noopener">20140226 发布 1.0</a></li>
+<li>QQ：<a href="https://zh.wikipedia.org/zh-cn/%E8%85%BE%E8%AE%AFQQ"  class="external-link" target="_blank" rel="noopener">20080128 发布 1.0 Preview 1</a></li>
+</ul>
+</li>
+<li>浏览器
+<ul>
+<li>360 浏览器 <a href="https://liulanmi.com/dl/13012.html"  class="external-link" target="_blank" rel="noopener">20190118 发布 1.0</a></li>
+</ul>
+</li>
+<li>音乐类
+<ul>
+<li>QQ 音乐 <a href="https://www.iphonetaiwan.org/2013/01/qq-for-mac-v10.html"  class="external-link" target="_blank" rel="noopener">20130114 发布 1.0</a>，第一个版本的界面还挺 Mac（好看） 的</li>
+<li>网易云音乐 <a href="https://www.waerfa.com/netease-cloud-music"  class="external-link" target="_blank" rel="noopener">201410xx 发布 1.0 （推测）</a> 第一个版本的界面也还挺 Mac（好看）的</li>
+<li>酷狗音乐 <a href="https://tech.sina.com.cn/s/2013-07-23/17008566708.shtml"  class="external-link" target="_blank" rel="noopener">20130723 发布 1.0</a></li>
+<li>虾米音乐 <a href="https://jp.v2ex.com/t/75671"  class="external-link" target="_blank" rel="noopener">20130713 前后（推测）</a></li>
+</ul>
+</li>
+<li>视频类
+<ul>
+<li>爱奇异 不可考</li>
+<li>腾讯视频 <a href="https://www.ithome.com/0/307/816.htm"  class="external-link" target="_blank" rel="noopener">20170507 发布 1.0</a></li>
+<li>搜狐视频 <a href="https://www.imac.vip/thread-4523-1-1.html"  class="external-link" target="_blank" rel="noopener">20130601 发布 0.1 测试版</a></li>
+<li>优酷视频 不可考</li>
+<li>暴风影音 <a href="https://www.sohu.com/a/35886387_117770"  class="external-link" target="_blank" rel="noopener">20151015 发布 1.0</a></li>
+</ul>
+</li>
+<li>工具类
+<ul>
+<li>搜狗输入法 <a href="https://www.pcbeta.com/viewnews-25831-1.html"  class="external-link" target="_blank" rel="noopener">20110617 发布 1.0</a></li>
+<li>有道词典 <a href="https://hk.v2ex.com/t/19864"  class="external-link" target="_blank" rel="noopener">20111020 发布 1.0</a></li>
+<li>迅雷 <a href="https://www.ithome.com/0/002/051.htm"  class="external-link" target="_blank" rel="noopener">20110713 发布 1.0.1.44 Beta1</a></li>
+<li>百度网盘 <a href="https://www.ithome.com/0/002/051.htm"  class="external-link" target="_blank" rel="noopener">20161020 发布 1.0</a></li>
+<li>坚果云 <a href="https://help.jianguoyun.com/?p=1419"  class="external-link" target="_blank" rel="noopener">20121018 之前（推测）</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="mac-在国内的市场占有率发展情况">
+  Mac 在国内的市场占有率发展情况
+  <a class="heading-link" href="#mac-%e5%9c%a8%e5%9b%bd%e5%86%85%e7%9a%84%e5%b8%82%e5%9c%ba%e5%8d%a0%e6%9c%89%e7%8e%87%e5%8f%91%e5%b1%95%e6%83%85%e5%86%b5">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p><a href="https://gs.statcounter.com/os-market-share/desktop/china/2010"  class="external-link" target="_blank" rel="noopener">参考 statcounter 数据</a></p>
+<ul>
+<li>201012 0.46%</li>
+<li>201112 1.08%（ Mac 生态爆发年）</li>
+<li>201212 0.92%</li>
+<li>201312 1.29%（ Mac 生态爆发年）</li>
+<li>201412 1.43%</li>
+<li>201512 2.37%</li>
+<li>201612 3.16%</li>
+<li>201712 5.78%</li>
+<li>201812 7.22%</li>
+<li>201912 8.64%</li>
+<li>202012 5.44%</li>
+<li>202112 5.90%</li>
+<li>202212 4.88%</li>
+<li>202312 6.61%</li>
+</ul>
+<h2 id="初步猜测">
+  初步猜测
+  <a class="heading-link" href="#%e5%88%9d%e6%ad%a5%e7%8c%9c%e6%b5%8b">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>2011年，<a href="https://www.gov.cn/jrzg/2012-01/16/content_2045532.htm"  class="external-link" target="_blank" rel="noopener">中国网民数量 5.13亿</a>， 粗略推测 Mac 装机量在 500万；</p>
+<p>2016年，<a href="https://www.gov.cn/xinwen/2016-01/22/content_5035386.htm"  class="external-link" target="_blank" rel="noopener">中国网民数量 6.88亿</a>，粗略推测 Mac 装机量在 900万；</p>
+<p>也就是说操作系统在有了~500万活跃用户，生态就会慢慢自然发展，如果达到 1000万，生态就会比较稳定发展？？？</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script>
+  window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hualetblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    
+    document.addEventListener('themeChanged', function (e) { 
+        if (document.readyState == 'complete') {
+          DISQUS.reset({ reload: true, config: disqus_config });
+        }
+    });
+</script>
+        
+        
+        
+        
+
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2024
+     Hualet Wang 
+    ·
+    
+     <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js" integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FNRR2W3Z7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6FNRR2W3Z7');
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>
