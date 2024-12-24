@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Think in Hualet</description>
     <generator>Hugo</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 16 Nov 2024 23:20:30 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 23 Dec 2024 09:39:25 +0800</lastBuildDate>
     <atom:link href="https://www.hualet.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>安卓发展史——产品、技术和用户量</title>
+      <link>https://www.hualet.org/posts/android_history/</link>
+      <pubDate>Mon, 23 Dec 2024 09:39:25 +0800</pubDate>
+      <guid>https://www.hualet.org/posts/android_history/</guid>
+      <description>谷歌之前 Link to heading 2003 创始开发； 2005 被谷歌收购； 2008 年： Android 1.0 Link to heading 2008 年 9 月，Android 1.0 正式发布，包括一系列基本应用程序，如 拨打电话、发送短信、浏览器、地图 等。&#xA;2009 年： 1.5 Cup Cake Link to heading 虚拟键盘。 插件框架，支持第三方输入法。 录音机应用程序。 自动旋转屏幕的支持。 2009 年：Android 1.6 Donut Link to heading 快捷搜索框（Quick Search Box）。 支持 CDMA 网络。 新的摄像头和图库应用程序。 改进的 Android Market 应用商店。 iOS 的商店是 2008 年 7 月上线的，安卓晚了一年时间。 2010 年：Android 2.0/2.1 Éclair Link to heading Google Maps 导航应用程序。 改进的用户界面和操作体验。 HTML5 功能支持。 改进的 Android Market 应用商店。 多点触控和虚拟相机功能。 2010 年：Android 2.</description>
+    </item>
     <item>
       <title>Mac 软件生态在中国的发展研究</title>
       <link>https://www.hualet.org/posts/macos_eco_cn/</link>
