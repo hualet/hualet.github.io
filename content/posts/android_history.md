@@ -184,18 +184,18 @@ Project Butter 的内容见参考链接中 Android 之 Project Butter 详细介�
 
 根据 [iPhone vs Android Statistics](https://backlinko.com/iphone-vs-android-statistics) 的数据：
 
-![alt text](//img/2024/12/android/Number-Of-Android-Users-Per-Year.png)
+![alt text](/img/2024/12/android/Number-Of-Android-Users-Per-Year.png)
 
-![alt text](//img/2024/12/android/Number-Of-Android-Users-Per-Year_details.png)
+![alt text](/img/2024/12/android/Number-Of-Android-Users-Per-Year_details.png)
 
 国内安卓开始比较火基本上是 2010 年的事情， 联想、HTC、中兴、华为 纷纷发布基于安卓系统的手机，MIUI 的ROM 也是在这一年开始对外推出。 2010 年安卓的用户数量应该在 2000万或者更少（按照 1.5 的复合增长率倒推2010）。
 
 
 根据 [Android Usage Statistics 2024 — Devices & Market Share](https://www.demandsage.com/android-statistics/) 的数据：
 
-![alt text](//img/2024/12/android/iphone-vs-android-worldwide-share-1280x973.webp)
+![alt text](/img/2024/12/android/iphone-vs-android-worldwide-share-1280x973.webp)
 
-![alt text](//img/2024/12/android/iphone-vs-android-worldwide-share-1280x973_details.png)
+![alt text](/img/2024/12/android/iphone-vs-android-worldwide-share-1280x973_details.png)
 
 安卓的市占率 2010 年 8.82 %，在这个情况下安卓就已经有不错的发展前景，让大量的软硬件厂商开始投入。
 
