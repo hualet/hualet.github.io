@@ -208,5 +208,4 @@ Project Butter 的内容见参考链接中 Android 之 Project Butter 详细介�
 - [Android发展历程](https://www.cnblogs.com/qsxstu/p/16616131.html)
 - [Android简介及发展历程](https://blog.csdn.net/csdnxia/article/details/101513820)
 - [Android 之 Project Butter 详细介绍](https://blog.csdn.net/qq_34115898/article/details/107997543)
-- [Android Usage Statistics 2024 — Devices & Market Share
-](https://www.demandsage.com/android-statistics/)
+- [Android Usage Statistics 2024 — Devices & Market Share](https://www.demandsage.com/android-statistics/)
