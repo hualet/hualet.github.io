@@ -2,14 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.hualet.org/posts/2024_summary/</loc>
-    <lastmod>2025-01-11T22:01:26+08:00</lastmod>
+    <loc>https://www.hualet.org/categories/</loc>
+    <lastmod>2025-03-15T22:19:26+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.hualet.org/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.hualet.org/categories/"
+                />
   </url><url>
     <loc>https://www.hualet.org/posts/</loc>
-    <lastmod>2025-01-11T22:01:26+08:00</lastmod>
+    <lastmod>2025-03-15T22:19:26+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/</loc>
-    <lastmod>2025-01-11T22:01:26+08:00</lastmod>
+    <lastmod>2025-03-15T22:19:26+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -21,21 +31,17 @@
                 href="https://www.hualet.org/"
                 />
   </url><url>
+    <loc>https://www.hualet.org/categories/%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2025-03-15T22:19:26+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/posts/manager_qualities/</loc>
+    <lastmod>2025-03-15T22:19:26+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/posts/2024_summary/</loc>
+    <lastmod>2025-01-11T22:01:26+08:00</lastmod>
+  </url><url>
     <loc>https://www.hualet.org/posts/android_history/</loc>
     <lastmod>2024-12-23T09:39:25+08:00</lastmod>
-  </url><url>
-    <loc>https://www.hualet.org/categories/</loc>
-    <lastmod>2024-11-16T23:20:30+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/categories/"
-                />
   </url><url>
     <loc>https://www.hualet.org/posts/macos_eco_cn/</loc>
     <lastmod>2024-11-16T23:20:30+08:00</lastmod>
@@ -69,9 +75,6 @@
     <lastmod>2024-10-27T07:29:05+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/categories/%E5%88%9B%E4%B8%9A/</loc>
-    <lastmod>2024-10-27T07:29:05+08:00</lastmod>
-  </url><url>
-    <loc>https://www.hualet.org/categories/%E7%AE%A1%E7%90%86/</loc>
     <lastmod>2024-10-27T07:29:05+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/tags/%E5%B0%8Flin%E8%AF%B4/</loc>
