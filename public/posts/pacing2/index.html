@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <title>
+  再谈节奏感 · Think in Hualet
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Hualet Wang">
+<meta name="description" content="今天有同事找过来，说最近通过一通研究发现系统很多问题，关键是还没有人负责解决，觉得好绝望。
+以前我老板也经常扔给我这样那样的问题，总觉得我们做得不够好，我很难让他接受我们得有所取舍的实际结果，只能当成是鞭策和PUA。今天同事这个问题我觉得还有必要好好跟他聊一下，至少我觉得跟他有说清楚的可能性。
+听到这个问题，我第一反应就是战略取舍。但是怕他觉得我在用互联网黑话忽悠他，我就尝试性地问他是否听过雷军的互联网七字诀，毕竟雷军火遍大街小巷嘛，果然是听过一些。互联网七字诀就是“专注、极致、口碑、快”。
+其实每一个创业公司在前期都面临同样的问题，尤其小米还跟我们一样的是做操作系统的，跟我们面临的问题更为相似。操作系统太宏大了，每个模块拿出来都可以研究上好几年甚至好几十年，在不能全面覆盖的情况下，问题多不是很正常嘛。所以，小米前期就 专注 在界面和几个应用的打磨上，做到极致、形成口碑，从而吸引了一波发烧友作为种子用户起步，才有了后面的发展。如果小米上来就要求有诺基亚和摩托的手机质量，要求苹果一样软硬件全干，结局大概率不会特别好，团队直接就被拖垮了。
+回到我们自己，团队规模变小有好有坏，其中有一个好处是帮我们变得更加专注。
+专注就是想清楚当前的主要矛盾，专注于这个点的解决，完了再看下个阶段的主要矛盾，一个个有节奏地解决。比如之前提系统稳定性、后来是系统兼容性、开发者生态、AI 能力 等等。
+组织能力强就多做一点，组织能力弱就少做一点，同时不断提高我们的组织能力。如果硬要在自己或者组织能力无法承受的阶段去解决过多的问题，人和组织可能就会崩溃。苹果造车就是一个很好的例子。
+这里想起来，以前看到有人（好像是宁高宁）说过，公司的目标就是提高效率和做创新，组织能力和组织活力是这两点的核心支撑啊。
+另外一点，资源受限的时候，千万不能盲目地扩大战线。一方面，战线拖长，团队长时间投入而没有结果容易产生怠惰； 另外一方面，战场增加，会让团队感觉腹背受敌没有焦点，也会产生疲惫。
+但是，发现了小问题可以快速解决的，一定要负责任地勇于去解决掉它，速战速决。软件工程是典型的“千里之堤，溃于蚁穴”，能解决一个蚁穴问题就能增加软件的成功概率。
+聊完想了想，这不就是去年提的节奏感嘛，只不过去年是以产品研发和上市的例子在讲，今天这个故事则更多体现在研发和项目管理上。遂作记录，以飨读者。">
+<meta name="keywords" content="blog,developer,personal">
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="再谈节奏感">
+  <meta name="twitter:description" content="今天有同事找过来，说最近通过一通研究发现系统很多问题，关键是还没有人负责解决，觉得好绝望。
+以前我老板也经常扔给我这样那样的问题，总觉得我们做得不够好，我很难让他接受我们得有所取舍的实际结果，只能当成是鞭策和PUA。今天同事这个问题我觉得还有必要好好跟他聊一下，至少我觉得跟他有说清楚的可能性。
+听到这个问题，我第一反应就是战略取舍。但是怕他觉得我在用互联网黑话忽悠他，我就尝试性地问他是否听过雷军的互联网七字诀，毕竟雷军火遍大街小巷嘛，果然是听过一些。互联网七字诀就是“专注、极致、口碑、快”。
+其实每一个创业公司在前期都面临同样的问题，尤其小米还跟我们一样的是做操作系统的，跟我们面临的问题更为相似。操作系统太宏大了，每个模块拿出来都可以研究上好几年甚至好几十年，在不能全面覆盖的情况下，问题多不是很正常嘛。所以，小米前期就 专注 在界面和几个应用的打磨上，做到极致、形成口碑，从而吸引了一波发烧友作为种子用户起步，才有了后面的发展。如果小米上来就要求有诺基亚和摩托的手机质量，要求苹果一样软硬件全干，结局大概率不会特别好，团队直接就被拖垮了。
+回到我们自己，团队规模变小有好有坏，其中有一个好处是帮我们变得更加专注。
+专注就是想清楚当前的主要矛盾，专注于这个点的解决，完了再看下个阶段的主要矛盾，一个个有节奏地解决。比如之前提系统稳定性、后来是系统兼容性、开发者生态、AI 能力 等等。
+组织能力强就多做一点，组织能力弱就少做一点，同时不断提高我们的组织能力。如果硬要在自己或者组织能力无法承受的阶段去解决过多的问题，人和组织可能就会崩溃。苹果造车就是一个很好的例子。
+这里想起来，以前看到有人（好像是宁高宁）说过，公司的目标就是提高效率和做创新，组织能力和组织活力是这两点的核心支撑啊。
+另外一点，资源受限的时候，千万不能盲目地扩大战线。一方面，战线拖长，团队长时间投入而没有结果容易产生怠惰； 另外一方面，战场增加，会让团队感觉腹背受敌没有焦点，也会产生疲惫。
+但是，发现了小问题可以快速解决的，一定要负责任地勇于去解决掉它，速战速决。软件工程是典型的“千里之堤，溃于蚁穴”，能解决一个蚁穴问题就能增加软件的成功概率。
+聊完想了想，这不就是去年提的节奏感嘛，只不过去年是以产品研发和上市的例子在讲，今天这个故事则更多体现在研发和项目管理上。遂作记录，以飨读者。">
+
+<meta property="og:url" content="https://www.hualet.org/posts/pacing2/">
+  <meta property="og:site_name" content="Think in Hualet">
+  <meta property="og:title" content="再谈节奏感">
+  <meta property="og:description" content="今天有同事找过来，说最近通过一通研究发现系统很多问题，关键是还没有人负责解决，觉得好绝望。
+以前我老板也经常扔给我这样那样的问题，总觉得我们做得不够好，我很难让他接受我们得有所取舍的实际结果，只能当成是鞭策和PUA。今天同事这个问题我觉得还有必要好好跟他聊一下，至少我觉得跟他有说清楚的可能性。
+听到这个问题，我第一反应就是战略取舍。但是怕他觉得我在用互联网黑话忽悠他，我就尝试性地问他是否听过雷军的互联网七字诀，毕竟雷军火遍大街小巷嘛，果然是听过一些。互联网七字诀就是“专注、极致、口碑、快”。
+其实每一个创业公司在前期都面临同样的问题，尤其小米还跟我们一样的是做操作系统的，跟我们面临的问题更为相似。操作系统太宏大了，每个模块拿出来都可以研究上好几年甚至好几十年，在不能全面覆盖的情况下，问题多不是很正常嘛。所以，小米前期就 专注 在界面和几个应用的打磨上，做到极致、形成口碑，从而吸引了一波发烧友作为种子用户起步，才有了后面的发展。如果小米上来就要求有诺基亚和摩托的手机质量，要求苹果一样软硬件全干，结局大概率不会特别好，团队直接就被拖垮了。
+回到我们自己，团队规模变小有好有坏，其中有一个好处是帮我们变得更加专注。
+专注就是想清楚当前的主要矛盾，专注于这个点的解决，完了再看下个阶段的主要矛盾，一个个有节奏地解决。比如之前提系统稳定性、后来是系统兼容性、开发者生态、AI 能力 等等。
+组织能力强就多做一点，组织能力弱就少做一点，同时不断提高我们的组织能力。如果硬要在自己或者组织能力无法承受的阶段去解决过多的问题，人和组织可能就会崩溃。苹果造车就是一个很好的例子。
+这里想起来，以前看到有人（好像是宁高宁）说过，公司的目标就是提高效率和做创新，组织能力和组织活力是这两点的核心支撑啊。
+另外一点，资源受限的时候，千万不能盲目地扩大战线。一方面，战线拖长，团队长时间投入而没有结果容易产生怠惰； 另外一方面，战场增加，会让团队感觉腹背受敌没有焦点，也会产生疲惫。
+但是，发现了小问题可以快速解决的，一定要负责任地勇于去解决掉它，速战速决。软件工程是典型的“千里之堤，溃于蚁穴”，能解决一个蚁穴问题就能增加软件的成功概率。
+聊完想了想，这不就是去年提的节奏感嘛，只不过去年是以产品研发和上市的例子在讲，今天这个故事则更多体现在研发和项目管理上。遂作记录，以飨读者。">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-03-19T14:08:09+08:00">
+    <meta property="article:modified_time" content="2025-03-19T14:08:09+08:00">
+
+
+
+
+<link rel="canonical" href="https://www.hualet.org/posts/pacing2/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.min.38c4552ac40f9ae3408bad40358f654ebd8804412fe74ed56f2d6c8a7af82dd3.css" integrity="sha256-OMRVKsQPmuNAi61ANY9lTr2IBEEv507Vby1sinr4LdM=" crossorigin="anonymous" media="screen" />
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css" integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin="anonymous" media="screen" />
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="https://www.hualet.org/">
+      Think in Hualet
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/blogroll/">友链</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">关于</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/en/">🇬🇧</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://www.hualet.org/posts/pacing2/">
+              再谈节奏感
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2025-03-19T14:08:09&#43;08:00">
+                三月 19, 2025
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa-solid fa-folder" aria-hidden="true"></i>
+    <a href="/categories/%E7%AE%A1%E7%90%86/">管理</a></div>
+
+          
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <p>今天有同事找过来，说最近通过一通研究发现系统很多问题，关键是还没有人负责解决，觉得好绝望。</p>
+</br>
+<blockquote>
+<p>以前我老板也经常扔给我这样那样的问题，总觉得我们做得不够好，我很难让他接受我们得有所取舍的实际结果，只能当成是鞭策和PUA。今天同事这个问题我觉得还有必要好好跟他聊一下，至少我觉得跟他有说清楚的可能性。</p>
+</blockquote>
+</br>
+<p>听到这个问题，我第一反应就是战略取舍。但是怕他觉得我在用互联网黑话忽悠他，我就尝试性地问他是否听过雷军的互联网七字诀，毕竟雷军火遍大街小巷嘛，果然是听过一些。互联网七字诀就是“专注、极致、口碑、快”。</p>
+</br>
+<p>其实每一个创业公司在前期都面临同样的问题，尤其小米还跟我们一样的是做操作系统的，跟我们面临的问题更为相似。操作系统太宏大了，每个模块拿出来都可以研究上好几年甚至好几十年，在不能全面覆盖的情况下，问题多不是很正常嘛。所以，小米前期就 <strong>专注</strong> 在界面和几个应用的打磨上，做到<strong>极致</strong>、形成<strong>口碑</strong>，从而吸引了一波发烧友作为种子用户起步，才有了后面的发展。如果小米上来就要求有诺基亚和摩托的手机质量，要求苹果一样软硬件全干，结局大概率不会特别好，团队直接就被拖垮了。</p>
+</br>
+<p>回到我们自己，团队规模变小有好有坏，其中有一个好处是帮我们变得更加专注。</p>
+</br>
+<p>专注就是想清楚当前的主要矛盾，专注于这个点的解决，完了再看下个阶段的主要矛盾，一个个有节奏地解决。比如之前提系统稳定性、后来是系统兼容性、开发者生态、AI 能力 等等。</p>
+</br>
+<p>组织能力强就多做一点，组织能力弱就少做一点，同时不断提高我们的组织能力。如果硬要在自己或者组织能力无法承受的阶段去解决过多的问题，人和组织可能就会崩溃。苹果造车就是一个很好的例子。</p>
+</br>
+<blockquote>
+<p>这里想起来，以前看到有人（好像是宁高宁）说过，公司的目标就是提高效率和做创新，组织能力和组织活力是这两点的核心支撑啊。</p>
+</blockquote>
+</br>
+<p>另外一点，资源受限的时候，千万不能盲目地扩大战线。一方面，战线拖长，团队长时间投入而没有结果容易产生怠惰； 另外一方面，战场增加，会让团队感觉腹背受敌没有焦点，也会产生疲惫。</p>
+</br>
+<p>但是，发现了小问题可以快速解决的，一定要负责任地勇于去解决掉它，速战速决。软件工程是典型的“千里之堤，溃于蚁穴”，能解决一个蚁穴问题就能增加软件的成功概率。</p>
+</br>
+<p>聊完想了想，这不就是去年提的节奏感嘛，只不过去年是以产品研发和上市的例子在讲，今天这个故事则更多体现在研发和项目管理上。遂作记录，以飨读者。</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script>
+  window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hualetblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    
+    document.addEventListener('themeChanged', function (e) { 
+        if (document.readyState == 'complete') {
+          DISQUS.reset({ reload: true, config: disqus_config });
+        }
+    });
+</script>
+        
+        
+        
+        
+
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2025
+     Hualet Wang 
+    ·
+    
+     <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js" integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script>
+  
+
+  
+
+  
+
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FNRR2W3Z7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6FNRR2W3Z7');
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>
