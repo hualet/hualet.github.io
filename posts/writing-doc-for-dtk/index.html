@@ -13,14 +13,38 @@
 
 
 <meta name="author" content="Hualet Wang">
-<meta name="description" content="背景 Link to heading 经过几年的摸爬滚打，DTK 作为构建 deepin 全家桶的基石，一直被说的主要有两个毛病：
-内部人员觉得它不够稳； 外部人员觉得它无从下手； 第一个问题主要原因是 DTK 在最开始的时候缺失的东西太多，各种剧烈的变化同时进行，但是又没有比较好的版本控制和接口管理，所以经常是这个应用要用新版本，新版本删除了一个废弃的接口，用了旧接口的应用就崩了。由于最近 DTK 的变化日趋平稳，以及有了基本的版本控制，第一个问题渐渐淡出了人们的视野。
+<meta name="description" content="
+  背景
+  
+    
+    Link to heading
+  
+
+经过几年的摸爬滚打，DTK 作为构建 deepin 全家桶的基石，一直被说的主要有两个毛病：
+
+内部人员觉得它不够稳；
+外部人员觉得它无从下手；
+
+第一个问题主要原因是 DTK 在最开始的时候缺失的东西太多，各种剧烈的变化同时进行，但是又没有比较好的版本控制和接口管理，所以经常是这个应用要用新版本，新版本删除了一个废弃的接口，用了旧接口的应用就崩了。由于最近 DTK 的变化日趋平稳，以及有了基本的版本控制，第一个问题渐渐淡出了人们的视野。
 第二个问题外部人员无从下手的原因是 DTK 在开发过程中并没有留下接口文档，所以目前想使用 DTK，内部靠得是口口相传，外部靠的是阅读源码，完全的石器时代……甚至连社区的小伙伴都看不下去了，自己做了一个《Deepin开发指南》 。
 是时候给DTK添加一下文档了！
-工具选择 Link to heading 其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。
+
+  工具选择
+  
+    
+    Link to heading
+  
+
+其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。
 用什么文档工具呢？ DTK 是基于 Qt 之上的开发库，最自然的想法是使用 QDoc，但是据使用 QDoc 搭建了 dde-file-manager 的 Github Pages 的 @BLumia 同学说 QDoc 对国际化的支持不是特别好，我们按道理是要支持中英双语文档的，遂放弃。除了 QDoc 以外，文档生成工具就是 Doxygen、还有一个KDE 项目自己的文档工具 KApiDox ，它们三者之间是什么关系呢？Doxygen 从 QDoc 上 fork 出来的，KApiDox 是基于 Doxygen 的封装……我没有怎么看 KApiDox ，所以就选择了 Doxygen 。
-如何写 Link to heading 下面就是规则部分了。
-1. 文档注释位置 Link to heading 为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。">
+
+  如何写
+  
+    
+    Link to heading
+  
+
+下面就是规则部分了。">
 <meta name="keywords" content="blog,developer,personal">
 
 
@@ -33,8 +57,7 @@
 是时候给DTK添加一下文档了！
 工具选择 Link to heading 其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。
 用什么文档工具呢？ DTK 是基于 Qt 之上的开发库，最自然的想法是使用 QDoc，但是据使用 QDoc 搭建了 dde-file-manager 的 Github Pages 的 @BLumia 同学说 QDoc 对国际化的支持不是特别好，我们按道理是要支持中英双语文档的，遂放弃。除了 QDoc 以外，文档生成工具就是 Doxygen、还有一个KDE 项目自己的文档工具 KApiDox ，它们三者之间是什么关系呢？Doxygen 从 QDoc 上 fork 出来的，KApiDox 是基于 Doxygen 的封装……我没有怎么看 KApiDox ，所以就选择了 Doxygen 。
-如何写 Link to heading 下面就是规则部分了。
-1. 文档注释位置 Link to heading 为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。">
+如何写 Link to heading 下面就是规则部分了。">
 
 <meta property="og:url" content="https://www.hualet.org/posts/writing-doc-for-dtk/">
   <meta property="og:site_name" content="Think in Hualet">
@@ -45,8 +68,7 @@
 是时候给DTK添加一下文档了！
 工具选择 Link to heading 其实， DTK 之前是有写文档的，但是写得并不多，主要问题就是英文文档不好写。我也尝试写过，每个类、每个函数都只能憋出一句英文，这种文档跟没有是差不多的。所以，这里需要做一个艰难的决定：文档用中文来写，英文靠爱好者来翻译。
 用什么文档工具呢？ DTK 是基于 Qt 之上的开发库，最自然的想法是使用 QDoc，但是据使用 QDoc 搭建了 dde-file-manager 的 Github Pages 的 @BLumia 同学说 QDoc 对国际化的支持不是特别好，我们按道理是要支持中英双语文档的，遂放弃。除了 QDoc 以外，文档生成工具就是 Doxygen、还有一个KDE 项目自己的文档工具 KApiDox ，它们三者之间是什么关系呢？Doxygen 从 QDoc 上 fork 出来的，KApiDox 是基于 Doxygen 的封装……我没有怎么看 KApiDox ，所以就选择了 Doxygen 。
-如何写 Link to heading 下面就是规则部分了。
-1. 文档注释位置 Link to heading 为了保持头文件的清爽和干净，所有文档注释都要写在源文件中。">
+如何写 Link to heading 下面就是规则部分了。">
   <meta property="og:locale" content="zh">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -304,7 +326,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \return 设置成功返回 true，否则返回 false。
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
 </span></span></code></pre></div><p>输出：</p>
-<p><img alt="function" src="/img/2018/09/26/function.png"></p>
+<p><img src="/img/2018/09/26/function.png" alt="function"></p>
 <h4 id="类">
   类
   <a class="heading-link" href="#%e7%b1%bb">
@@ -329,7 +351,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm"> *
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \sa loadTranslator, setSingleInstance.
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span></code></pre></div><p>输出：<img alt="class" src="/img/2018/09/26/class.png"></p>
+</span></span></code></pre></div><p>输出：<img src="/img/2018/09/26/class.png" alt="class"></p>
 <h4 id="结构体">
   结构体
   <a class="heading-link" href="#%e7%bb%93%e6%9e%84%e4%bd%93">
@@ -363,7 +385,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese 代表单实例的范围为系统范围，当前系统内只允许一个程序实例运行。
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
 </span></span></code></pre></div><p>输出：</p>
-<p><img alt="enum" src="/img/2018/09/26/enum.png"></p>
+<p><img src="/img/2018/09/26/enum.png" alt="enum"></p>
 <h4 id="属性">
   属性
   <a class="heading-link" href="#%e5%b1%9e%e6%80%a7">
@@ -381,7 +403,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \brief visibleMenuIcon 属性代表了程序中菜单项是否显示图标。
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
 </span></span></code></pre></div><p>输出：</p>
-<p><img alt="property" src="/img/2018/09/26/property.png"></p>
+<p><img src="/img/2018/09/26/property.png" alt="property"></p>
 <h4 id="信号">
   信号
   <a class="heading-link" href="#%e4%bf%a1%e5%8f%b7">
@@ -401,7 +423,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * \~chinese \brief iconThemeChanged 信号会在系统图标主题发生改变的时候被触发。
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
 </span></span></code></pre></div><p>输出：</p>
-<p><img alt="signal" src="/img/2018/09/26/signal.png"></p>
+<p><img src="/img/2018/09/26/signal.png" alt="signal"></p>
 <h3 id="4-其他一些用法">
   4. 其他一些用法
   <a class="heading-link" href="#4-%e5%85%b6%e4%bb%96%e4%b8%80%e4%ba%9b%e7%94%a8%e6%b3%95">
@@ -411,8 +433,7 @@
 </h3>
 <p>因为写文档大家都是新手，所以其他高级用法就没有做什么特殊说明和要求了，文档中引用本类、其他类或者函数只需要写上相应的名称即可，非常简单。另外，也非常鼓励使用 <code>\sa</code> 和 <code>\example</code> 等标签来加强文档的便捷性和可读性。</p>
 <blockquote>
-<p>注：引用 Qt 相关类和函数的方式跟引用本地函数没有不同，只是需要配置一下 Doxygen ，这篇文章暂时略过，会有单独的文章补充说明，写文档的时候尽情引用便是。</p>
-</blockquote>
+<p>注：引用 Qt 相关类和函数的方式跟引用本地函数没有不同，只是需要配置一下 Doxygen ，这篇文章暂时略过，会有单独的文章补充说明，写文档的时候尽情引用便是。</p></blockquote>
 <h2 id="工具">
   工具
   <a class="heading-link" href="#%e5%b7%a5%e5%85%b7">
@@ -534,9 +555,6 @@
 
 
   
-  
-
-
 
   
 

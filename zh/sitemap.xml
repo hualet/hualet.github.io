@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.hualet.org/categories/</loc>
-    <lastmod>2025-03-19T14:08:09+08:00</lastmod>
+    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -16,10 +16,10 @@
                 />
   </url><url>
     <loc>https://www.hualet.org/posts/</loc>
-    <lastmod>2025-03-19T14:08:09+08:00</lastmod>
+    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/</loc>
-    <lastmod>2025-03-19T14:08:09+08:00</lastmod>
+    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -32,7 +32,13 @@
                 />
   </url><url>
     <loc>https://www.hualet.org/categories/%E7%AE%A1%E7%90%86/</loc>
-    <lastmod>2025-03-19T14:08:09+08:00</lastmod>
+    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/posts/expensive_vs_cheap/</loc>
+    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/categories/%E5%93%B2%E5%AD%A6/</loc>
+    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/posts/pacing2/</loc>
     <lastmod>2025-03-19T14:08:09+08:00</lastmod>
@@ -164,9 +170,6 @@
     <loc>https://www.hualet.org/posts/add-notify-icon-support-for-freerdp/</loc>
     <lastmod>2018-12-16T14:41:44+08:00</lastmod>
   </url><url>
-    <loc>https://www.hualet.org/posts/thoughts-on-15.8/</loc>
-    <lastmod>2018-11-21T09:07:31+08:00</lastmod>
-  </url><url>
     <loc>https://www.hualet.org/posts/unix-domain-socket-send-fds/</loc>
     <lastmod>2018-10-28T21:08:45+08:00</lastmod>
   </url><url>
@@ -179,7 +182,7 @@
     <loc>https://www.hualet.org/posts/deepin-code-release/</loc>
     <lastmod>2018-09-17T15:23:47+08:00</lastmod>
   </url><url>
-    <loc>https://www.hualet.org/posts/thoughts-on-15.7/</loc>
+    <loc>https://www.hualet.org/posts/thoughts-on-15/</loc>
     <lastmod>2018-09-02T10:27:00+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/blogroll/</loc>
@@ -203,7 +206,7 @@
     <loc>https://www.hualet.org/about/</loc>
     <lastmod>2017-12-14T21:26:12+08:00</lastmod>
   </url><url>
-    <loc>https://www.hualet.org/posts/15.5-yan-fa-jing-yan/</loc>
+    <loc>https://www.hualet.org/posts/15/</loc>
     <lastmod>2017-12-04T21:26:48+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/posts/gei-xiao-cui-de-ji-chu-guan-li-ke/</loc>

@@ -14,9 +14,16 @@
 
 <meta name="author" content="Hualet Wang">
 <meta name="description" content="前些日子才从apt-get命令系列换成更为时尚的apt系列，作为一个debian系发行版——deepin的开发者，我表示很汗颜……新的apt命令除了在功能上将apt-get、apt-cache等几个命令统一到了一个命令上外，更是有了不错的TUI，如文档所说：
-The `apt` command is meant to be pleasant for end users and does not need to be backward compatible like apt-get(8). 毕竟，还多了进度条呢…… 😂
+The `apt` command is meant to be pleasant for end users and does not need to be backward compatible like apt-get(8).
+
+毕竟，还多了进度条呢…… 😂
 不过这不是今天要说的重点，换到apt以后，把apt操作的一些结果跟管道结合一起用，经常会收到警告，例如：
-(ssh) hualet@hualet-PC : ~ [0] % apt search deepin | grep -i superstar WARNING: apt does not have a stable CLI interface. Use with caution in scripts. CLI的输出也算是API要保持stable么？汗颜again……dtk作为一个系统级的开发库都还没有到stable的状态、某in公司的CTO写得命令行工具，第二天接口就全变了😂……敬畏之余，困惑我的倒不是这个警告的内容，毕竟新的东西都不保证稳定么，但是apt是怎么知道它的输出被连到管道了呢？
+(ssh) hualet@hualet-PC : ~
+[0] % apt search deepin | grep -i superstar
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+CLI的输出也算是API要保持stable么？汗颜again……dtk作为一个系统级的开发库都还没有到stable的状态、某in公司的CTO写得命令行工具，第二天接口就全变了😂……敬畏之余，困惑我的倒不是这个警告的内容，毕竟新的东西都不保证稳定么，但是apt是怎么知道它的输出被连到管道了呢？
 一直没空处理，直到昨天，又一次遇到了，遂记下，晚上思来想去没什么想法，遂请教前文提到的不靠谱CTO，丫直接甩过来一句：
 “istty检测output啊，很多命令行程序都会根据这个做不同的反应”
 我：“man istty没有结果啊“
@@ -26,8 +33,7 @@ The `apt` command is meant to be pleasant for end users and does not need to be 
 他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。
 我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
 我：“你是不是记错了，有isatty，unistd.h里面的……”
-他：“恩额”
-就是这么不靠谱一人……">
+他：“恩额”">
 <meta name="keywords" content="blog,developer,personal">
 
 
@@ -47,8 +53,7 @@ The `apt` command is meant to be pleasant for end users and does not need to be 
 他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。
 我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
 我：“你是不是记错了，有isatty，unistd.h里面的……”
-他：“恩额”
-就是这么不靠谱一人……">
+他：“恩额”">
 
 <meta property="og:url" content="https://www.hualet.org/posts/shen-qi-de-isatty/">
   <meta property="og:site_name" content="Think in Hualet">
@@ -66,8 +71,7 @@ The `apt` command is meant to be pleasant for end users and does not need to be 
 他：“肯定没装全，应该是在libbsd或者termios里的吧……“ 信誓旦旦。
 我默默Google了一圈，发现那个函数其实叫isatty，在unistd.h里面定义
 我：“你是不是记错了，有isatty，unistd.h里面的……”
-他：“恩额”
-就是这么不靠谱一人……">
+他：“恩额”">
   <meta property="og:locale" content="zh">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -338,9 +342,6 @@ int main(int argc, char** argv) {
 
 
   
-  
-
-
 
   
 

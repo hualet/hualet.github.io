@@ -14,17 +14,56 @@
 
 <meta name="author" content="Hualet Wang">
 <meta name="description" content="​	最近对性能剖析的技术颇感兴趣。好不容易来了三分钟热度，自然不能浪费，因此在余热消失之前研究并实践了其中一部分细节，对于其中一些知识点，个人感觉对于自身编程能力提升还是比较有益的，因此在这里写出来，抛砖引玉。
-Linux profiler简介 Link to heading ​	性能剖析的工具，其实在Linux平台还是挺多的，比如小巧实用的strace、ltrace、latrace，大名鼎鼎的google-perftools、gprof、valgrind，以及瑞士军刀型的linux-perf等等，它们主要分为三个阵营，一个是针对程序执行的性能进行剖析，对程序执行的热点进行分析，如*trace、gprof这些工具；另一个是针对程序运行过程中内存的使用进行剖析，方便针对性地做内存优化，如valgrind；最后一部分就是“脚踏两条船”的，两个我都做，比如google-perftools、linux-perf这些，我们这个系列主要集中在“针对程序执行的性能进行剖析”方面。
-Profiler的本质 Link to heading ​	要自制Profiler，首先要知道Profiler的本质是什么。简单来说，Profiler的本质其实就是在程序执行的过程中对程序正在“做什么”进行搜集和统计，如何搜集呢？无非两种：
-Instrumentaion - 程序主动Profiler告诉它在做什么； Sampling - Profiler自己间断性地去看程序在做什么； 前者的实现主要依靠程序运行时提供的某些钩子机制、代码插桩等方式，例如gprof主要是依靠 gcc 在编译程序的时候”夹带私货“来达到程序运行的时候主动提供给gprof采样样本，来达到事后分析的目的[1]。这种方式相对来说虽然比较可靠、准确，但是对于无法控制编译条件的程序就比较无可奈何了。
+
+  Linux profiler简介
+  
+    
+    Link to heading
+  
+
+​	性能剖析的工具，其实在Linux平台还是挺多的，比如小巧实用的strace、ltrace、latrace，大名鼎鼎的google-perftools、gprof、valgrind，以及瑞士军刀型的linux-perf等等，它们主要分为三个阵营，一个是针对程序执行的性能进行剖析，对程序执行的热点进行分析，如*trace、gprof这些工具；另一个是针对程序运行过程中内存的使用进行剖析，方便针对性地做内存优化，如valgrind；最后一部分就是“脚踏两条船”的，两个我都做，比如google-perftools、linux-perf这些，我们这个系列主要集中在“针对程序执行的性能进行剖析”方面。
+
+  Profiler的本质
+  
+    
+    Link to heading
+  
+
+​	要自制Profiler，首先要知道Profiler的本质是什么。简单来说，Profiler的本质其实就是在程序执行的过程中对程序正在“做什么”进行搜集和统计，如何搜集呢？无非两种：
+
+Instrumentaion - 程序主动Profiler告诉它在做什么；
+Sampling - Profiler自己间断性地去看程序在做什么；
+
+前者的实现主要依靠程序运行时提供的某些钩子机制、代码插桩等方式，例如gprof主要是依靠 gcc 在编译程序的时候”夹带私货“来达到程序运行的时候主动提供给gprof采样样本，来达到事后分析的目的[1]。这种方式相对来说虽然比较可靠、准确，但是对于无法控制编译条件的程序就比较无可奈何了。
 后者的实现则主要是定期对程序当前执行的指令和对程序执行的函数堆栈进行回溯（unwind）来尽量还原程序执行的过程，例如google-perftools就是采用这种方式，这种情况下，采样的周期就显得尤为重要。
 ​	对比以上两种方式，我们果断采用第二种。
 ​	PS: 这里需要说明一下的是，利用ptrace系统调用完成工作的strace和ltrace，虽然不依赖编译器夹带私货，但是相当于依赖了内核的“钩子”，不属于sampling的范围；同样，latrace则是依赖了ld的LD_AUDIT“钩子”，也不属于sampling的范围。
-Profiler启动 Link to heading ​	那么问题又来了，ptrace没得用，我们怎么去获取被剖析程序的执行状态呢？总不至于profiler要搞成root权限的吧？答案是：不，内核管天管地，总管不到程序自己偷看自己的数据吧？我们想办法把我们的代码塞到被剖析程序中去就可以了！
+
+  Profiler启动
+  
+    
+    Link to heading
+  
+
+​	那么问题又来了，ptrace没得用，我们怎么去获取被剖析程序的执行状态呢？总不至于profiler要搞成root权限的吧？答案是：不，内核管天管地，总管不到程序自己偷看自己的数据吧？我们想办法把我们的代码塞到被剖析程序中去就可以了！
 ​	刚才提到了ld的LD_AUDIT，这次就轮到它的兄弟——大名鼎鼎的LD_PRELOAD——登场了。想法是这样的，我们的profiler其实只需要在程序开始的时候执行一个定时器，以后每次定时器执行的时候去抓取我们的样本就OK了，所以我们完全可以把自己伪装成一个人畜无害的动态库，等到别个程序有意无意加载到我们，哼哼……事实上，很多profiler都是采取类似的策略，比如google-perftools，再比如heaptrack等等。
-编码实战 Link to heading ​	废话少说，放码过来！
+
+  编码实战
+  
+    
+    Link to heading
+  
+
+​	废话少说，放码过来！
 ​	我们在QtCreator中创建一个动态库项目 simple-profiler，主类 SimpleProfiler。首先，我们需要设置好我们的定时器：
-void SimpleProfiler::enableProfile() { int ret = setitimer(ITIMER_PROF, &amp;m_tick, nullptr); if ( ret != 0) { fprintf(stderr, &#34;failed to enable profiler: %s&#34;, strerror(errno)); } } 根据 setitimer 的man文档，计时器主要有三种类型：">
+void SimpleProfiler::enableProfile()
+{
+    int ret = setitimer(ITIMER_PROF, &amp;m_tick, nullptr);
+    if ( ret != 0) {
+        fprintf(stderr, &#34;failed to enable profiler: %s&#34;, strerror(errno));
+    }
+}
+根据 setitimer 的man文档，计时器主要有三种类型：">
 <meta name="keywords" content="blog,developer,personal">
 
 
@@ -458,9 +497,6 @@ LIBS += -L$$OUT_PWD/../src/ -lsimple-profiler
 
 
   
-  
-
-
 
   
 
