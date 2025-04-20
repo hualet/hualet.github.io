@@ -3,7 +3,7 @@ title = "Think in Hualet"
 theme = "hugo-coder"
 languageCode = "zh"
 defaultContentLanguage = "zh"
-paginate = 15
+pagination.pagerSize = 15
 enableEmoji = true
 favicon = "/img/favicon.ico"
 

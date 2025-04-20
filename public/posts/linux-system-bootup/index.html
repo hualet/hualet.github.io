@@ -14,22 +14,65 @@
 
 <meta name="author" content="Hualet Wang">
 <meta name="description" content="deepin系统整个的启动流程到底是怎么样子的？以前曾被同事缠问过类似的问题。遇到这种宏大而又不着边际的问题，我的回复往往是“你还太嫩，现在我告诉你还是会忘掉的，等你干上个两年，不用我说你就知道了”。我边敲着键盘，边佩服自己的聪明才智。
-两年后…… 这个小伙子长大了，并且坚定地又问了同样的问题。
+两年后……
+这个小伙子长大了，并且坚定地又问了同样的问题。
 我一愣神，脑海中不停浮现出一个声音“出来混，迟早是要还的”。想想也罢，是时候该把压箱底儿的货拿出来了，毕竟自封了“半吊子系统工程师”的title（虽然我自封的title还有很多：半吊子客服、半吊子产品经理、半吊子研发项目经理等等），不给你们露两手看看看来还真不行……
-概览 Link to heading deepin系统启动，从整体上看主要分为了硬件上电、内核引导、内核启动、系统初始化、图形界面等几个阶段。如果将这几个阶段分为两个部分，那么第一部分的硬件上电、内核引导、内核启动主要是“引导（boot）”，更偏向让内核可以启动；而第二部分的系统初始化、图形界面两个阶段主要的任务则是“初始化（initialize）”了，因为对于一个系统来说仅仅有内核跑起来是不行的，还要有各种各样的服务对系统的软硬件进行管理，这也是平常大家说发行版跟纯粹的GNU/Linux内核不是一个概念的原因之一。
+
+  概览
+  
+    
+    Link to heading
+  
+
+deepin系统启动，从整体上看主要分为了硬件上电、内核引导、内核启动、系统初始化、图形界面等几个阶段。如果将这几个阶段分为两个部分，那么第一部分的硬件上电、内核引导、内核启动主要是“引导（boot）”，更偏向让内核可以启动；而第二部分的系统初始化、图形界面两个阶段主要的任务则是“初始化（initialize）”了，因为对于一个系统来说仅仅有内核跑起来是不行的，还要有各种各样的服务对系统的软硬件进行管理，这也是平常大家说发行版跟纯粹的GNU/Linux内核不是一个概念的原因之一。
 下面我从一个软件开发者的角度说一下我对每个阶段的理解以及一些调试的方法。
-硬件上电 Link to heading 既然说了是软件开发者的角度，这个部分对我来说基本上相当于黑盒子了。但是大体上我们仍然知道这个部分主要是：
-硬件上电 BIOS/UEFI bootloader 当你按下电源的那一刻起，电流就会“滋滋滋”的流向主板，启动BIOS（Basic Input Output System）系统。BIOS系统，顾名思义就是最直接跟硬件打交道的系统，因为有标准规定，所以输入输出设备的基本功能都是可以使用的，一些硬件的开关配置也可以在BIOS中进行操作。除此之外，BIOS还有两个重要的功能，一个是硬件自检；另外一个是加载引导。硬件自检这个跟作为一个”半吊子系统工程师“没什么关系，自不多说。加载引导的过程其实就是大家耳熟能详的MBR、小蝌蚪找妈…哦不…MBR中找bootloader了。
+
+  硬件上电
+  
+    
+    Link to heading
+  
+
+既然说了是软件开发者的角度，这个部分对我来说基本上相当于黑盒子了。但是大体上我们仍然知道这个部分主要是：
+
+硬件上电
+BIOS/UEFI
+bootloader
+
+当你按下电源的那一刻起，电流就会“滋滋滋”的流向主板，启动BIOS（Basic Input Output System）系统。BIOS系统，顾名思义就是最直接跟硬件打交道的系统，因为有标准规定，所以输入输出设备的基本功能都是可以使用的，一些硬件的开关配置也可以在BIOS中进行操作。除此之外，BIOS还有两个重要的功能，一个是硬件自检；另外一个是加载引导。硬件自检这个跟作为一个”半吊子系统工程师“没什么关系，自不多说。加载引导的过程其实就是大家耳熟能详的MBR、小蝌蚪找妈…哦不…MBR中找bootloader了。
 跟BIOS对应的UEFI，要说它们之间的区别，除了加载引导的方式不大一样以外。对我来说可能就是界面能够用鼠标点点点了吧，嗯……哈哈哈。
 这里讲个段子，之前15.7搞启动时间优化的时候，测试的同学测试系统启动时间的优化情况，老是说效果不理想，我去看看吧，原来是他们测试系统启动是从硬件启动算起的，我说你们直接从内核引导开始计算，他还问我为什么。优化时间/(BIOS时间&#43;GRUB时间&#43;内核时间&#43;图形时间) 跟 优化时间/(内核时间&#43;图形时间)哪个大哪个小？我只能说这个测试同学的数学不大好……😂
-内核引导 Link to heading BIOS在MBR中（或者UEFI在主板专有的存储设备中）找到bootloader并加载后，bootloader就会开始加载Linux内核并启动了。
-GRUB引导 Link to heading deepin系统默认的bootloader是GRUB（GRand Unified Bootloader）。其实我一直觉得这个名字挺恶心的，大神们果然都是重口味……GRUB并不需要按照什么规则去硬盘中找系统，而是根据/boot/grub/grub.cfg中的启动项加载内核、启动系统，而这个配置文件则是在系统安装或者手动执行update-grub这个命令的时候生成和更新。
+
+  内核引导
+  
+    
+    Link to heading
+  
+
+BIOS在MBR中（或者UEFI在主板专有的存储设备中）找到bootloader并加载后，bootloader就会开始加载Linux内核并启动了。
+
+  GRUB引导
+  
+    
+    Link to heading
+  
+
+deepin系统默认的bootloader是GRUB（GRand Unified Bootloader）。其实我一直觉得这个名字挺恶心的，大神们果然都是重口味……GRUB并不需要按照什么规则去硬盘中找系统，而是根据/boot/grub/grub.cfg中的启动项加载内核、启动系统，而这个配置文件则是在系统安装或者手动执行update-grub这个命令的时候生成和更新。
 update-grub这个命令其实是对grub-mkconfig的一个包装，在非Debian系的发行版上是没有的。grub-mkconfig会执行的动作主要是：
-加载/etc/default/grub中的一些配置项。比如GRUB_CMDLINE_LINUX_DEFAULT配置项会控制Linux的boot param。 挨个执行/etc/grub.d/目录中的脚本，用来生成最终的grub.cfg文件。比如我们平常看到update-grub命令执行时输出的哪些启动项，其实就是/etc/grub.d/03_os-prober这个脚本里面执行os-prober这个工具产生的。 在GRUB界面选择启动项，按e编辑启动项。除了普通的上下左右键移动光标，还可以使用基本的Emacs快捷键：
-Ctrl&#43;N 下一行 Ctrl&#43;P 上一行 Ctrl&#43;B 左移一个字符 Ctrl&#43;F 右移一个字符 Ctrl&#43;A 移动光标到行首 Ctrl&#43;E 移动光标到行尾 编辑完成后按Ctrl&#43;X按照编辑后的结果启动系统，但是编辑的结果不会保存，也就是说如果需要永久修改某个启动项，就要修改grub.cfg文件或者会影响grub.cfg生成的/etc/default/grub以及/etc/grub.d/中的脚本文件了。
-对于GRUB，我们一般需要知道的就这么多，关于GRUB其他一些用法和知识，可以参考GRUB与系统引导这篇文章。
-UEFI直接引导 Link to heading 在UEFI模式下，除了使用GRUB来引导内核以外，还可以通过UEFI直接引导内核（需要内核开启了 EFI Stub支持），具体的配置方式见Debian Wiki EFI Stub。需要注意的一点是在使用efibootmgr创建启动项的时候，可能需要-d参数指定设备，否则可能会导致创建启动项失败。
-内核启动 Link to heading 内核启动部分其实主要是想说initrd。">
+
+加载/etc/default/grub中的一些配置项。比如GRUB_CMDLINE_LINUX_DEFAULT配置项会控制Linux的boot param。
+挨个执行/etc/grub.d/目录中的脚本，用来生成最终的grub.cfg文件。比如我们平常看到update-grub命令执行时输出的哪些启动项，其实就是/etc/grub.d/03_os-prober这个脚本里面执行os-prober这个工具产生的。
+
+在GRUB界面选择启动项，按e编辑启动项。除了普通的上下左右键移动光标，还可以使用基本的Emacs快捷键：
+
+Ctrl&#43;N 下一行
+Ctrl&#43;P 上一行
+Ctrl&#43;B 左移一个字符
+Ctrl&#43;F 右移一个字符
+Ctrl&#43;A 移动光标到行首
+Ctrl&#43;E 移动光标到行尾
+
+编辑完成后按Ctrl&#43;X按照编辑后的结果启动系统，但是编辑的结果不会保存，也就是说如果需要永久修改某个启动项，就要修改grub.cfg文件或者会影响grub.cfg生成的/etc/default/grub以及/etc/grub.d/中的脚本文件了。">
 <meta name="keywords" content="blog,developer,personal">
 
 
@@ -49,10 +92,7 @@ UEFI直接引导 Link to heading 在UEFI模式下，除了使用GRUB来引导内
 GRUB引导 Link to heading deepin系统默认的bootloader是GRUB（GRand Unified Bootloader）。其实我一直觉得这个名字挺恶心的，大神们果然都是重口味……GRUB并不需要按照什么规则去硬盘中找系统，而是根据/boot/grub/grub.cfg中的启动项加载内核、启动系统，而这个配置文件则是在系统安装或者手动执行update-grub这个命令的时候生成和更新。
 update-grub这个命令其实是对grub-mkconfig的一个包装，在非Debian系的发行版上是没有的。grub-mkconfig会执行的动作主要是：
 加载/etc/default/grub中的一些配置项。比如GRUB_CMDLINE_LINUX_DEFAULT配置项会控制Linux的boot param。 挨个执行/etc/grub.d/目录中的脚本，用来生成最终的grub.cfg文件。比如我们平常看到update-grub命令执行时输出的哪些启动项，其实就是/etc/grub.d/03_os-prober这个脚本里面执行os-prober这个工具产生的。 在GRUB界面选择启动项，按e编辑启动项。除了普通的上下左右键移动光标，还可以使用基本的Emacs快捷键：
-Ctrl&#43;N 下一行 Ctrl&#43;P 上一行 Ctrl&#43;B 左移一个字符 Ctrl&#43;F 右移一个字符 Ctrl&#43;A 移动光标到行首 Ctrl&#43;E 移动光标到行尾 编辑完成后按Ctrl&#43;X按照编辑后的结果启动系统，但是编辑的结果不会保存，也就是说如果需要永久修改某个启动项，就要修改grub.cfg文件或者会影响grub.cfg生成的/etc/default/grub以及/etc/grub.d/中的脚本文件了。
-对于GRUB，我们一般需要知道的就这么多，关于GRUB其他一些用法和知识，可以参考GRUB与系统引导这篇文章。
-UEFI直接引导 Link to heading 在UEFI模式下，除了使用GRUB来引导内核以外，还可以通过UEFI直接引导内核（需要内核开启了 EFI Stub支持），具体的配置方式见Debian Wiki EFI Stub。需要注意的一点是在使用efibootmgr创建启动项的时候，可能需要-d参数指定设备，否则可能会导致创建启动项失败。
-内核启动 Link to heading 内核启动部分其实主要是想说initrd。">
+Ctrl&#43;N 下一行 Ctrl&#43;P 上一行 Ctrl&#43;B 左移一个字符 Ctrl&#43;F 右移一个字符 Ctrl&#43;A 移动光标到行首 Ctrl&#43;E 移动光标到行尾 编辑完成后按Ctrl&#43;X按照编辑后的结果启动系统，但是编辑的结果不会保存，也就是说如果需要永久修改某个启动项，就要修改grub.cfg文件或者会影响grub.cfg生成的/etc/default/grub以及/etc/grub.d/中的脚本文件了。">
 
 <meta property="og:url" content="https://www.hualet.org/posts/linux-system-bootup/">
   <meta property="og:site_name" content="Think in Hualet">
@@ -70,10 +110,7 @@ UEFI直接引导 Link to heading 在UEFI模式下，除了使用GRUB来引导内
 GRUB引导 Link to heading deepin系统默认的bootloader是GRUB（GRand Unified Bootloader）。其实我一直觉得这个名字挺恶心的，大神们果然都是重口味……GRUB并不需要按照什么规则去硬盘中找系统，而是根据/boot/grub/grub.cfg中的启动项加载内核、启动系统，而这个配置文件则是在系统安装或者手动执行update-grub这个命令的时候生成和更新。
 update-grub这个命令其实是对grub-mkconfig的一个包装，在非Debian系的发行版上是没有的。grub-mkconfig会执行的动作主要是：
 加载/etc/default/grub中的一些配置项。比如GRUB_CMDLINE_LINUX_DEFAULT配置项会控制Linux的boot param。 挨个执行/etc/grub.d/目录中的脚本，用来生成最终的grub.cfg文件。比如我们平常看到update-grub命令执行时输出的哪些启动项，其实就是/etc/grub.d/03_os-prober这个脚本里面执行os-prober这个工具产生的。 在GRUB界面选择启动项，按e编辑启动项。除了普通的上下左右键移动光标，还可以使用基本的Emacs快捷键：
-Ctrl&#43;N 下一行 Ctrl&#43;P 上一行 Ctrl&#43;B 左移一个字符 Ctrl&#43;F 右移一个字符 Ctrl&#43;A 移动光标到行首 Ctrl&#43;E 移动光标到行尾 编辑完成后按Ctrl&#43;X按照编辑后的结果启动系统，但是编辑的结果不会保存，也就是说如果需要永久修改某个启动项，就要修改grub.cfg文件或者会影响grub.cfg生成的/etc/default/grub以及/etc/grub.d/中的脚本文件了。
-对于GRUB，我们一般需要知道的就这么多，关于GRUB其他一些用法和知识，可以参考GRUB与系统引导这篇文章。
-UEFI直接引导 Link to heading 在UEFI模式下，除了使用GRUB来引导内核以外，还可以通过UEFI直接引导内核（需要内核开启了 EFI Stub支持），具体的配置方式见Debian Wiki EFI Stub。需要注意的一点是在使用efibootmgr创建启动项的时候，可能需要-d参数指定设备，否则可能会导致创建启动项失败。
-内核启动 Link to heading 内核启动部分其实主要是想说initrd。">
+Ctrl&#43;N 下一行 Ctrl&#43;P 上一行 Ctrl&#43;B 左移一个字符 Ctrl&#43;F 右移一个字符 Ctrl&#43;A 移动光标到行首 Ctrl&#43;E 移动光标到行尾 编辑完成后按Ctrl&#43;X按照编辑后的结果启动系统，但是编辑的结果不会保存，也就是说如果需要永久修改某个启动项，就要修改grub.cfg文件或者会影响grub.cfg生成的/etc/default/grub以及/etc/grub.d/中的脚本文件了。">
   <meta property="og:locale" content="zh">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -498,9 +535,6 @@ UEFI直接引导 Link to heading 在UEFI模式下，除了使用GRUB来引导内
 
 
   
-  
-
-
 
   
 
