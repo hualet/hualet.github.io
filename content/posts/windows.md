@@ -19,6 +19,23 @@ series = []
 
 
 
+## Windows 95
+
+
+
+- 代号 "Chicago" 从原来 Windows 3.x 的 16 位进入 32位时代，产品方面定位为面向大众的消费品而不是面向企业技术人员。
+- NT 内核并入主线，意味着专门为企业级使用的高级内核开始开放给大众消费者，产品线进行了融合；
+- 开创性引入 开始菜单 和 任务栏；
+- 开发新的资源管理器，替代原来的文件管理器；
+- 捆绑 IE 浏览器；
+- 技术上：
+  - 全面支持32位处理器，但是同时仍然兼容 16 位的应用程序；
+  - 支持虚拟内存和抢占式调度；
+  - 支持即插即用；
+  - 广泛的多媒体支持，提供 DirectX；
+
+
+
 ## Windows 98
 
 - 界面方面也进行了改进
@@ -26,41 +43,77 @@ series = []
     - 新的快速启动工具栏，可将某些快捷方式固定到任务栏
     - Windows 资源管理器（Windows Explorer）添加了后退和前进按钮以及地址栏
     - 多显示器支持
-- Web TV的支持
+- 针对多媒体和即插即用的优化，Web TV的支持等；
 - 文件系统
     - 对FAT32文件系统的支持
-- 融入了更多基于 Web 的元素
+- 深度整合网络功能，融入了更多基于 Web 的元素
     - 附带的 Internet Explorer，还有应用程序如 Outlook Express、FrontPage Express 和 Microsoft Chat
 - 引入了 Windows 驱动程序模型（WDM）来帮助硬件支持
 - [DirectX](https://en.wikipedia.org/wiki/DirectX) （95开始提供， 98以后开始默认预装）
+- 增加在线更新的功能 -- 难道在此之前都是重装系统么？
 
-## Windows 2000 & Windows Me
 
+
+## Windows Me
+
+
+
+- 定位为 家庭数字媒体中心的操作系统，整体上仍然是对 98 系列的延续和完善；
+- 技术创新点：
+  - 首次引入系统还原的特性；
+  - 多媒体（Me版本）
+    - Windows Movie Maker 视频编辑器
+    - Windows Media Player 和 Windows DVD Player
+  - 启动优化和图形系统改进；
+  - 更加专注于 Windows 内核，而不是 DOS。
+
+
+
+## Windows 2000
+
+- 定位为面向企业，采用 NT 内核；
+- 在服务器版本中增加了 AD（Active Directory）的支持；
+- Windows Shell
+  - 支持透明度和阴影等特效
+  - 任务栏增加了气泡通知，以吸引用户的注意力
+  - Windows 资源管理器获得了可自定义的工具栏和自动完成支持
+- 文件系统
+  - 增加了对 NTFS 3.0 的支持
+  - 文件系统加密，支持文件/文件夹透明加密等新功能
+  - 首次引入动态磁盘功能
+- 硬件方面首次引入 ACPI 高级电源管理；
+
+- 计算机管理控制台
+    - 包括磁盘管理、设备管理器和磁盘碎片整理等工具
 - 辅助功能
     - 如屏幕键盘和朗读器
 - 多种语言支持
-- 计算机管理控制台
-    - 包括磁盘管理、设备管理器和磁盘碎片整理等工具
-- Windows Shell
-    - 支持透明度和阴影等特效
-    - 任务栏增加了气泡通知，以吸引用户的注意力
-    - Windows 资源管理器获得了可自定义的工具栏和自动完成支持
-- 文件系统
-    - 增加了对 NTFS 3.0 的支持
-    - 文件系统加密
-- 多媒体（Me版本）
-    - Windows Movie Maker 视频编辑器
-    -  Windows Media Player 和 Windows DVD Player
-- 系统工具（Me版本）
-    - 新增了系统还原、自动更新
-    - 屏幕键盘支持
+
+
 
 ## Windows XP
 
 - 重新设计的用户界面 “Luna”
 - 任务栏
     - 支持任务分组
-- 支持远程桌面（最开始在Windows Server中引入）
+- 网络：
+    - 支持远程桌面（最开始在Windows Server中引入）
+    - 支持连接 Wi-Fi
+
+- 面向家庭场景的优化：
+    - 多用户家庭可以使用**Fast User Switching（快速用户切换）**，无需注销即可切换账户
+
+- 安全：
+    - 首个内置防火墙（Internet Connection Firewall，默认关闭，后在SP2中默认开启）的Windows
+    - 并引入了更严格的文件权限和更加自动化的Windows Update机制
+    - SP2升级为XP带来了弹出窗口拦截、默认启用防火墙、改进的内存保护（DEP）等
+
+- 首次引入了**产品激活 (Product Activation)**机制，要求零售用户在安装后在线或电话激活，以打击盗版
+- 更快的启动速度（**XP引入预读取机制，加快开机和常用程序启动**）
+
+
+
+
 
 ## Windows Vista
 
@@ -81,6 +134,8 @@ series = []
 
 > 因为过多的性能消耗，以及UAC导致的过多安全提示而饱受诟病，用户满意度极差。
 > hualet: 不过从技术的角度看，Vista确实是改进非常大的版本，尤其是在安全方面
+
+
 
 ## Windows 7
 
@@ -106,6 +161,8 @@ series = []
     - 系統圖示和顯示
 - Windows XP 模式：支持通过虚拟化技术调用虚拟机中的 XP，实现软件的兼容 （有点像彩虹）
 
+
+
 ## Windows 8
 
 - 更适合触摸的界面（基于磁贴和 Metro 的用户界面）
@@ -115,11 +172,21 @@ series = []
 
 > 由于新的用户界面非常难以学习，对大多数 PC 用户来说成为了一个不受欢迎的更新。
 
+
+
 ## Windows 10
 
 - 首次引入多任务视图+虚拟桌面
 - 首次引入 UWP
 - 生物认证支持：指纹、人脸、虹膜
+- Cortana 智能助理
+- Microsoft Edge 浏览器
+- **在支持的硬件上推出Device Guard**和**Credential Guard**等企业级防护
+- 引入**Windows Subsystem for Linux (WSL)**
+
+
+
+
 
 ## Windows 11
 
