@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>开源 on Think in Hualet</title>
+    <link>https://www.hualet.org/categories/%E5%BC%80%E6%BA%90/</link>
+    <description>Recent content in 开源 on Think in Hualet</description>
+    <generator>Hugo</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 11 May 2025 11:02:04 +0800</lastBuildDate>
+    <atom:link href="https://www.hualet.org/categories/%E5%BC%80%E6%BA%90/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>开源社区和先进生产力</title>
+      <link>https://www.hualet.org/posts/why_open_source/</link>
+      <pubDate>Sun, 11 May 2025 11:02:04 +0800</pubDate>
+      <guid>https://www.hualet.org/posts/why_open_source/</guid>
+      <description>&lt;p&gt;这两天 openSUSE 移除 deepin 软件包的事情闹得满城风雨，  我们第一时间联系了下游打包者和openSUSE团队（当前还未有正式回应），并且为了避免国内一些媒体对读者的误导，专门在deepin论坛发帖 &lt;a href=&#34;https://bbs.deepin.org.cn/post/287016&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;关于 openSUSE 移除 deepin 桌面环境(DDE)的回应与改进措施&lt;/a&gt; 进行了澄清。&lt;/p&gt;&#xA;&lt;p&gt;文章内写得“正视问题，深刻反思”有些朋友觉得说得有点过了，我个人并不这样认为。 除了反思面对openSUSE社区提出的这些安全问题处理不当外，针对其他发行版移植的问题处理，更深层次的开源社区对我们的意义、以及我们在开源方面的表现都值得深刻反思。&lt;/p&gt;&#xA;&lt;h2 id=&#34;关于开源的反思&#34;&gt;&#xA;  关于开源的反思&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#%e5%85%b3%e4%ba%8e%e5%bc%80%e6%ba%90%e7%9a%84%e5%8f%8d%e6%80%9d&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;以前理解开源就是开源社区的透明开放、开源文化的取自开源回馈开源、社区可以作为产品反馈很重要的渠道……后来做商业发行版时间长了，很多事情有虚有实，可能我们自己在开源社区这条路上都有点迷失了。&lt;/p&gt;&#xA;&lt;p&gt;最近公司内部在搞AI提升工作效率这件事，就着这个事情我也在思考提效的本质是什么，不应该就是一个公司为了节省几个人力和成本，本质应该还是把团队变成代表先进生产力的团队，能力、工具、方法方方面面。&lt;/p&gt;&#xA;&lt;p&gt;这样再回去想开源，一流的开源项目和社区实际上在某种程度上代表了（软件工程）的先进生产力，我们以前做开源比较深入、耳濡目染自然也不差。所以，我反思我们做开源这件事，最深刻的本质驱动力应该在这里——让团队能代表先进生产力。&lt;/p&gt;&#xA;&lt;h2 id=&#34;开源社区的先进生产力&#34;&gt;&#xA;  开源社区的先进生产力&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#%e5%bc%80%e6%ba%90%e7%a4%be%e5%8c%ba%e7%9a%84%e5%85%88%e8%bf%9b%e7%94%9f%e4%ba%a7%e5%8a%9b&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;优秀的能力&#34;&gt;&#xA;  优秀的能力&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#%e4%bc%98%e7%a7%80%e7%9a%84%e8%83%bd%e5%8a%9b&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;自不必说，开源社区里面各种大牛，都是我们可以作为偶像/榜样的学习对象。比如鼎鼎大名的Linus 林老大，作为 Linux 的掌舵人，一方面技术能力非常强，另外一方面 “show me the code” 的务实态度和 &amp;ldquo;just for fun” 的兴趣驱动带来的持之以恒的工作热情，都是我们可以好好学习的。&lt;/p&gt;&#xA;&lt;p&gt;除了 Linus 以及一众大家所熟知的开源明星人物外，最近我还发现一个非常有意思的黑客哥们 Mitchell Hashimoto。 他以前是 Hashcorp 的 CTO，财务自由以后进入退休生活，但是退休以后更加兴趣驱动，比如最近知道他是因为他做了一个项目叫 ghotty。&lt;/p&gt;&#xA;&lt;p&gt;不仅ghostty 本身出世以后就备受欢迎，它本身的网站也非常有趣：&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://whqab2zz5k.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGQ1M2U3Mjg0ODVlMDhiZTE0MDc1ODBjNzRlYmRkOGNfYk9hSDRRa05yVzNCdTFPdzJ3Z0lWdXVxM2RraGN5Y1pfVG9rZW46UUxRemI0Q01yb09pSjZ4Nk9KQWNGVlV3bmFoXzE3NDY5MzI2MTU6MTc0NjkzNjIxNV9WNA&#34; alt=&#34;img&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;上次看到这么酷的网站还是在 jwz.org ：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

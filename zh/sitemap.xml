@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.hualet.org/categories/</loc>
-    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
+    <lastmod>2025-05-11T11:02:04+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -16,10 +16,10 @@
                 />
   </url><url>
     <loc>https://www.hualet.org/posts/</loc>
-    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
+    <lastmod>2025-05-11T11:02:04+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/</loc>
-    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
+    <lastmod>2025-05-11T11:02:04+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -30,6 +30,15 @@
                 hreflang="zh"
                 href="https://www.hualet.org/"
                 />
+  </url><url>
+    <loc>https://www.hualet.org/categories/%E5%BC%80%E6%BA%90/</loc>
+    <lastmod>2025-05-11T11:02:04+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/posts/why_open_source/</loc>
+    <lastmod>2025-05-11T11:02:04+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/categories/%E6%95%88%E7%8E%87/</loc>
+    <lastmod>2025-05-11T11:02:04+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/categories/%E7%AE%A1%E7%90%86/</loc>
     <lastmod>2025-03-21T23:15:31+08:00</lastmod>
