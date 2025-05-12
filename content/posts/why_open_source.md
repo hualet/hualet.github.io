@@ -16,7 +16,7 @@ series = []
 
 这两天 openSUSE 移除 deepin 软件包的事情闹得满城风雨，  我们第一时间联系了下游打包者和openSUSE团队（当前还未有正式回应），并且为了避免国内一些媒体对读者的误导，专门在deepin论坛发帖 [关于 openSUSE 移除 deepin 桌面环境(DDE)的回应与改进措施](https://bbs.deepin.org.cn/post/287016) 进行了澄清。
 
-文章内写得“正视问题，深刻反思”有些朋友觉得说得有点过了，我个人并不这样认为。 除了反思面对openSUSE社区提出的这些安全问题处理不当外，针对其他发行版移植的问题处理，更深层次的开源社区对我们的意义、以及我们在开源方面的表现都值得深刻反思。 
+文章内写得“正视问题，深刻反思”有些朋友觉得说得有点过了，我个人并不这样认为。 除了反思面对openSUSE社区提出的这些安全问题处理不当外，针对其他发行版移植的问题处理，更深层次的开源社区对我们的意义、以及我们在开源方面的表现都值得深刻反思。
 
 
 
@@ -24,7 +24,7 @@ series = []
 
 以前理解开源就是开源社区的透明开放、开源文化的取自开源回馈开源、社区可以作为产品反馈很重要的渠道……后来做商业发行版时间长了，很多事情有虚有实，可能我们自己在开源社区这条路上都有点迷失了。
 
-最近公司内部在搞AI提升工作效率这件事，就着这个事情我也在思考提效的本质是什么，不应该就是一个公司为了节省几个人力和成本，本质应该还是把团队变成代表先进生产力的团队，能力、工具、方法方方面面。 
+最近公司内部在搞AI提升工作效率这件事，就着这个事情我也在思考提效的本质是什么，不应该就是一个公司为了节省几个人力和成本，本质应该还是把团队变成代表先进生产力的团队，能力、工具、方法方方面面。
 
 这样再回去想开源，一流的开源项目和社区实际上在某种程度上代表了（软件工程）的先进生产力，我们以前做开源比较深入、耳濡目染自然也不差。所以，我反思我们做开源这件事，最深刻的本质驱动力应该在这里——让团队能代表先进生产力。
 
@@ -38,15 +38,15 @@ series = []
 
 自不必说，开源社区里面各种大牛，都是我们可以作为偶像/榜样的学习对象。比如鼎鼎大名的Linus 林老大，作为 Linux 的掌舵人，一方面技术能力非常强，另外一方面 “show me the code” 的务实态度和 "just for fun” 的兴趣驱动带来的持之以恒的工作热情，都是我们可以好好学习的。
 
-除了 Linus 以及一众大家所熟知的开源明星人物外，最近我还发现一个非常有意思的黑客哥们 Mitchell Hashimoto。 他以前是 Hashcorp 的 CTO，财务自由以后进入退休生活，但是退休以后更加兴趣驱动，比如最近知道他是因为他做了一个项目叫 ghotty。 
+除了 Linus 以及一众大家所熟知的开源明星人物外，最近我还发现一个非常有意思的黑客哥们 Mitchell Hashimoto。 他以前是 Hashcorp 的 CTO，财务自由以后进入退休生活，但是退休以后更加兴趣驱动，比如最近知道他是因为他做了一个项目叫 ghotty。
 
 不仅ghostty 本身出世以后就备受欢迎，它本身的网站也非常有趣：
 
-![img](https://whqab2zz5k.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGQ1M2U3Mjg0ODVlMDhiZTE0MDc1ODBjNzRlYmRkOGNfYk9hSDRRa05yVzNCdTFPdzJ3Z0lWdXVxM2RraGN5Y1pfVG9rZW46UUxRemI0Q01yb09pSjZ4Nk9KQWNGVlV3bmFoXzE3NDY5MzI2MTU6MTc0NjkzNjIxNV9WNA)
+![img](/img/2025/05/ghostty.png)
 
-上次看到这么酷的网站还是在 jwz.org ： 
+上次看到这么酷的网站还是在 jwz.org ：
 
-![img](https://whqab2zz5k.feishu.cn/space/api/box/stream/download/asynccode/?code=NjI1N2NhMGU5MDA5MmRlOWE5MjEzNTFmOTBlM2M4MDJfb3hyY1F4emdZbjRmRHcwOGxQZ25NRW0zR0JobHRJUE1fVG9rZW46VHBWSGJSWE11b0xTNkN4R0xPdmNEcVhQbjRmXzE3NDY5MzI2MTU6MTc0NjkzNjIxNV9WNA)
+![img](/img/2025/05/jwz.png)
 
 跟进他的twitter以后发现他用 NixOS、开发 ghostty 用的是 Zig 语言……都是非常小众或新鲜的技术，写 ghostty 也是完全处于兴趣，对他也越来越着迷。
 
