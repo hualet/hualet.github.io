@@ -13,7 +13,7 @@
 
 
 <meta name="author" content="Hualet Wang">
-<meta name="description" content="最近在deepin 25上遇到几个问题，处理方案记录一下，以备未来或者其他人需要。
+<meta name="description" content="最近在 deepin 25 上遇到几个问题，处理方案记录一下，以备未来自己或者其他人需要。
 
   01 待机睡死问题
   
@@ -21,8 +21,8 @@
     Link to heading
   
 
-有一段时间 25 没有预装 tlp ，导致系统功耗升高，有时候电脑发烫严重。发现这个问题以后一方面是通知系统研发进行系统更新、集成，另外一方面我自己也先装上测试。
-结果虽然电脑功耗下来了，但是不出意料引入了系统稳定性问题，具体的现象就是偶尔待机睡死，概率还比较高。找了内核的同事帮忙调试了一下，没有很好的调试结果，再加上我经常出差、远程调试也不方便，所以干脆自己做了一些尝试。
+有一段时间 25 没有预装 TLP，导致系统功耗升高，有时电脑发烫明显。发现后，一方面通知系统研发做集成更新，另一方面自己先装上 TLP 做验证。
+装上 TLP 系统功耗是降下来了，但不出意料引入了稳定性问题：偶发待机睡死，概率还不低。找内核同事帮忙看过，受限于出差远程调试不便，也没有立刻跑出有效线索，于是自己做了几轮尝试。
 处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器)
 主板 : LNVNB161216
 内存 : 4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)
@@ -35,25 +35,25 @@
 键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard)
 显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm))
 图像设备 : Integrated Camera (Chicony Electronics Integrated Camera)
-因为明确知道是装了 tlp 导致的，所以把现象报给ChatGPT 以后，很快得到一些可以尝试的方向。">
+因为明确知道是装了 TLP 后出现的问题，把现象发给 ChatGPT 后得到一些方向。">
 <meta name="keywords" content="blog,developer,personal">
 
 
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="最近25上遇到的几个问题和处理方案">
-  <meta name="twitter:description" content="最近在deepin 25上遇到几个问题，处理方案记录一下，以备未来或者其他人需要。
-01 待机睡死问题 Link to heading 有一段时间 25 没有预装 tlp ，导致系统功耗升高，有时候电脑发烫严重。发现这个问题以后一方面是通知系统研发进行系统更新、集成，另外一方面我自己也先装上测试。
-结果虽然电脑功耗下来了，但是不出意料引入了系统稳定性问题，具体的现象就是偶尔待机睡死，概率还比较高。找了内核的同事帮忙调试了一下，没有很好的调试结果，再加上我经常出差、远程调试也不方便，所以干脆自己做了一些尝试。
-处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器) 主板 : LNVNB161216 内存 : 4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s) 显示适配器 : Rembrandt [Radeon 680M] 音频适配器 : Radeon High Definition Audio Controller [Rembrandt/Strix]/Family 17h/19h/1ah HD Audio Controller 存储设备 : SAMSUNG MZVL2512HCJQ-00BL2 (512 GB) 蓝牙 : Bluetooth Radio 网络适配器 : RTL8852BE PCIe 802.11ax Wireless Network Controller/RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller 鼠标 : M185 compact wireless mouse (Logitech M185 compact wireless mouse)/ELAN0662:00 04F3:317C Mouse (ELAN0662:00 04F3:317C Mouse)/ELAN0662:00 04F3:317C Touchpad (ELAN0662:00 04F3:317C Touchpad) 键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard) 显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm)) 图像设备 : Integrated Camera (Chicony Electronics Integrated Camera) 因为明确知道是装了 tlp 导致的，所以把现象报给ChatGPT 以后，很快得到一些可以尝试的方向。">
+  <meta name="twitter:description" content="最近在 deepin 25 上遇到几个问题，处理方案记录一下，以备未来自己或者其他人需要。
+01 待机睡死问题 Link to heading 有一段时间 25 没有预装 TLP，导致系统功耗升高，有时电脑发烫明显。发现后，一方面通知系统研发做集成更新，另一方面自己先装上 TLP 做验证。
+装上 TLP 系统功耗是降下来了，但不出意料引入了稳定性问题：偶发待机睡死，概率还不低。找内核同事帮忙看过，受限于出差远程调试不便，也没有立刻跑出有效线索，于是自己做了几轮尝试。
+处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器) 主板 : LNVNB161216 内存 : 4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s) 显示适配器 : Rembrandt [Radeon 680M] 音频适配器 : Radeon High Definition Audio Controller [Rembrandt/Strix]/Family 17h/19h/1ah HD Audio Controller 存储设备 : SAMSUNG MZVL2512HCJQ-00BL2 (512 GB) 蓝牙 : Bluetooth Radio 网络适配器 : RTL8852BE PCIe 802.11ax Wireless Network Controller/RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller 鼠标 : M185 compact wireless mouse (Logitech M185 compact wireless mouse)/ELAN0662:00 04F3:317C Mouse (ELAN0662:00 04F3:317C Mouse)/ELAN0662:00 04F3:317C Touchpad (ELAN0662:00 04F3:317C Touchpad) 键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard) 显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm)) 图像设备 : Integrated Camera (Chicony Electronics Integrated Camera) 因为明确知道是装了 TLP 后出现的问题，把现象发给 ChatGPT 后得到一些方向。">
 
 <meta property="og:url" content="https://www.hualet.org/posts/some_25_issues/">
   <meta property="og:site_name" content="Think in Hualet">
   <meta property="og:title" content="最近25上遇到的几个问题和处理方案">
-  <meta property="og:description" content="最近在deepin 25上遇到几个问题，处理方案记录一下，以备未来或者其他人需要。
-01 待机睡死问题 Link to heading 有一段时间 25 没有预装 tlp ，导致系统功耗升高，有时候电脑发烫严重。发现这个问题以后一方面是通知系统研发进行系统更新、集成，另外一方面我自己也先装上测试。
-结果虽然电脑功耗下来了，但是不出意料引入了系统稳定性问题，具体的现象就是偶尔待机睡死，概率还比较高。找了内核的同事帮忙调试了一下，没有很好的调试结果，再加上我经常出差、远程调试也不方便，所以干脆自己做了一些尝试。
-处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器) 主板 : LNVNB161216 内存 : 4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s) 显示适配器 : Rembrandt [Radeon 680M] 音频适配器 : Radeon High Definition Audio Controller [Rembrandt/Strix]/Family 17h/19h/1ah HD Audio Controller 存储设备 : SAMSUNG MZVL2512HCJQ-00BL2 (512 GB) 蓝牙 : Bluetooth Radio 网络适配器 : RTL8852BE PCIe 802.11ax Wireless Network Controller/RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller 鼠标 : M185 compact wireless mouse (Logitech M185 compact wireless mouse)/ELAN0662:00 04F3:317C Mouse (ELAN0662:00 04F3:317C Mouse)/ELAN0662:00 04F3:317C Touchpad (ELAN0662:00 04F3:317C Touchpad) 键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard) 显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm)) 图像设备 : Integrated Camera (Chicony Electronics Integrated Camera) 因为明确知道是装了 tlp 导致的，所以把现象报给ChatGPT 以后，很快得到一些可以尝试的方向。">
+  <meta property="og:description" content="最近在 deepin 25 上遇到几个问题，处理方案记录一下，以备未来自己或者其他人需要。
+01 待机睡死问题 Link to heading 有一段时间 25 没有预装 TLP，导致系统功耗升高，有时电脑发烫明显。发现后，一方面通知系统研发做集成更新，另一方面自己先装上 TLP 做验证。
+装上 TLP 系统功耗是降下来了，但不出意料引入了稳定性问题：偶发待机睡死，概率还不低。找内核同事帮忙看过，受限于出差远程调试不便，也没有立刻跑出有效线索，于是自己做了几轮尝试。
+处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器) 主板 : LNVNB161216 内存 : 4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s) 显示适配器 : Rembrandt [Radeon 680M] 音频适配器 : Radeon High Definition Audio Controller [Rembrandt/Strix]/Family 17h/19h/1ah HD Audio Controller 存储设备 : SAMSUNG MZVL2512HCJQ-00BL2 (512 GB) 蓝牙 : Bluetooth Radio 网络适配器 : RTL8852BE PCIe 802.11ax Wireless Network Controller/RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller 鼠标 : M185 compact wireless mouse (Logitech M185 compact wireless mouse)/ELAN0662:00 04F3:317C Mouse (ELAN0662:00 04F3:317C Mouse)/ELAN0662:00 04F3:317C Touchpad (ELAN0662:00 04F3:317C Touchpad) 键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard) 显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm)) 图像设备 : Integrated Camera (Chicony Electronics Integrated Camera) 因为明确知道是装了 TLP 后出现的问题，把现象发给 ChatGPT 后得到一些方向。">
   <meta property="og:locale" content="zh">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -228,7 +228,7 @@
 
       <div class="post-content">
         
-        <p>最近在deepin 25上遇到几个问题，处理方案记录一下，以备未来或者其他人需要。</p>
+        <p>最近在 deepin 25 上遇到几个问题，处理方案记录一下，以备未来自己或者其他人需要。</p>
 <h3 id="01-待机睡死问题">
   01 待机睡死问题
   <a class="heading-link" href="#01-%e5%be%85%e6%9c%ba%e7%9d%a1%e6%ad%bb%e9%97%ae%e9%a2%98">
@@ -236,8 +236,8 @@
     <span class="sr-only">Link to heading</span>
   </a>
 </h3>
-<p>有一段时间 25 没有预装 tlp ，导致系统功耗升高，有时候电脑发烫严重。发现这个问题以后一方面是通知系统研发进行系统更新、集成，另外一方面我自己也先装上测试。</p>
-<p>结果虽然电脑功耗下来了，但是不出意料引入了系统稳定性问题，具体的现象就是偶尔待机睡死，概率还比较高。找了内核的同事帮忙调试了一下，没有很好的调试结果，再加上我经常出差、远程调试也不方便，所以干脆自己做了一些尝试。</p>
+<p>有一段时间 25 没有预装 TLP，导致系统功耗升高，有时电脑发烫明显。发现后，一方面通知系统研发做集成更新，另一方面自己先装上 TLP 做验证。</p>
+<p>装上 TLP 系统功耗是降下来了，但不出意料引入了稳定性问题：<strong>偶发待机睡死</strong>，概率还不低。找内核同事帮忙看过，受限于出差远程调试不便，也没有立刻跑出有效线索，于是自己做了几轮尝试。</p>
 <pre tabindex="0"><code>处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器)
 主板 : LNVNB161216
 内存 : 4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)
@@ -250,13 +250,16 @@
 键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard)
 显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm))
 图像设备 : Integrated Camera (Chicony Electronics Integrated Camera)
-</code></pre><p>因为明确知道是装了 tlp 导致的，所以把现象报给ChatGPT 以后，很快得到一些可以尝试的方向。</p>
-<p>第一次尝试把 <code>amdgpu</code> 和 <code>nvme</code> 加入到 <code>RUNTIME_PM_DRIVER_DENYLIST</code> 中:</p>
+</code></pre><p>因为明确知道是装了 TLP 后出现的问题，把现象发给 ChatGPT 后得到一些方向。</p>
+<p>第一次尝试把 <code>amdgpu</code> 和 <code>nvme</code> 加入 <code>RUNTIME_PM_DRIVER_DENYLIST</code>：</p>
 <pre tabindex="0"><code>RUNTIME_PM_DRIVER_DENYLIST=&#34;nvme amdgpu mei_me nouveau radeon&#34;
-</code></pre><p>试了一下，效果不是特别明显。遂来了个一刀切, 直接把 <code>RUNTIME_PM</code> 给关掉了:</p>
+</code></pre><p>效果一般。于是<strong>先“一刀切”关闭 RUNTIME_PM</strong> 验证：</p>
 <pre tabindex="0"><code>RUNTIME_PM_ON_AC=off
 RUNTIME_PM_ON_BAT=off
-</code></pre><p>果然有效果了，基本上没有再出现过待机睡死的问题。 不过这个处理方案太一刀切，个人使用可以、但不适合上主线，未来还得继续跟进。</p>
+</code></pre><p>果然有效，基本未再复现待机睡死。</p>
+<blockquote>
+<p>注：该方案过于激进，<strong>适合个人兜底，不宜主线默认</strong>，后续仍需结合驱动/固件继续收敛问题面。</p></blockquote>
+<hr>
 <h3 id="02-网络不稳定问题">
   02 网络不稳定问题
   <a class="heading-link" href="#02-%e7%bd%91%e7%bb%9c%e4%b8%8d%e7%a8%b3%e5%ae%9a%e9%97%ae%e9%a2%98">
@@ -264,28 +267,28 @@ RUNTIME_PM_ON_BAT=off
     <span class="sr-only">Link to heading</span>
   </a>
 </h3>
-<p>网络不稳定最开始的表现是邮箱收发邮件经常失败，最开始我还觉得是我们邮箱客户端有问题、没有重试机制，跟同事反馈问题的过程中，又揣摩了出现问题的场景：一般是在家里、在酒店容易出现问题，结合上面提到tlp导致的一些不稳定问题，问了一下 ChatGPT：</p>
-<pre tabindex="0"><code>某些驱动/网卡还会因省电引入短时 TX/队列停顿，反而被 AP 的 band-steering 频繁“踢/引流”，造成来回跳。
-</code></pre><p>遂尝试把WiFi省电方案给禁掉，有几种方式：</p>
+<p>最初表现是<strong>邮箱收发常失败</strong>。一开始怀疑是客户端缺乏重试，但结合场景（家/酒店更易复现）以及上面 TLP 带来的不稳定，进一步追问 ChatGPT，得到提示：</p>
+<pre tabindex="0"><code>某些驱动/网卡会因省电引入短时 TX/队列停顿，可能被 AP 的 band-steering 频繁“踢/引流”，造成频段来回跳。
+</code></pre><p>于是尝试<strong>禁用 Wi-Fi 省电</strong>。可选方式：</p>
 <ol>
 <li>
-<p>在驱动层面禁用</p>
+<p><strong>驱动层面禁用</strong></p>
 <pre tabindex="0"><code># 为特定网卡添加配置，禁用 powersave
 options iwlwifi power_save=0
 </code></pre></li>
 <li>
-<p>在 NetworkManager 层面禁用</p>
-<pre tabindex="0"><code># /etc/NetworkManager/conf.d/wifi-powersave.conf 中添加或修改
+<p><strong>NetworkManager 层面禁用</strong></p>
+<pre tabindex="0"><code># /etc/NetworkManager/conf.d/wifi-powersave.conf
 [connection]
 wifi.powersave = 2     # 2=禁用，3=启用
 </code></pre></li>
 <li>
-<p>在某些特定网络禁用</p>
+<p><strong>针对特定网络禁用</strong></p>
 <pre tabindex="0"><code>nmcli connection modify WIFI名字 802-11-wireless.powersave 2
 </code></pre></li>
 </ol>
-<p>因为我一般倾向于系统策略，所以选择了在家里、公司的网络有多AP的情况给WiFi禁用了powersave。</p>
-<p>貌似后面遇到问题确实少了。</p>
+<p>我偏向系统策略，因此只是在<strong>家/公司多 AP</strong>的环境，禁用特定 WiFi的 省电。之后问题<strong>明显减少</strong>。</p>
+<hr>
 <h3 id="03-邮箱收发邮件问题">
   03 邮箱收发邮件问题
   <a class="heading-link" href="#03-%e9%82%ae%e7%ae%b1%e6%94%b6%e5%8f%91%e9%82%ae%e4%bb%b6%e9%97%ae%e9%a2%98">
@@ -293,83 +296,80 @@ wifi.powersave = 2     # 2=禁用，3=启用
     <span class="sr-only">Link to heading</span>
   </a>
 </h3>
-<p>虽然上面网络不稳定的问题解决了，但是邮箱收发邮件还是经常容易出现收不到的问题。</p>
-<p>让同事给邮箱加了重试机制，还是不行。</p>
-<p>正纳闷呢，突然看见有的工作群在讨论商店访问不稳定可能是因为商店支持 IPv6，25默认走 IPv6 但是 IPv6 链路又不稳导致额 。抱着试一试的态度：</p>
+<p>即便网络不稳的问题得到缓解，<strong>邮箱收发邮件仍出现稳定失败的情况</strong>。给客户端增加重试机制，没有解决。</p>
+<p>这时看到同事讨论商店访问不稳，怀疑和 <strong>IPv6 优先</strong>有关：25 默认跟随上游策略走 IPv6，但链路并不稳定。试探性验证：</p>
 <pre tabindex="0"><code>➜  ~ getent ahosts exmail.qq.com
 240e:97c:2f:1::5f STREAM exmail.qq.com
-240e:97c:2f:1::5f DGRAM  
-240e:97c:2f:1::5f RAW    
-240e:97c:2f:1::87 STREAM 
-240e:97c:2f:1::87 DGRAM  
-240e:97c:2f:1::87 RAW    
-183.2.144.113   STREAM 
-183.2.144.113   DGRAM  
-183.2.144.113   RAW    
-183.47.114.101  STREAM 
-183.47.114.101  DGRAM  
-183.47.114.101  RAW    
-183.2.144.108   STREAM 
-183.2.144.108   DGRAM  
-183.2.144.108   RAW    
-</code></pre><p>果然优先解析到了 IPv6 ，然后查了一下应该是 25 跟随上游策略，默认 IPv6 优先了。</p>
-<p>查到两种修改策略：</p>
+240e:97c:2f:1::5f DGRAM
+240e:97c:2f:1::5f RAW
+240e:97c:2f:1::87 STREAM
+240e:97c:2f:1::87 DGRAM
+240e:97c:2f:1::87 RAW
+183.2.144.113   STREAM
+183.2.144.113   DGRAM
+183.2.144.113   RAW
+183.47.114.101  STREAM
+183.47.114.101  DGRAM
+183.47.114.101  RAW
+183.2.144.108   STREAM
+183.2.144.108   DGRAM
+183.2.144.108   RAW
+</code></pre><p>果然优先解析到 IPv6。两种调整思路：</p>
 <ol>
-<li>修改 gai.conf 配置文件</li>
-</ol>
+<li>
+<p><strong>修改 <code>gai.conf</code> 提升 IPv4 优先级</strong></p>
 <pre tabindex="0"><code># /etc/gai.conf
 precedence ::ffff:0:0/96  100
-</code></pre><ol start="2">
-<li>内核层面直接禁用 ipv6</li>
-</ol>
+</code></pre></li>
+<li>
+<p><strong>内核层面直接禁用 IPv6（更激进）</strong></p>
 <pre tabindex="0"><code>sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
-</code></pre><p>我选择了方案一，修改以后再试：</p>
+</code></pre></li>
+</ol>
+<p>我选择方案一。调整后再次验证：</p>
 <pre tabindex="0"><code>➜  ~ getent ahosts exmail.qq.com
 183.2.144.113   STREAM exmail.qq.com
-183.2.144.113   DGRAM  
-183.2.144.113   RAW    
-183.2.144.108   STREAM 
-183.2.144.108   DGRAM  
-183.2.144.108   RAW    
-183.47.114.101  STREAM 
-183.47.114.101  DGRAM  
-183.47.114.101  RAW    
-240e:97c:2f:1::5f STREAM 
-240e:97c:2f:1::5f DGRAM  
-240e:97c:2f:1::5f RAW    
-240e:97c:2f:1::87 STREAM 
-240e:97c:2f:1::87 DGRAM  
-240e:97c:2f:1::87 RAW    
-</code></pre><p>默认走到 IPv4 上了，修改完以后果然立竿见影。 邮箱重试机制+默认走 IPv6 ，问题全面解决。</p>
-<p>问了下 ChatGPT 为什么 IPv6 不稳定，说了一大堆：</p>
-<pre tabindex="0"><code>主要成因（按命中频率）
+183.2.144.113   DGRAM
+183.2.144.113   RAW
+183.2.144.108   STREAM
+183.2.144.108   DGRAM
+183.2.144.108   RAW
+183.47.114.101  STREAM
+183.47.114.101  DGRAM
+183.47.114.101  RAW
+240e:97c:2f:1::5f STREAM
+240e:97c:2f:1::5f DGRAM
+240e:97c:2f:1::5f RAW
+240e:97c:2f:1::87 STREAM
+240e:97c:2f:1::87 DGRAM
+240e:97c:2f:1::87 RAW
+</code></pre><p>可以看到<strong>默认走到 IPv4</strong> 了。<strong>邮件重试机制 + IPv4 优先</strong>后，问题基本解决。</p>
+<p>问了下 ChatGPT 为什么 IPv6 不稳，说了一堆我也没看懂的玩意儿：</p>
+<pre tabindex="0"><code>主要成因（命中频率靠前）：
 
 ICMPv6 被阻断 → PMTU 黑洞
 IPv6 依赖 ICMPv6 Packet Too Big 做路径 MTU 发现；被拦后大包/握手卡顿、间歇超时。
 对策：防火墙放行 ICMPv6 常用类型：1,2,3,4,128,129,133-136。
 
 MTU/PPPoE/隧道不匹配
-家庭宽带经 PPPoE（1492）或上游隧道，再叠加设备错误 MSS，导致丢包重传。
+家庭宽带经 PPPoE（1492）或上游隧道，若设备错误设置 MSS，可能丢包重传。
 对策：
-
-临时把接口 MTU 调低试验：sudo ip link set wlo1 mtu 1480；
-
+临时调低接口 MTU：sudo ip link set wlo1 mtu 1480；
 开启 TCP MSS clamp（nftables）：tcp flags syn / tcp option maxseg size set clamp-to-pmtu。
 
 CDN/GeoDNS 对 IPv6 定位不准
 AAAA 记录被分配到较远 PoP，RTT 抖动。
-对策：对比 traceroute -6/-4，必要时固定 IPv4 访问关键服务（如企业邮箱）或与运营商/服务商工单修正 GeoIP。
+对策：对比 traceroute -6/-4；必要时固定 IPv4 访问关键服务或与运营商/服务商修正 GeoIP。
 
-VPN 仅隧道 IPv4（你的现状）
-应用解析出 AAAA 后绕过 VPN 直连外网 IPv6，被策略/互联影响，表现为不稳。
-对策：让 VPN 承载 IPv6（WG AllowedIPs=::/0 / OpenVPN tun-ipv6 + redirect-gateway ipv6），或在连 VPN 期间禁用 IPv6/优先 IPv4。
+VPN 仅隧道 IPv4
+应用解析出 AAAA 后绕过 VPN 直连外网 IPv6，受策略/互联影响表现为不稳。
+对策：让 VPN 承载 IPv6（WG AllowedIPs=::/0 / OpenVPN tun-ipv6 + redirect-gateway ipv6），或连 VPN 期间禁用 IPv6/优先 IPv4。
 
 CPE/驱动/省电 Bug
-老旧路由器的 RA/NDP、DHCPv6-PD 抖动；Linux 无线驱动省电（如 rtw89）导致瞬断。
-对策：更新路由固件与网卡驱动；关闭无线省电：iw dev wlo1 set power_save off；TLP 中关闭 Wi-Fi 省电。
-</code></pre><p>也没完全看懂。</p>
-<p>哎，坑爹的网络……</p>
+老旧路由的 RA/NDP、DHCPv6-PD 抖动；Linux 无线驱动省电影响稳定性。
+对策：更新路由固件与网卡驱动；关闭无线省电（如：iw dev wlo1 set power_save off；TLP 中关闭 Wi-Fi 省电）。
+</code></pre><p>哎，坑爹的网络……</p>
 
       </div>
 
