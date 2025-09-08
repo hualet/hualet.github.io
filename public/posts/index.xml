@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Think in Hualet</description>
     <generator>Hugo</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 11 May 2025 11:02:04 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 03 Aug 2025 14:17:04 +0800</lastBuildDate>
     <atom:link href="https://www.hualet.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>最近25上遇到的几个问题和处理方案</title>
+      <link>https://www.hualet.org/posts/some_25_issues/</link>
+      <pubDate>Sun, 03 Aug 2025 14:17:04 +0800</pubDate>
+      <guid>https://www.hualet.org/posts/some_25_issues/</guid>
+      <description>&lt;p&gt;最近在deepin 25上遇到几个问题，处理方案记录一下，以备未来或者其他人需要。&lt;/p&gt;&#xA;&lt;h3 id=&#34;01-待机睡死问题&#34;&gt;&#xA;  01 待机睡死问题&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#01-%e5%be%85%e6%9c%ba%e7%9d%a1%e6%ad%bb%e9%97%ae%e9%a2%98&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;有一段时间 25 没有预装 tlp ，导致系统功耗升高，有时候电脑发烫严重。发现这个问题以后一方面是通知系统研发进行系统更新、集成，另外一方面我自己也先装上测试。&lt;/p&gt;&#xA;&lt;p&gt;结果虽然电脑功耗下来了，但是不出意料引入了系统稳定性问题，具体的现象就是偶尔待机睡死，概率还比较高。找了内核的同事帮忙调试了一下，没有很好的调试结果，再加上我经常出差、远程调试也不方便，所以干脆自己做了一些尝试。&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器)&#xA;主板 : LNVNB161216&#xA;内存 : 4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)&#xA;显示适配器 : Rembrandt [Radeon 680M]&#xA;音频适配器 : Radeon High Definition Audio Controller [Rembrandt/Strix]/Family 17h/19h/1ah HD Audio Controller&#xA;存储设备 : SAMSUNG MZVL2512HCJQ-00BL2 (512 GB)&#xA;蓝牙 : Bluetooth Radio&#xA;网络适配器 : RTL8852BE PCIe 802.11ax Wireless Network Controller/RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller&#xA;鼠标 : M185 compact wireless mouse (Logitech M185 compact wireless mouse)/ELAN0662:00 04F3:317C Mouse (ELAN0662:00 04F3:317C Mouse)/ELAN0662:00 04F3:317C Touchpad (ELAN0662:00 04F3:317C Touchpad)&#xA;键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard)&#xA;显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm))&#xA;图像设备 : Integrated Camera (Chicony Electronics Integrated Camera)&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;因为明确知道是装了 tlp 导致的，所以把现象报给ChatGPT 以后，很快得到一些可以尝试的方向。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>开源社区和先进生产力</title>
       <link>https://www.hualet.org/posts/why_open_source/</link>

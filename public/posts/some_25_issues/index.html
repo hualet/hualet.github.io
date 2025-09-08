@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <title>
+  最近25上遇到的几个问题和处理方案 · Think in Hualet
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Hualet Wang">
+<meta name="description" content="最近在deepin 25上遇到几个问题，处理方案记录一下，以备未来或者其他人需要。
+
+  01 待机睡死问题
+  
+    
+    Link to heading
+  
+
+有一段时间 25 没有预装 tlp ，导致系统功耗升高，有时候电脑发烫严重。发现这个问题以后一方面是通知系统研发进行系统更新、集成，另外一方面我自己也先装上测试。
+结果虽然电脑功耗下来了，但是不出意料引入了系统稳定性问题，具体的现象就是偶尔待机睡死，概率还比较高。找了内核的同事帮忙调试了一下，没有很好的调试结果，再加上我经常出差、远程调试也不方便，所以干脆自己做了一些尝试。
+处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器)
+主板 : LNVNB161216
+内存 : 4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)
+显示适配器 : Rembrandt [Radeon 680M]
+音频适配器 : Radeon High Definition Audio Controller [Rembrandt/Strix]/Family 17h/19h/1ah HD Audio Controller
+存储设备 : SAMSUNG MZVL2512HCJQ-00BL2 (512 GB)
+蓝牙 : Bluetooth Radio
+网络适配器 : RTL8852BE PCIe 802.11ax Wireless Network Controller/RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller
+鼠标 : M185 compact wireless mouse (Logitech M185 compact wireless mouse)/ELAN0662:00 04F3:317C Mouse (ELAN0662:00 04F3:317C Mouse)/ELAN0662:00 04F3:317C Touchpad (ELAN0662:00 04F3:317C Touchpad)
+键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard)
+显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm))
+图像设备 : Integrated Camera (Chicony Electronics Integrated Camera)
+因为明确知道是装了 tlp 导致的，所以把现象报给ChatGPT 以后，很快得到一些可以尝试的方向。">
+<meta name="keywords" content="blog,developer,personal">
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="最近25上遇到的几个问题和处理方案">
+  <meta name="twitter:description" content="最近在deepin 25上遇到几个问题，处理方案记录一下，以备未来或者其他人需要。
+01 待机睡死问题 Link to heading 有一段时间 25 没有预装 tlp ，导致系统功耗升高，有时候电脑发烫严重。发现这个问题以后一方面是通知系统研发进行系统更新、集成，另外一方面我自己也先装上测试。
+结果虽然电脑功耗下来了，但是不出意料引入了系统稳定性问题，具体的现象就是偶尔待机睡死，概率还比较高。找了内核的同事帮忙调试了一下，没有很好的调试结果，再加上我经常出差、远程调试也不方便，所以干脆自己做了一些尝试。
+处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器) 主板 : LNVNB161216 内存 : 4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s) 显示适配器 : Rembrandt [Radeon 680M] 音频适配器 : Radeon High Definition Audio Controller [Rembrandt/Strix]/Family 17h/19h/1ah HD Audio Controller 存储设备 : SAMSUNG MZVL2512HCJQ-00BL2 (512 GB) 蓝牙 : Bluetooth Radio 网络适配器 : RTL8852BE PCIe 802.11ax Wireless Network Controller/RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller 鼠标 : M185 compact wireless mouse (Logitech M185 compact wireless mouse)/ELAN0662:00 04F3:317C Mouse (ELAN0662:00 04F3:317C Mouse)/ELAN0662:00 04F3:317C Touchpad (ELAN0662:00 04F3:317C Touchpad) 键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard) 显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm)) 图像设备 : Integrated Camera (Chicony Electronics Integrated Camera) 因为明确知道是装了 tlp 导致的，所以把现象报给ChatGPT 以后，很快得到一些可以尝试的方向。">
+
+<meta property="og:url" content="https://www.hualet.org/posts/some_25_issues/">
+  <meta property="og:site_name" content="Think in Hualet">
+  <meta property="og:title" content="最近25上遇到的几个问题和处理方案">
+  <meta property="og:description" content="最近在deepin 25上遇到几个问题，处理方案记录一下，以备未来或者其他人需要。
+01 待机睡死问题 Link to heading 有一段时间 25 没有预装 tlp ，导致系统功耗升高，有时候电脑发烫严重。发现这个问题以后一方面是通知系统研发进行系统更新、集成，另外一方面我自己也先装上测试。
+结果虽然电脑功耗下来了，但是不出意料引入了系统稳定性问题，具体的现象就是偶尔待机睡死，概率还比较高。找了内核的同事帮忙调试了一下，没有很好的调试结果，再加上我经常出差、远程调试也不方便，所以干脆自己做了一些尝试。
+处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器) 主板 : LNVNB161216 内存 : 4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s)/4GB(MT62F1G32D4DR-031 WT 6400 MT/s) 显示适配器 : Rembrandt [Radeon 680M] 音频适配器 : Radeon High Definition Audio Controller [Rembrandt/Strix]/Family 17h/19h/1ah HD Audio Controller 存储设备 : SAMSUNG MZVL2512HCJQ-00BL2 (512 GB) 蓝牙 : Bluetooth Radio 网络适配器 : RTL8852BE PCIe 802.11ax Wireless Network Controller/RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller 鼠标 : M185 compact wireless mouse (Logitech M185 compact wireless mouse)/ELAN0662:00 04F3:317C Mouse (ELAN0662:00 04F3:317C Mouse)/ELAN0662:00 04F3:317C Touchpad (ELAN0662:00 04F3:317C Touchpad) 键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard) 显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm)) 图像设备 : Integrated Camera (Chicony Electronics Integrated Camera) 因为明确知道是装了 tlp 导致的，所以把现象报给ChatGPT 以后，很快得到一些可以尝试的方向。">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-03T14:17:04+08:00">
+    <meta property="article:modified_time" content="2025-08-03T14:17:04+08:00">
+    <meta property="article:tag" content="25">
+    <meta property="article:tag" content="网络">
+
+
+
+
+<link rel="canonical" href="https://www.hualet.org/posts/some_25_issues/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.min.7763f8bc6341ecf82378e867c285e1549abb063a899be313ccd25dbfcd24fa7d.css" integrity="sha256-d2P4vGNB7PgjeOhnwoXhVJq7BjqJm&#43;MTzNJdv80k&#43;n0=" crossorigin="anonymous" media="screen" />
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.min.a00e6364bacbc8266ad1cc81230774a1397198f8cfb7bcba29b7d6fcb54ce57f.css" integrity="sha256-oA5jZLrLyCZq0cyBIwd0oTlxmPjPt7y6KbfW/LVM5X8=" crossorigin="anonymous" media="screen" />
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="https://www.hualet.org/">
+      Think in Hualet
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/blogroll/">友链</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">关于</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/en/">🇬🇧</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://www.hualet.org/posts/some_25_issues/">
+              最近25上遇到的几个问题和处理方案
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2025-08-03T14:17:04&#43;08:00">
+                八月 3, 2025
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa-solid fa-folder" aria-hidden="true"></i>
+    <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></div>
+
+          <div class="tags">
+  <i class="fa-solid fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/25/">25</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <p>最近在deepin 25上遇到几个问题，处理方案记录一下，以备未来或者其他人需要。</p>
+<h3 id="01-待机睡死问题">
+  01 待机睡死问题
+  <a class="heading-link" href="#01-%e5%be%85%e6%9c%ba%e7%9d%a1%e6%ad%bb%e9%97%ae%e9%a2%98">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p>有一段时间 25 没有预装 tlp ，导致系统功耗升高，有时候电脑发烫严重。发现这个问题以后一方面是通知系统研发进行系统更新、集成，另外一方面我自己也先装上测试。</p>
+<p>结果虽然电脑功耗下来了，但是不出意料引入了系统稳定性问题，具体的现象就是偶尔待机睡死，概率还比较高。找了内核的同事帮忙调试了一下，没有很好的调试结果，再加上我经常出差、远程调试也不方便，所以干脆自己做了一些尝试。</p>
+<pre tabindex="0"><code>处理器 : AMD Ryzen 7 6800H with Radeon Graphics (八核 / 十六逻辑处理器)
+主板 : LNVNB161216
+内存 : 4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)/4GB(MT62F1G32D4DR-031 WT  6400 MT/s)
+显示适配器 : Rembrandt [Radeon 680M]
+音频适配器 : Radeon High Definition Audio Controller [Rembrandt/Strix]/Family 17h/19h/1ah HD Audio Controller
+存储设备 : SAMSUNG MZVL2512HCJQ-00BL2 (512 GB)
+蓝牙 : Bluetooth Radio
+网络适配器 : RTL8852BE PCIe 802.11ax Wireless Network Controller/RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller
+鼠标 : M185 compact wireless mouse (Logitech M185 compact wireless mouse)/ELAN0662:00 04F3:317C Mouse (ELAN0662:00 04F3:317C Mouse)/ELAN0662:00 04F3:317C Touchpad (ELAN0662:00 04F3:317C Touchpad)
+键盘 : AT Translated Set 2 keyboard (AT Translated Set 2 keyboard)
+显示设备 : CSOT T3 LCD Monitor(14.0 英寸 (302x188 mm))
+图像设备 : Integrated Camera (Chicony Electronics Integrated Camera)
+</code></pre><p>因为明确知道是装了 tlp 导致的，所以把现象报给ChatGPT 以后，很快得到一些可以尝试的方向。</p>
+<p>第一次尝试把 <code>amdgpu</code> 和 <code>nvme</code> 加入到 <code>RUNTIME_PM_DRIVER_DENYLIST</code> 中:</p>
+<pre tabindex="0"><code>RUNTIME_PM_DRIVER_DENYLIST=&#34;nvme amdgpu mei_me nouveau radeon&#34;
+</code></pre><p>试了一下，效果不是特别明显。遂来了个一刀切, 直接把 <code>RUNTIME_PM</code> 给关掉了:</p>
+<pre tabindex="0"><code>RUNTIME_PM_ON_AC=off
+RUNTIME_PM_ON_BAT=off
+</code></pre><p>果然有效果了，基本上没有再出现过待机睡死的问题。 不过这个处理方案太一刀切，个人使用可以、但不适合上主线，未来还得继续跟进。</p>
+<h3 id="02-网络不稳定问题">
+  02 网络不稳定问题
+  <a class="heading-link" href="#02-%e7%bd%91%e7%bb%9c%e4%b8%8d%e7%a8%b3%e5%ae%9a%e9%97%ae%e9%a2%98">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p>网络不稳定最开始的表现是邮箱收发邮件经常失败，最开始我还觉得是我们邮箱客户端有问题、没有重试机制，跟同事反馈问题的过程中，又揣摩了出现问题的场景：一般是在家里、在酒店容易出现问题，结合上面提到tlp导致的一些不稳定问题，问了一下 ChatGPT：</p>
+<pre tabindex="0"><code>某些驱动/网卡还会因省电引入短时 TX/队列停顿，反而被 AP 的 band-steering 频繁“踢/引流”，造成来回跳。
+</code></pre><p>遂尝试把WiFi省电方案给禁掉，有几种方式：</p>
+<ol>
+<li>
+<p>在驱动层面禁用</p>
+<pre tabindex="0"><code># 为特定网卡添加配置，禁用 powersave
+options iwlwifi power_save=0
+</code></pre></li>
+<li>
+<p>在 NetworkManager 层面禁用</p>
+<pre tabindex="0"><code># /etc/NetworkManager/conf.d/wifi-powersave.conf 中添加或修改
+[connection]
+wifi.powersave = 2     # 2=禁用，3=启用
+</code></pre></li>
+<li>
+<p>在某些特定网络禁用</p>
+<pre tabindex="0"><code>nmcli connection modify WIFI名字 802-11-wireless.powersave 2
+</code></pre></li>
+</ol>
+<p>因为我一般倾向于系统策略，所以选择了在家里、公司的网络有多AP的情况给WiFi禁用了powersave。</p>
+<p>貌似后面遇到问题确实少了。</p>
+<h3 id="03-邮箱收发邮件问题">
+  03 邮箱收发邮件问题
+  <a class="heading-link" href="#03-%e9%82%ae%e7%ae%b1%e6%94%b6%e5%8f%91%e9%82%ae%e4%bb%b6%e9%97%ae%e9%a2%98">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p>虽然上面网络不稳定的问题解决了，但是邮箱收发邮件还是经常容易出现收不到的问题。</p>
+<p>让同事给邮箱加了重试机制，还是不行。</p>
+<p>正纳闷呢，突然看见有的工作群在讨论商店访问不稳定可能是因为商店支持 IPv6，25默认走 IPv6 但是 IPv6 链路又不稳导致额 。抱着试一试的态度：</p>
+<pre tabindex="0"><code>➜  ~ getent ahosts exmail.qq.com
+240e:97c:2f:1::5f STREAM exmail.qq.com
+240e:97c:2f:1::5f DGRAM  
+240e:97c:2f:1::5f RAW    
+240e:97c:2f:1::87 STREAM 
+240e:97c:2f:1::87 DGRAM  
+240e:97c:2f:1::87 RAW    
+183.2.144.113   STREAM 
+183.2.144.113   DGRAM  
+183.2.144.113   RAW    
+183.47.114.101  STREAM 
+183.47.114.101  DGRAM  
+183.47.114.101  RAW    
+183.2.144.108   STREAM 
+183.2.144.108   DGRAM  
+183.2.144.108   RAW    
+</code></pre><p>果然优先解析到了 IPv6 ，然后查了一下应该是 25 跟随上游策略，默认 IPv6 优先了。</p>
+<p>查到两种修改策略：</p>
+<ol>
+<li>修改 gai.conf 配置文件</li>
+</ol>
+<pre tabindex="0"><code># /etc/gai.conf
+precedence ::ffff:0:0/96  100
+</code></pre><ol start="2">
+<li>内核层面直接禁用 ipv6</li>
+</ol>
+<pre tabindex="0"><code>sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+</code></pre><p>我选择了方案一，修改以后再试：</p>
+<pre tabindex="0"><code>➜  ~ getent ahosts exmail.qq.com
+183.2.144.113   STREAM exmail.qq.com
+183.2.144.113   DGRAM  
+183.2.144.113   RAW    
+183.2.144.108   STREAM 
+183.2.144.108   DGRAM  
+183.2.144.108   RAW    
+183.47.114.101  STREAM 
+183.47.114.101  DGRAM  
+183.47.114.101  RAW    
+240e:97c:2f:1::5f STREAM 
+240e:97c:2f:1::5f DGRAM  
+240e:97c:2f:1::5f RAW    
+240e:97c:2f:1::87 STREAM 
+240e:97c:2f:1::87 DGRAM  
+240e:97c:2f:1::87 RAW    
+</code></pre><p>默认走到 IPv4 上了，修改完以后果然立竿见影。 邮箱重试机制+默认走 IPv6 ，问题全面解决。</p>
+<p>问了下 ChatGPT 为什么 IPv6 不稳定，说了一大堆：</p>
+<pre tabindex="0"><code>主要成因（按命中频率）
+
+ICMPv6 被阻断 → PMTU 黑洞
+IPv6 依赖 ICMPv6 Packet Too Big 做路径 MTU 发现；被拦后大包/握手卡顿、间歇超时。
+对策：防火墙放行 ICMPv6 常用类型：1,2,3,4,128,129,133-136。
+
+MTU/PPPoE/隧道不匹配
+家庭宽带经 PPPoE（1492）或上游隧道，再叠加设备错误 MSS，导致丢包重传。
+对策：
+
+临时把接口 MTU 调低试验：sudo ip link set wlo1 mtu 1480；
+
+开启 TCP MSS clamp（nftables）：tcp flags syn / tcp option maxseg size set clamp-to-pmtu。
+
+CDN/GeoDNS 对 IPv6 定位不准
+AAAA 记录被分配到较远 PoP，RTT 抖动。
+对策：对比 traceroute -6/-4，必要时固定 IPv4 访问关键服务（如企业邮箱）或与运营商/服务商工单修正 GeoIP。
+
+VPN 仅隧道 IPv4（你的现状）
+应用解析出 AAAA 后绕过 VPN 直连外网 IPv6，被策略/互联影响，表现为不稳。
+对策：让 VPN 承载 IPv6（WG AllowedIPs=::/0 / OpenVPN tun-ipv6 + redirect-gateway ipv6），或在连 VPN 期间禁用 IPv6/优先 IPv4。
+
+CPE/驱动/省电 Bug
+老旧路由器的 RA/NDP、DHCPv6-PD 抖动；Linux 无线驱动省电（如 rtw89）导致瞬断。
+对策：更新路由固件与网卡驱动；关闭无线省电：iw dev wlo1 set power_save off；TLP 中关闭 Wi-Fi 省电。
+</code></pre><p>也没完全看懂。</p>
+<p>哎，坑爹的网络……</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script>
+  window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hualetblog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    
+    document.addEventListener('themeChanged', function (e) { 
+        if (document.readyState == 'complete') {
+          DISQUS.reset({ reload: true, config: disqus_config });
+        }
+    });
+</script>
+        
+        
+        
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2025
+     Hualet Wang 
+    ·
+    
+     <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js" integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script>
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FNRR2W3Z7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6FNRR2W3Z7');
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
