@@ -140,7 +140,8 @@ Project Butter 的内容见参考链接中 Android 之 Project Butter 详细介�
 ## 2017 年：Android 8.0/8.1 Oreo
 
 - 引入 Project Treble，简化了 Android 更新流程。
-- 最大的更新包括限制了不必要的后台任务，例如«胡萝卜和棍子»算法来保留电量；- Webview 已经从系统中移除，在 Google Play 商店中分发更新。
+- 最大的更新包括限制了不必要的后台任务，例如«胡萝卜和棍子»算法来保留电量；
+- Webview 已经从系统中移除，在 Google Play 商店中分发更新。
 - 自适应图标。
 - 强化 WiFi 连接速度及安全性。
 - 新增 PiP（画中画）功能以便于多任务处理。
