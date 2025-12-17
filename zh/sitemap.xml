@@ -2,11 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.hualet.org/tags/25/</loc>
-    <lastmod>2025-08-03T14:17:04+08:00</lastmod>
-  </url><url>
     <loc>https://www.hualet.org/categories/</loc>
-    <lastmod>2025-08-03T14:17:04+08:00</lastmod>
+    <lastmod>2025-12-17T22:39:33+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -19,10 +16,10 @@
                 />
   </url><url>
     <loc>https://www.hualet.org/posts/</loc>
-    <lastmod>2025-08-03T14:17:04+08:00</lastmod>
+    <lastmod>2025-12-17T22:39:33+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/tags/</loc>
-    <lastmod>2025-08-03T14:17:04+08:00</lastmod>
+    <lastmod>2025-12-17T22:39:33+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -35,7 +32,7 @@
                 />
   </url><url>
     <loc>https://www.hualet.org/</loc>
-    <lastmod>2025-08-03T14:17:04+08:00</lastmod>
+    <lastmod>2025-12-17T22:39:33+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -46,6 +43,21 @@
                 hreflang="zh"
                 href="https://www.hualet.org/"
                 />
+  </url><url>
+    <loc>https://www.hualet.org/categories/%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2025-12-17T22:39:33+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/tags/%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2025-12-17T22:39:33+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/tags/%E5%AE%9E%E4%BA%8B%E6%B1%82%E6%98%AF/</loc>
+    <lastmod>2025-12-17T22:39:33+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/posts/facing_the_reality/</loc>
+    <lastmod>2025-12-17T22:39:33+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/tags/25/</loc>
+    <lastmod>2025-08-03T14:17:04+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/categories/%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2025-08-03T14:17:04+08:00</lastmod>
@@ -64,9 +76,6 @@
   </url><url>
     <loc>https://www.hualet.org/categories/%E6%95%88%E7%8E%87/</loc>
     <lastmod>2025-05-11T11:02:04+08:00</lastmod>
-  </url><url>
-    <loc>https://www.hualet.org/categories/%E7%AE%A1%E7%90%86/</loc>
-    <lastmod>2025-03-21T23:15:31+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/posts/expensive_vs_cheap/</loc>
     <lastmod>2025-03-21T23:15:31+08:00</lastmod>
