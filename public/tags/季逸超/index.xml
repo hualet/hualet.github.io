@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>季逸超 on Think in Hualet</title>
+    <link>https://www.hualet.org/tags/%E5%AD%A3%E9%80%B8%E8%B6%85/</link>
+    <description>Recent content in 季逸超 on Think in Hualet</description>
+    <generator>Hugo</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 04 Jan 2026 23:01:22 +0800</lastBuildDate>
+    <atom:link href="https://www.hualet.org/tags/%E5%AD%A3%E9%80%B8%E8%B6%85/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>推荐一个超级无敌棒的访谈</title>
+      <link>https://www.hualet.org/posts/peakji/</link>
+      <pubDate>Sun, 04 Jan 2026 23:01:22 +0800</pubDate>
+      <guid>https://www.hualet.org/posts/peakji/</guid>
+      <description>&lt;p&gt;强烈推荐     &lt;a href=&#34;https://www.bilibili.com/video/BV1knvYBDEjs/?share_source=copy_web&amp;amp;vd_source=de5766e03e8fbd05c065e2f4ecbca51a&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Manus决定出售前最后的访谈&lt;/a&gt; ，这个视频的能量实在是太大了，大到我看了好几遍，还到处推荐给别人看。&lt;/p&gt;&#xA;&lt;p&gt;季逸超在这期访谈中表现出的 自信、坦诚、专业 和 热情，都能溢出屏幕。而且，内容绝对也是干货满满。那些关于 AI、 Agent相关的内容就不记录了，重点记录哪些非技术的感思。&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;访谈的过程中他基本上处于口若悬河的状态，也难怪把张小珺也给“骗”了，觉得他是个E人。为什么他能这么侃侃而谈而且内容还这么深刻？ 因为他实践得多啊，高中就开始自己做产品 猛犸浏览器、然后被真格“忽悠”辍学创业、做下一代搜索引擎 Magi，扬言要打败 Google、到后来到夜莺科技当合伙人，一路走来都是真刀真枪地干，能不深刻嘛……所以说人生目标定好了，应该尽快向着目标做，而不是绕远路。比如你想创业，应该提前去准备，至少尝试运营一个产品、一个社区。&lt;/li&gt;&#xA;&lt;li&gt;兴趣才是人生的发动机。 季逸超研究浏览器、研究NLP，讲过往经理和技术的时候的热情都能溢出屏幕，甚至说出能自己做infra、自己做爬虫和搜索引擎、自己做模型…满足到死而无憾了。这些东西别说对一般人，就是对普通的程序员来说都是天书，要不是对这些技术有足够的兴趣和热情，很难想象他能坚持做、甚至中间沉寂那段时间还在坚持。 而且，他做哪些是2013年到2014年啊🤦♂️ ，天才少年时无疑了。&lt;/li&gt;&#xA;&lt;li&gt;圈子很重要。访谈过程中可以感受到他在主流模型圈有各种各样的朋友，能够第一时间拿到GPT3或者其他模型新版本的early access，当然还有一些有提前量的“坊间传闻”，对他们自己做 Agent 也有很大的帮助，比如3月份做完 Manus 以后，因为提前知道 Claude 新版本的模型很快就会发布，等着新版本的模型共同发布以遍能够最早享受到新一代模型能力的红利。还有一个更重要的是，他能够通过产品的影响力+自己的专业能力，去影响大模型厂商，“忽悠”他们去做自己认为模型应该去补足的地方，“让模型帮自己打工”。🥳&lt;/li&gt;&#xA;&lt;li&gt;“与其悬而未决，不如赶紧试试”。这是他说的原话，我对此无比赞同。形式变化很快的时候，可能没有已有经验、或者经验可能快速变化。不如赶紧试错，错了可以快速改正。&lt;/li&gt;&#xA;&lt;li&gt;尊重常识和保持平常心。他们几个肯定都是段永平的信徒……在产品刚做完的时候，人们更倾向于说服自己的产品是不错的！但是回归到用户视角去看，如果这个产品本身并不讨喜，那大概率发布出去也不会有人喜欢。他们花了大半年时间投入十几个人做出来的AI浏览器，做出来发现“感觉不对”，最终取消了这个产品的发布。“因为一个负责任的团队会持续维护，发布出去以后会有不少精力去自证，这有很大的机会成本”。是啊，如果他们继续了AI浏览器这条路，就失去了后来Manus这一波，这得是多大的机会成本。&lt;/li&gt;&#xA;&lt;li&gt;拥抱新事物。Manus的idea来自于他们几个人看到公司内部很多非研发的同事在用Cursor，去解决很多非研发的事情。进而发现模型和智能体的能力已经可以去支撑通用智能体的概念，才开创了第一个通用智能体——Manus。我相信是这一定是团队有大量的人当时已经在用Cursor，才可能影响周围非研发的人也用起来。我们团队其实也有类似的观察，但是却是在2025年中，已经相当晚了。所以，拥抱新事物要趁早！&lt;/li&gt;&#xA;&lt;li&gt;不做什么比做什么重要。不做基础模型、不服务普通用户、不去做大的bet、不做类Cursor的工具…这些都来自于产品定位清晰——服务好prosumer客户、竞争策略清晰——OpenAI服务普通大众，Manus服务prosumer客户更好。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;写到最后，突然感觉季逸超这种不就是大家说的很有魅力嘛——自信、谈成、又有深刻的行业洞察。粉了，哈哈。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
