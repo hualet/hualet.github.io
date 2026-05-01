@@ -12,13 +12,13 @@ series = []
 
 +++
 
-26年春节前后，Coding Agent 的能力又大涨了一波，以至于我也按耐不住，春节后到现在陆陆续续 Vibe Coding 了些小项目，探索 Coding Agent 新一波的能力、Harness Engineering 之余，还能满足一些自己的小需求。
+26年春节前后，Coding Agent 的能力又涨了一波大的。我没按捺住，春节后到现在陆陆续续 vibe coding 了些小项目——探索新能力、搞搞 Harness Engineering，顺便满足点自己的小需求。
 
-不得不说这一波不管是从模型能力（Claude Opus 4.6 、GPT 5.4/5.5、GLM 5.1、Kimi K2.5/2.6、DeepSeek V4 pro），还是 Coding Agent 的工具能力（Claude code、Opencode、codex 、kimi cli）都又飞涨了一大截。相较于去年6月份体验AI编程（Cursor），现在 Vibe Coding 一次性满足需求的准确率提升了不止一丢丢，基本上在单点需求上99%不用返工。
+这一波模型能力（Claude Opus 4.6、GPT 5.4/5.5、GLM 5.1、Kimi K2.5/2.6、DeepSeek V4 pro）和 Coding Agent 工具链（Claude code、Opencode、codex、kimi cli）都蹿了一大截。对比去年 6 月用 Cursor 那会儿，现在 vibe coding 一次性搞对需求的概率提升得不止一丢丢——单点需求上基本 99% 不用返工。
 
-除了这个，“蒸馏”了软件工程最佳实践的一些插件和skills，也进一步提升了AI辅助软件工程的靠谱程度，其中典型的 omo（oh-my-opencode）、superpowers、openspec 等等。以及面向驾驭多 Agent的 clawteams ，在提升并行开发效率方面也给碳基程序员打开了不少脑洞。
+插件和 skills 这边，"蒸馏"了软件工程最佳实践的 omo（oh-my-opencode）、superpowers、openspec，也让 AI 辅助编码靠谱了不少。面向多 Agent 协作的 clawteams，在并行开发效率上给碳基程序员开了不少脑洞。
 
-不过随着Coding Agent 本身的飞速进化（一周2-3个版本），很多能力已经被官方纳入，比如 plan、ralph loop、multi-agent、btw 等等，我个人现在倾向于 codex/opencode + superpowers 这套极简组合方案。
+不过 Coding Agent 本身进化太快了——一周两三个版本，plan、ralph loop、multi-agent、btw 这些能力很快就被官方收了。我现在倾向于 codex/opencode + superpowers 这套极简组合。
 
 
 
@@ -64,7 +64,7 @@ series = []
 
 2）AI 可以大幅拓展我的能力边界。 动态天气图标本来只是个提案，并没有报以太大的期望。但是在我告诉 codex 以后，没想到它真的帮我找到了实现路径并且实现。要不是受限于 25 系统中 Qt 的6.8版本老了一丢丢，在 Qt 6.10 上可以使用 Animated Vector Graphics 按道理可以更好实现；
 
-3）AI 不完全是遵循，也可以跟你辩论了。 在给项目调整 API 选型的时候，我让它给我使用XX API 服务，它居然反过来跟我说建议我不要这么做，因为 XX API 明确了免费接口不能商用。 在我跟它强调我这个项目将来会完全开源以后，它才悻悻作罢 😂。
+3）AI 不完全是遵循，也可以跟你辩论了。在给项目调 API 选型的时候，我让它用 XX API 服务，它居然反过来劝我别用——因为 XX API 明确了免费接口不能商用。我强调这项目将来会完全开源，它才不情不愿地照做了 😂。
 
 
 
@@ -104,7 +104,7 @@ series = []
 
 
 
-虽然最终没有观测到明显的问题，没能证明我认为系统DBus存在“滥用”的猜想，但是这何尝不是一件好事呢。
+最终没测出明显的问题，没能证明我认为 DBus 被"滥用"的猜想——但这何尝不是一件好事呢。
 
 
 
@@ -130,7 +130,7 @@ series = []
 
 [deepin-terminal-ghostty](https://github.com/hualet/deepin-terminal-ghostty) 算是这两个月 vibe coding 得最大的项目了，这个项目的诞生源于我希望 deepin-terminal 支持垂直标签页和更多现代化终端协议（比如 kitty image protocol）的需求。
 
-但是，原版 deepin-terminal 大量修改了 vendor 的 qtermwidget ，导致在遇到上游 BUG /功能缺失，无法快速跟进上游项目，我对此是“深恶痛绝”。同时，又因为我对 ghostty 这个网红终端心向往之。所以，在选择基于 deepin-terminal 做开发、和基于原生 qtermwidget 做开发两者中，我选择了基于 ghostty 🤣 。
+但原版 deepin-terminal 大量修改了 vendor 的 qtermwidget，导致遇到上游 BUG 或功能缺失时没法快速跟进——我对此深恶痛绝。加上对 ghostty 这个网红终端心向往之，所以在基于 deepin-terminal 做开发和基于原生 qtermwidget 做开发两个选项中，我选择了基于 ghostty 🤣。
 
 说是基于  ghostty，但是 ghostty 现在并没有提供等同于 qtermwidget 的开发库，只提供了 libghostty-vt 处理 vt 的基础协议实现。所以 deepin-terminal-ghostty 目前还没有等同于 ghostty  的 GPU 渲染能力，仍然是基于 QPainter 绘制，未来是否自研 GPU 渲染还是等上游，还要看上游拆分 lib 库的速度。
 
@@ -182,14 +182,14 @@ Coding Agent：
 
 
 
-1）vibe coding 上瘾。久违了的创造和快速学习的快感，通过 vibe coding 可以得到快速释放，经常从 00：30 拖到 1：30或者2:00 才睡觉，导致我的早睡计划一直无法实现；
+1）vibe coding 上瘾。久违的创造和快速拿到结果的感觉，通过 vibe coding 释放得特别快。经常从十二点半搞到一点半甚至两点才睡，早睡计划全面搁浅；
 
-2）有了 AI 以后，以前需要代理给其他人做的事情，现在可以方便地交给 AI。比如我看到 rtk 号称能节省不少 token，本来是安排同事去做调研的，后来转念一想可以交给 AI 啊，结果 AI 做得又快又好，也减少了对同事的干扰。
+2）有了 AI 以后，以前需要委派给别人的活，现在可以方便地丢给 AI。比如我看到 rtk 号称能省不少 token，本来安排同事去调研，转念一想——交给 AI 啊。结果做得又快又好，还不用打扰同事。
 
-3）以前受限于“想象力”做得慢或者不会做的事情，现在也可以让 AI 做。比如 给GUI程序补充单元测试，这是以前我觉得没法做得，但是在 deepin-terminal-ghostty 项目中 AI 给我啪啪打脸……在 dde-shell-weather-plugin  项目中， AI 帮我把 CSS-Animated SVGs 转换成  SMIL-Animated SVGs，参见 [gist](https://gist.github.com/hualet/0b43abc9c4e7f56d465f0879b5b4e6dd)。
+3）以前受限于"想象力"做得慢或不会做的事，现在也可以丢给 AI。比如给 GUI 程序写单元测试，以前我觉得根本没法弄，结果在 deepin-terminal-ghostty 项目里 AI 啪啪打脸……还有 dde-shell-weather-plugin 里，AI 帮我把 CSS-Animated SVG 转成 SMIL-Animated SVG（[gist](https://gist.github.com/hualet/0b43abc9c4e7f56d465f0879b5b4e6dd)）。
 
-4）vibe coding 的同时也要 vibe learning。deepin-terminal-ghostty 开发过程中，需要不停地补充终端底层的知识，比如终端是怎么跟shell通信的、shell 集成是不是真集成了个 shell、各类测试工具带来的问题等等。
+4）vibe coding 的同时也在 vibe learning。deepin-terminal-ghostty 开发过程里，得不停地补终端底层知识——终端怎么跟 shell 通信的、shell 集成到底是不是真集成了个 shell、各种测试工具踩的坑……等等。
 
 5）harness engineering 的本质还是软件工程。
 
-6）AI 时代最重要的是 taste中，taste 这个词应该有更广泛的含义。不只是界面设计，技术、工程、工具都考验眼界和审美，你的眼界和审美决定了你项目能达成的高度。
+6）AI 时代最重要的是 taste。这个词应该有更广的含义——不光是界面设计，技术选型、工程实践、工具链，都考验眼界和审美。你的眼界和审美，决定了项目能走到的高度。
