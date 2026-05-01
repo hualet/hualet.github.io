@@ -6,8 +6,15 @@
     <description>Recent content in AI on Think in Hualet</description>
     <generator>Hugo</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 04 Jan 2026 23:01:22 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 01 May 2026 22:34:23 +0800</lastBuildDate>
     <atom:link href="https://www.hualet.org/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>最近 vibe coding 的几个小项目</title>
+      <link>https://www.hualet.org/posts/recent_projects/</link>
+      <pubDate>Fri, 01 May 2026 22:34:23 +0800</pubDate>
+      <guid>https://www.hualet.org/posts/recent_projects/</guid>
+      <description>&lt;p&gt;26年春节前后，Coding Agent 的能力又大涨了一波，以至于我也按耐不住，春节后到现在陆陆续续 Vibe Coding 了些小项目，探索 Coding Agent 新一波的能力、Harness Engineering 之余，还能满足一些自己的小需求。&lt;/p&gt;&#xA;&lt;p&gt;不得不说这一波不管是从模型能力（Claude Opus 4.6 、GPT 5.4/5.5、GLM 5.1、Kimi K2.5/2.6、DeepSeek V4 pro），还是 Coding Agent 的工具能力（Claude code、Opencode、codex 、kimi cli）都又飞涨了一大截。相较于去年6月份体验AI编程（Cursor），现在 Vibe Coding 一次性满足需求的准确率提升了不止一丢丢，基本上在单点需求上99%不用返工。&lt;/p&gt;&#xA;&lt;p&gt;除了这个，“蒸馏”了软件工程最佳实践的一些插件和skills，也进一步提升了AI辅助软件工程的靠谱程度，其中典型的 omo（oh-my-opencode）、superpowers、openspec 等等。以及面向驾驭多 Agent的 clawteams ，在提升并行开发效率方面也给碳基程序员打开了不少脑洞。&lt;/p&gt;&#xA;&lt;p&gt;不过随着Coding Agent 本身的飞速进化（一周2-3个版本），很多能力已经被官方纳入，比如 plan、ralph loop、multi-agent、btw 等等，我个人现在倾向于 codex/opencode + superpowers 这套极简组合方案。&lt;/p&gt;&#xA;&lt;h2 id=&#34;项目列表&#34;&gt;&#xA;  项目列表&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#%e9%a1%b9%e7%9b%ae%e5%88%97%e8%a1%a8&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;dde-shell-weather-plugin&#34;&gt;&#xA;  dde-shell-weather-plugin&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#dde-shell-weather-plugin&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://www.hualet.org/img/2026/05/dde-shell-weather-plugin-project-card.png&#34; alt=&#34;dde-shell-weather-plugin-project-card&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/hualet/dde-shell-weather-plugin&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;dde-shell-weather-plugin&lt;/a&gt;  算是年后第一个正儿八经 vibe coding 的项目，为 deepin V25 新的 dde-shell 提供了天气插件，目前已经上架应用商店，迭代了有6、7个版本。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>推荐一个超级无敌棒的访谈</title>
       <link>https://www.hualet.org/posts/peakji/</link>

@@ -3,26 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.hualet.org/tags/ai/</loc>
-    <lastmod>2026-01-04T23:01:22+08:00</lastmod>
-  </url><url>
-    <loc>https://www.hualet.org/categories/</loc>
-    <lastmod>2026-01-04T23:01:22+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/categories/"
-                />
+    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/posts/</loc>
-    <lastmod>2026-01-04T23:01:22+08:00</lastmod>
+    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/tags/</loc>
-    <lastmod>2026-01-04T23:01:22+08:00</lastmod>
+    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -35,7 +22,7 @@
                 />
   </url><url>
     <loc>https://www.hualet.org/</loc>
-    <lastmod>2026-01-04T23:01:22+08:00</lastmod>
+    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -45,6 +32,25 @@
                 rel="alternate"
                 hreflang="zh"
                 href="https://www.hualet.org/"
+                />
+  </url><url>
+    <loc>https://www.hualet.org/tags/%E9%9A%8F%E6%83%B3/</loc>
+    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/posts/recent_projects/</loc>
+    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/categories/</loc>
+    <lastmod>2026-01-04T23:01:22+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.hualet.org/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.hualet.org/categories/"
                 />
   </url><url>
     <loc>https://www.hualet.org/categories/%E8%AE%BF%E8%B0%88/</loc>
