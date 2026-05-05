@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Think in Hualet</description>
     <generator>Hugo</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 01 May 2026 22:34:23 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 05 May 2026 22:00:00 +0800</lastBuildDate>
     <atom:link href="https://www.hualet.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从零开始写一个终端模拟器：基于 libghostty-vt 的极简实现与进阶之路</title>
+      <link>https://www.hualet.org/posts/build-terminal-with-libghostty-vt/</link>
+      <pubDate>Tue, 05 May 2026 22:00:00 +0800</pubDate>
+      <guid>https://www.hualet.org/posts/build-terminal-with-libghostty-vt/</guid>
+      <description>&lt;p&gt;为什么基于 libghotty-vt 做新版的 deepin-terminal，在上篇博客中已经介绍过了。&lt;/p&gt;&#xA;&lt;p&gt;这个项目做下来（还未完成），最大的感受是：终端这玩意看着简单，底层知识缺口一个接一个。终端怎么跟 shell 通信、shell 集成到底集成的是不是 shell、各种测试工具怎么搭……这些问题之前完全没概念。这篇文章就是一路填坑的笔记，从概念到代码，说说写一个终端模拟器到底要搞清哪些东西。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;要写终端，Shell、PTY、Terminal Emulator、VT 序列这四个东西的关系必须搞明白。我一开始也是糊里糊涂的，以为 Terminal Emulator 就是&amp;quot;一个带图形界面的 shell&amp;quot;，其实不是。&lt;/p&gt;&#xA;&lt;h3 id=&#34;11-shell&#34;&gt;&#xA;  1.1 Shell&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#11-shell&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;Shell 就是 bash、zsh、fish 这些东西。它从你给它的标准输入读命令，解析完 fork 个子进程去跑，再把结果写回标准输出。Shell 根本不在乎输出到了哪里，管道也好，文件也好，PTY 也好，对它来说都是文件描述符。&lt;/p&gt;&#xA;&lt;h3 id=&#34;12-pty&#34;&gt;&#xA;  1.2 PTY&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#12-pty&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;终端模拟器是 GUI 程序，用户通过窗口和它交互。但 Shell 和它启动的命令程序，骨子里仍觉得自己应该连在一个字符设备上。这个设备叫 TTY（电传打字机的历史遗留），程序通过检测 stdout 是不是 TTY 来决定要不要输出彩色文本、显示进度条、启动 TUI 界面。如果直接把 Shell 的标准输出接到管道上，它立刻进入哑巴模式，输出变成灰扑扑的纯文本。&lt;/p&gt;&#xA;&lt;p&gt;PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提供了一对虚拟设备文件：master 和 slave。Shell 和命令程序连在 slave 端，把它们的标准输入输出都绑到这里。slave 端的行为跟真实 TTY 一模一样，所以程序检测 stdout 时会得到&amp;quot;是 TTY&amp;quot;的结果，正常输出颜色和转义序列。终端模拟器则连在 master 端，读取程序输出、发送用户输入。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>最近 vibe coding 的几个小项目</title>
       <link>https://www.hualet.org/posts/recent_projects/</link>
