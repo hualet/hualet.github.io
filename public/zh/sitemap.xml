@@ -2,14 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.hualet.org/tags/ai/</loc>
-    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
+    <loc>https://www.hualet.org/tags/libghostty-vt/</loc>
+    <lastmod>2026-05-05T22:00:00+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/posts/</loc>
-    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
+    <lastmod>2026-05-05T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/tags/qt/</loc>
+    <lastmod>2026-05-05T22:00:00+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/tags/</loc>
-    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
+    <lastmod>2026-05-05T22:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -22,7 +25,7 @@
                 />
   </url><url>
     <loc>https://www.hualet.org/</loc>
-    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
+    <lastmod>2026-05-05T22:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -33,6 +36,18 @@
                 hreflang="zh"
                 href="https://www.hualet.org/"
                 />
+  </url><url>
+    <loc>https://www.hualet.org/posts/build-terminal-with-libghostty-vt/</loc>
+    <lastmod>2026-05-05T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/tags/%E6%8A%80%E6%9C%AF/</loc>
+    <lastmod>2026-05-05T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/tags/%E7%BB%88%E7%AB%AF/</loc>
+    <lastmod>2026-05-05T22:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/tags/ai/</loc>
+    <lastmod>2026-05-01T22:34:23+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/tags/%E9%9A%8F%E6%83%B3/</loc>
     <lastmod>2026-05-01T22:34:23+08:00</lastmod>
