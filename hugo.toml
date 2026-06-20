@@ -139,7 +139,7 @@ id = "G-6FNRR2W3Z7"
   emitMetadata = "0"
   inputPosition = "bottom"
   theme = "preferred_color_scheme"
-  lang = "zh"
+  lang = "zh-CN"
   loading = "lazy"
 
 [taxonomies]
