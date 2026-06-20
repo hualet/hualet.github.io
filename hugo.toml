@@ -8,9 +8,9 @@ enableEmoji = true
 favicon = "/img/favicon.ico"
 
 [services]
-[services.disqus]
-# Enable Disqus comments
-shortname = "hualetblog"
+# [services.disqus]
+# # Enable Disqus comments
+# shortname = "hualetblog"
 
 [markup.highlight]
 noClasses = false
@@ -127,6 +127,20 @@ id = "G-6FNRR2W3Z7"
 # prefetchsrc = ["'self'"]
 # # connect-src directive – defines valid targets for to XMLHttpRequest (AJAX), WebSockets or EventSource
 # connectsrc = ["'self'", "https://www.google-analytics.com"]
+
+[params.giscus]
+  repo = "hualet/hualet.github.io"
+  repoID = "MDEwOlJlcG9zaXRvcnkxNzk0MTk4Ng=="
+  category = "Announcements"
+  categoryID = "DIC_kwDOARHF4s4C_iEM"
+  mapping = "pathname"
+  term = ""
+  reactionsEnabled = "1"
+  emitMetadata = "0"
+  inputPosition = "bottom"
+  theme = "preferred_color_scheme"
+  lang = "zh"
+  loading = "lazy"
 
 [taxonomies]
 category = "categories"
