@@ -53,9 +53,9 @@ perf这个工具最开始是作为Performance Counter的接口引入内核的，
 
 
 
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="使用 Perf 优化程序性能">
-  <meta name="twitter:description" content="因为原定deepin 15.7会做优化（能耗、资源占用等）方面的工作，所以在此之前，想提升一下团队整体的性能剖析、优化方面的水平，也就有了这次（周五）的培训。本来想用视频记录的，一个是自己回头能看看，反思和改进一下演说能力；另一个是以后有新人入职，我也就不用挨个再讲一遍，天不遂人愿，录制视频的软件半道挂了（ 所以只能这里尽量回忆当时想表述的内容，这里文字稿记录了。
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="使用 Perf 优化程序性能">
+	<meta name="twitter:description" content="因为原定deepin 15.7会做优化（能耗、资源占用等）方面的工作，所以在此之前，想提升一下团队整体的性能剖析、优化方面的水平，也就有了这次（周五）的培训。本来想用视频记录的，一个是自己回头能看看，反思和改进一下演说能力；另一个是以后有新人入职，我也就不用挨个再讲一遍，天不遂人愿，录制视频的软件半道挂了（ 所以只能这里尽量回忆当时想表述的内容，这里文字稿记录了。
 下面就是培训内容：
 好，人到齐了我们就开始了。今天要培训或者说要分享的内容是程序性能优化方面的内容，其实我们对性能优化不陌生：最开始接触龙芯和申威平台，系统组件间调用不是异步导致系统卡得无法使用；好不容易交了一个版本，控制中心各个模块还是因为切换卡顿、使用体验不好等做改进；前段时间为2G内存机器做优化等等。现在我们因为程序设计问题导致的性能问题比以前少了很多，一方面我们还要对这些部分持续改进，另一方面我们需要掌握一些性能剖析工具的使用，来帮助我们改进一些更细粒度的程序性能问题，今天我们主要集中在程序执行性能、也就是CPU占用这部分的性能优化。
 今天培训的内容比较基础，还是老规矩，我做敲门砖，其余的还需要各位发挥。
@@ -83,9 +83,9 @@ perf这个工具最开始是作为Performance Counter的接口引入内核的，
 第二个命令是 perf record，它跟第三个命令 perf report 是搭配使用的，record 用来记录一段时间内的程序执行情况，然后用 report 来进行展示。 -g 参数的意义跟 perf top一致，启用了函数栈以后，我们可以使用 –call-graph 来制定使用哪种方式来获取函数栈：">
 
 <meta property="og:url" content="https://www.hualet.org/posts/perf-training-one/">
-  <meta property="og:site_name" content="Think in Hualet">
-  <meta property="og:title" content="使用 Perf 优化程序性能">
-  <meta property="og:description" content="因为原定deepin 15.7会做优化（能耗、资源占用等）方面的工作，所以在此之前，想提升一下团队整体的性能剖析、优化方面的水平，也就有了这次（周五）的培训。本来想用视频记录的，一个是自己回头能看看，反思和改进一下演说能力；另一个是以后有新人入职，我也就不用挨个再讲一遍，天不遂人愿，录制视频的软件半道挂了（ 所以只能这里尽量回忆当时想表述的内容，这里文字稿记录了。
+	<meta property="og:site_name" content="Think in Hualet">
+	<meta property="og:title" content="使用 Perf 优化程序性能">
+	<meta property="og:description" content="因为原定deepin 15.7会做优化（能耗、资源占用等）方面的工作，所以在此之前，想提升一下团队整体的性能剖析、优化方面的水平，也就有了这次（周五）的培训。本来想用视频记录的，一个是自己回头能看看，反思和改进一下演说能力；另一个是以后有新人入职，我也就不用挨个再讲一遍，天不遂人愿，录制视频的软件半道挂了（ 所以只能这里尽量回忆当时想表述的内容，这里文字稿记录了。
 下面就是培训内容：
 好，人到齐了我们就开始了。今天要培训或者说要分享的内容是程序性能优化方面的内容，其实我们对性能优化不陌生：最开始接触龙芯和申威平台，系统组件间调用不是异步导致系统卡得无法使用；好不容易交了一个版本，控制中心各个模块还是因为切换卡顿、使用体验不好等做改进；前段时间为2G内存机器做优化等等。现在我们因为程序设计问题导致的性能问题比以前少了很多，一方面我们还要对这些部分持续改进，另一方面我们需要掌握一些性能剖析工具的使用，来帮助我们改进一些更细粒度的程序性能问题，今天我们主要集中在程序执行性能、也就是CPU占用这部分的性能优化。
 今天培训的内容比较基础，还是老规矩，我做敲门砖，其余的还需要各位发挥。
@@ -111,11 +111,11 @@ perf这个工具最开始是作为Performance Counter的接口引入内核的，
 我们平常使用的perf命令是用户态的工具，前面说得那些都是内核里面做的事情，内核态工具主要是对搜集到的数据和事件进行处理和统计。因为这个工具跟内核版本关系比较紧密，所以安装perf的时候需要注意跟内核版本对应的问题。当然，调试的时候装dbgsym包是必须的。
 使用perf查找程序性能热点，一般主要用到三个子命令，第一个就是 perf top，这个很好理解，top命令大家都用过，那个top主要是针对进程或者线程级别的资源占用进行统计和展示，perf top可以理解为函数级别的top，可以动态展示系统目前占用资源最高的函数分布情况，它后面的 -g 是启用函数栈，-p 后面加上进程 PID就可以针对单个进程进行追踪，这个跟top命令一致，如果不加 -p 就是默认系统级的统计和展示。
 第二个命令是 perf record，它跟第三个命令 perf report 是搭配使用的，record 用来记录一段时间内的程序执行情况，然后用 report 来进行展示。 -g 参数的意义跟 perf top一致，启用了函数栈以后，我们可以使用 –call-graph 来制定使用哪种方式来获取函数栈：">
-  <meta property="og:locale" content="zh">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2018-06-16T20:54:44+08:00">
-    <meta property="article:modified_time" content="2018-06-16T20:54:44+08:00">
+	<meta property="og:locale" content="zh">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2018-06-16T20:54:44+08:00">
+		<meta property="article:modified_time" content="2018-06-16T20:54:44+08:00">
 
 
 

@@ -38,9 +38,9 @@ PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提�
 
 
 
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="从零开始写一个终端模拟器：基于 libghostty-vt 的极简实现与进阶之路">
-  <meta name="twitter:description" content="为什么基于 libghotty-vt 做新版的 deepin-terminal，在上篇博客中已经介绍过了。
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="从零开始写一个终端模拟器：基于 libghostty-vt 的极简实现与进阶之路">
+	<meta name="twitter:description" content="为什么基于 libghotty-vt 做新版的 deepin-terminal，在上篇博客中已经介绍过了。
 这个项目做下来（还未完成），最大的感受是：终端这玩意看着简单，底层知识缺口一个接一个。终端怎么跟 shell 通信、shell 集成到底集成的是不是 shell、各种测试工具怎么搭……这些问题之前完全没概念。这篇文章就是一路填坑的笔记，从概念到代码，说说写一个终端模拟器到底要搞清哪些东西。
 要写终端，Shell、PTY、Terminal Emulator、VT 序列这四个东西的关系必须搞明白。我一开始也是糊里糊涂的，以为 Terminal Emulator 就是&#34;一个带图形界面的 shell&#34;，其实不是。
 1.1 Shell Link to heading Shell 就是 bash、zsh、fish 这些东西。它从你给它的标准输入读命令，解析完 fork 个子进程去跑，再把结果写回标准输出。Shell 根本不在乎输出到了哪里，管道也好，文件也好，PTY 也好，对它来说都是文件描述符。
@@ -48,23 +48,23 @@ PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提�
 PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提供了一对虚拟设备文件：master 和 slave。Shell 和命令程序连在 slave 端，把它们的标准输入输出都绑到这里。slave 端的行为跟真实 TTY 一模一样，所以程序检测 stdout 时会得到&#34;是 TTY&#34;的结果，正常输出颜色和转义序列。终端模拟器则连在 master 端，读取程序输出、发送用户输入。">
 
 <meta property="og:url" content="https://www.hualet.org/posts/build-terminal-with-libghostty-vt/">
-  <meta property="og:site_name" content="Think in Hualet">
-  <meta property="og:title" content="从零开始写一个终端模拟器：基于 libghostty-vt 的极简实现与进阶之路">
-  <meta property="og:description" content="为什么基于 libghotty-vt 做新版的 deepin-terminal，在上篇博客中已经介绍过了。
+	<meta property="og:site_name" content="Think in Hualet">
+	<meta property="og:title" content="从零开始写一个终端模拟器：基于 libghostty-vt 的极简实现与进阶之路">
+	<meta property="og:description" content="为什么基于 libghotty-vt 做新版的 deepin-terminal，在上篇博客中已经介绍过了。
 这个项目做下来（还未完成），最大的感受是：终端这玩意看着简单，底层知识缺口一个接一个。终端怎么跟 shell 通信、shell 集成到底集成的是不是 shell、各种测试工具怎么搭……这些问题之前完全没概念。这篇文章就是一路填坑的笔记，从概念到代码，说说写一个终端模拟器到底要搞清哪些东西。
 要写终端，Shell、PTY、Terminal Emulator、VT 序列这四个东西的关系必须搞明白。我一开始也是糊里糊涂的，以为 Terminal Emulator 就是&#34;一个带图形界面的 shell&#34;，其实不是。
 1.1 Shell Link to heading Shell 就是 bash、zsh、fish 这些东西。它从你给它的标准输入读命令，解析完 fork 个子进程去跑，再把结果写回标准输出。Shell 根本不在乎输出到了哪里，管道也好，文件也好，PTY 也好，对它来说都是文件描述符。
 1.2 PTY Link to heading 终端模拟器是 GUI 程序，用户通过窗口和它交互。但 Shell 和它启动的命令程序，骨子里仍觉得自己应该连在一个字符设备上。这个设备叫 TTY（电传打字机的历史遗留），程序通过检测 stdout 是不是 TTY 来决定要不要输出彩色文本、显示进度条、启动 TUI 界面。如果直接把 Shell 的标准输出接到管道上，它立刻进入哑巴模式，输出变成灰扑扑的纯文本。
 PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提供了一对虚拟设备文件：master 和 slave。Shell 和命令程序连在 slave 端，把它们的标准输入输出都绑到这里。slave 端的行为跟真实 TTY 一模一样，所以程序检测 stdout 时会得到&#34;是 TTY&#34;的结果，正常输出颜色和转义序列。终端模拟器则连在 master 端，读取程序输出、发送用户输入。">
-  <meta property="og:locale" content="zh">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2026-05-05T22:00:00+08:00">
-    <meta property="article:modified_time" content="2026-05-05T22:00:00+08:00">
-    <meta property="article:tag" content="终端">
-    <meta property="article:tag" content="Libghostty-Vt">
-    <meta property="article:tag" content="Qt">
-    <meta property="article:tag" content="技术">
+	<meta property="og:locale" content="zh">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-05-05T22:00:00+08:00">
+		<meta property="article:modified_time" content="2026-05-05T22:00:00+08:00">
+		<meta property="article:tag" content="终端">
+		<meta property="article:tag" content="Libghostty-Vt">
+		<meta property="article:tag" content="Qt">
+		<meta property="article:tag" content="技术">
 
 
 
@@ -370,7 +370,7 @@ PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提�
 </h3>
 <p><code>TerminalWidget::initialize()</code> 里按顺序创建 handle：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 1. 终端状态机
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">GhosttyTerminalOptions</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="n">GhosttyTerminalOptions</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">cols</span> <span class="o">=</span> <span class="n">m_cols</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">rows</span> <span class="o">=</span> <span class="n">m_rows</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">max_scrollback</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
@@ -379,18 +379,18 @@ PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提�
 </span></span><span class="line"><span class="cl"><span class="n">ghostty_terminal_resize</span><span class="p">(</span><span class="n">m_terminal</span><span class="p">,</span> <span class="n">m_cols</span><span class="p">,</span> <span class="n">m_rows</span><span class="p">,</span> <span class="n">cellWidth</span><span class="p">,</span> <span class="n">cellHeight</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 2. 注册 effect 回调
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ghostty_terminal_set</span><span class="p">(</span><span class="n">m_terminal</span><span class="p">,</span> <span class="n">GHOSTTY_TERMINAL_OPT_USERDATA</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="n">ghostty_terminal_set</span><span class="p">(</span><span class="n">m_terminal</span><span class="p">,</span> <span class="n">GHOSTTY_TERMINAL_OPT_USERDATA</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">ghostty_terminal_set</span><span class="p">(</span><span class="n">m_terminal</span><span class="p">,</span> <span class="n">GHOSTTY_TERMINAL_OPT_WRITE_PTY</span><span class="p">,</span> <span class="n">effectWritePty</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">ghostty_terminal_set</span><span class="p">(</span><span class="n">m_terminal</span><span class="p">,</span> <span class="n">GHOSTTY_TERMINAL_OPT_SIZE</span><span class="p">,</span> <span class="n">effectSize</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">ghostty_terminal_set</span><span class="p">(</span><span class="n">m_terminal</span><span class="p">,</span> <span class="n">GHOSTTY_TERMINAL_OPT_TITLE_CHANGED</span><span class="p">,</span> <span class="n">effectTitleChanged</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 3. 渲染状态
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ghostty_render_state_new</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_renderState</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="n">ghostty_render_state_new</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_renderState</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">ghostty_render_state_row_iterator_new</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_rowIter</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">ghostty_render_state_row_cells_new</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_rowCells</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 4. 输入编码器
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ghostty_key_encoder_new</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_keyEncoder</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="n">ghostty_key_encoder_new</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_keyEncoder</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">ghostty_key_event_new</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_keyEvent</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">ghostty_mouse_encoder_new</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_mouseEncoder</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">ghostty_mouse_event_new</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_mouseEvent</span><span class="p">);</span>
@@ -436,23 +436,23 @@ PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提�
 <p><code>paintEvent()</code> 调 <code>renderTerminal()</code>：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">TerminalWidget</span><span class="o">::</span><span class="n">renderTerminal</span><span class="p">(</span><span class="n">QPainter</span> <span class="o">&amp;</span><span class="n">painter</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 1. 同步终端状态到渲染状态
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ghostty_render_state_update</span><span class="p">(</span><span class="n">m_renderState</span><span class="p">,</span> <span class="n">m_terminal</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">ghostty_render_state_update</span><span class="p">(</span><span class="n">m_renderState</span><span class="p">,</span> <span class="n">m_terminal</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1">// 2. 获取默认颜色
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">GhosttyRenderStateColors</span> <span class="n">colors</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">GhosttyRenderStateColors</span> <span class="n">colors</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="n">ghostty_render_state_colors_get</span><span class="p">(</span><span class="n">m_renderState</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">colors</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1">// 3. 判断是否需要全量重绘
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">GhosttyRenderStateDirty</span> <span class="n">dirtyState</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">GhosttyRenderStateDirty</span> <span class="n">dirtyState</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="n">ghostty_render_state_get</span><span class="p">(</span><span class="n">m_renderState</span><span class="p">,</span> <span class="n">GHOSTTY_RENDER_STATE_DATA_DIRTY</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dirtyState</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="n">fullRedraw</span> <span class="o">=</span> <span class="p">(</span><span class="n">dirtyState</span> <span class="o">==</span> <span class="n">GHOSTTY_RENDER_STATE_DIRTY_ALL</span><span class="p">)</span> 
 </span></span><span class="line"><span class="cl">                      <span class="o">||</span> <span class="n">m_backBuffer</span><span class="p">.</span><span class="n">isNull</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1">// 4. 离屏绘制到 back buffer
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">QPainter</span> <span class="nf">backPainter</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_backBuffer</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">QPainter</span> <span class="nf">backPainter</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_backBuffer</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1">// 5. 逐行遍历，只画脏行
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">ghostty_render_state_row_iterator_next</span><span class="p">(</span><span class="n">m_rowIter</span><span class="p">))</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="kt">bool</span> <span class="n">rowDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">ghostty_render_state_row_get</span><span class="p">(</span><span class="n">m_rowIter</span><span class="p">,</span> 
@@ -472,7 +472,7 @@ PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提�
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1">// 6. 贴到屏幕
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">painter</span><span class="p">.</span><span class="n">drawImage</span><span class="p">(</span><span class="n">contentOrigin</span><span class="p">,</span> <span class="n">m_backBuffer</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">painter</span><span class="p">.</span><span class="n">drawImage</span><span class="p">(</span><span class="n">contentOrigin</span><span class="p">,</span> <span class="n">m_backBuffer</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>增量渲染的关键在第 5 步：只重绘 dirty 的行。libghostty-vt 内部维护了每行的修改标记，<code>ghostty_render_state_update()</code> 会把这个信息同步过来。</p>
 <p><code>renderRow()</code> 的逻辑更细：</p>
@@ -482,7 +482,7 @@ PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提�
 </span></span><span class="line"><span class="cl">        <span class="n">GHOSTTY_RENDER_STATE_ROW_DATA_CELLS</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_rowCells</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1">// 整行背景填充
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">painter</span><span class="p">.</span><span class="n">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">(),</span> <span class="n">m_cellHeight</span><span class="p">,</span> <span class="n">defaultBackground</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">painter</span><span class="p">.</span><span class="n">fillRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">(),</span> <span class="n">m_cellHeight</span><span class="p">,</span> <span class="n">defaultBackground</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">ghostty_render_state_row_cells_next</span><span class="p">(</span><span class="n">m_rowCells</span><span class="p">))</span> <span class="p">{</span>
@@ -499,16 +499,16 @@ PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提�
 </span></span><span class="line"><span class="cl">        <span class="n">ghostty_render_state_row_cells_get_multi</span><span class="p">(</span><span class="n">m_rowCells</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">written</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        
 </span></span><span class="line"><span class="cl">        <span class="c1">// 宽字符处理
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">GhosttyCellWide</span> <span class="n">cellWide</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">        <span class="n">GhosttyCellWide</span> <span class="n">cellWide</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">ghostty_cell_get</span><span class="p">(</span><span class="n">rawCell</span><span class="p">,</span> <span class="n">GHOSTTY_CELL_DATA_WIDE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cellWide</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">cellWidth</span> <span class="o">=</span> <span class="p">(</span><span class="n">cellWide</span> <span class="o">==</span> <span class="n">GHOSTTY_CELL_WIDE_WIDE</span><span class="p">)</span> 
 </span></span><span class="line"><span class="cl">                        <span class="o">?</span> <span class="n">m_cellWidth</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">:</span> <span class="n">m_cellWidth</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">        
 </span></span><span class="line"><span class="cl">        <span class="c1">// 颜色处理（反色、自定义前景背景）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        
+</span></span></span><span class="line"><span class="cl">        <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">        
 </span></span><span class="line"><span class="cl">        <span class="c1">// 绘制文字
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">graphemeLen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">graphemeLen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">QString</span> <span class="n">text</span> <span class="o">=</span> <span class="n">extractText</span><span class="p">(</span><span class="n">m_rowCells</span><span class="p">,</span> <span class="n">graphemeLen</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">painter</span><span class="p">.</span><span class="n">drawText</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">m_fontAscent</span><span class="p">,</span> <span class="n">text</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
@@ -552,14 +552,14 @@ PTY（Pseudo Terminal，伪终端）就是来解决这个矛盾的。内核提�
 <p>用户调整窗口时，三样东西要同步：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">TerminalWidget</span><span class="o">::</span><span class="n">resizeEvent</span><span class="p">(</span><span class="n">QResizeEvent</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 1. 算新的行列数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">updateGridSize</span><span class="p">();</span>  <span class="c1">// m_cols = width / m_cellWidth
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    
+</span></span></span><span class="line"><span class="cl">    <span class="n">updateGridSize</span><span class="p">();</span>  <span class="c1">// m_cols = width / m_cellWidth
+</span></span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1">// 2. 通知 libghostty-vt
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ghostty_terminal_resize</span><span class="p">(</span><span class="n">m_terminal</span><span class="p">,</span> <span class="n">m_cols</span><span class="p">,</span> <span class="n">m_rows</span><span class="p">,</span> 
+</span></span></span><span class="line"><span class="cl">    <span class="n">ghostty_terminal_resize</span><span class="p">(</span><span class="n">m_terminal</span><span class="p">,</span> <span class="n">m_cols</span><span class="p">,</span> <span class="n">m_rows</span><span class="p">,</span> 
 </span></span><span class="line"><span class="cl">                            <span class="n">m_cellWidth</span><span class="p">,</span> <span class="n">m_cellHeight</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1">// 3. 通知 PTY（让 stty size 和 SIGWINCH 生效）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">m_ptySession</span><span class="o">-&gt;</span><span class="n">resize</span><span class="p">(</span><span class="n">m_cols</span><span class="p">,</span> <span class="n">m_rows</span><span class="p">,</span> <span class="n">m_cellWidth</span><span class="p">,</span> <span class="n">m_cellHeight</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">m_ptySession</span><span class="o">-&gt;</span><span class="n">resize</span><span class="p">(</span><span class="n">m_cols</span><span class="p">,</span> <span class="n">m_rows</span><span class="p">,</span> <span class="n">m_cellWidth</span><span class="p">,</span> <span class="n">m_cellHeight</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p><code>PtySession::resize()</code> 里用 <code>ioctl(fd, TIOCSWINSZ, &amp;winsize)</code> 把新尺寸设到 PTY。shell 和它的子进程收到 <code>SIGWINCH</code> 信号，vim、htop 这些 TUI 程序就知道该重绘了。</p>
 <p>实际实现里 resize 会做防抖，<code>QTimer</code> 延迟几十毫秒再应用。拖拽窗口时如果每像素都刷新，闪烁会很严重。</p>
