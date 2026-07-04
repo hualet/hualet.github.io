@@ -5,13 +5,13 @@
     <loc>https://www.hualet.org/en/authors/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/authors/"
+                hreflang="en"
+                href="https://www.hualet.org/en/authors/"
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/authors/"
+                hreflang="zh"
+                href="https://www.hualet.org/authors/"
                 />
   </url><url>
     <loc>https://www.hualet.org/en/categories/</loc>
@@ -29,13 +29,13 @@
     <loc>https://www.hualet.org/en/series/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/series/"
+                hreflang="en"
+                href="https://www.hualet.org/en/series/"
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/series/"
+                hreflang="zh"
+                href="https://www.hualet.org/series/"
                 />
   </url><url>
     <loc>https://www.hualet.org/en/tags/</loc>

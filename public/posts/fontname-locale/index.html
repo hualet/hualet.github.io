@@ -31,9 +31,9 @@ WPS 设置段落字体（中文字体）后，工具栏显示的字体为英文�
 
 
 
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="WPS中的字体名">
-  <meta name="twitter:description" content="今天又被 fontconfig 坑到了……仔细想想，半年到一年前我还对 fontconfig 狗屁不通呢，而现在我已经被 fontconfit 坑了有几次了，这印证了一个真理：“只要你足够迟钝，世界就是美好的，一旦你有了某种能力，麻烦就会找到你”——这只是个玩笑，事实上不管你有没有能力，现实都不会让你好过 😈
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="WPS中的字体名">
+	<meta name="twitter:description" content="今天又被 fontconfig 坑到了……仔细想想，半年到一年前我还对 fontconfig 狗屁不通呢，而现在我已经被 fontconfit 坑了有几次了，这印证了一个真理：“只要你足够迟钝，世界就是美好的，一旦你有了某种能力，麻烦就会找到你”——这只是个玩笑，事实上不管你有没有能力，现实都不会让你好过 😈
 在这些坑里面，有两个是跟今天主题相关的，也就是关于WPS中字体名称的两个问题：
 WPS 字体列表中中文字体在中文环境下不显示中文名（比如系统里面有宋体，列表里面显示 SimSun）； WPS 设置段落字体（中文字体）后，工具栏显示的字体为英文名（比如你设置一段文字是宋体，但是标题栏显示的仍然是SimSun） 这两个问题有点像，但是却不是同一个问题（也不只是WPS有问题，而是WPS对字体的需求比较多）：
 第一个问题原先是 论坛用户报告 的（实际上刘老大也报过，不过被自动忽略了😂），论坛用户又报过来以后，大家看用户的报告太详细了，感动得一塌糊涂，顿时解决问题的动力都有了。我也折腾了大半天，不过脑袋里面一直有一个同事的声音：那是字体有问题！我也挺赞同的：盗版的字体，不靠谱很正常……所以，我就考虑能不能给字体做一些别名啥的，比如 SimSun 就叫 宋体……当然了最后就是玩了一下 fontconfig 的配置以后，默默就放弃了。
@@ -45,9 +45,9 @@ WPS 字体列表中中文字体在中文环境下不显示中文名（比如系�
 更让人尴尬的是，我也不知道这是怎么回事。但是，无巧不成书，就在这种尴尬氛围的笼罩下，我鬼使神差地在 ElementryOS （太长了，下面简称 EOS ）上运行了 fc-match 宋体 这个命令，而且很神奇的发现输出的 simsun.ttf: &#34;宋体&#34; &#34;Regular&#34; 跟 deepin 下同样命令输出的 simsun.ttf: &#34;SimSun&#34; &#34;Regular&#34; 不太一样，这可把我乐坏了——要知道一个稍微复杂点的图形软件，打开 fontconfig 的调试以后，输出就是很可怕的，更别说 WPS！别问我是怎么知道的，回忆起来都是泪。但是现在使用 fc-match 就能重现的问题（我打心底认为这俩是同一个问题），调试起来就比较简单了。">
 
 <meta property="og:url" content="https://www.hualet.org/posts/fontname-locale/">
-  <meta property="og:site_name" content="Think in Hualet">
-  <meta property="og:title" content="WPS中的字体名">
-  <meta property="og:description" content="今天又被 fontconfig 坑到了……仔细想想，半年到一年前我还对 fontconfig 狗屁不通呢，而现在我已经被 fontconfit 坑了有几次了，这印证了一个真理：“只要你足够迟钝，世界就是美好的，一旦你有了某种能力，麻烦就会找到你”——这只是个玩笑，事实上不管你有没有能力，现实都不会让你好过 😈
+	<meta property="og:site_name" content="Think in Hualet">
+	<meta property="og:title" content="WPS中的字体名">
+	<meta property="og:description" content="今天又被 fontconfig 坑到了……仔细想想，半年到一年前我还对 fontconfig 狗屁不通呢，而现在我已经被 fontconfit 坑了有几次了，这印证了一个真理：“只要你足够迟钝，世界就是美好的，一旦你有了某种能力，麻烦就会找到你”——这只是个玩笑，事实上不管你有没有能力，现实都不会让你好过 😈
 在这些坑里面，有两个是跟今天主题相关的，也就是关于WPS中字体名称的两个问题：
 WPS 字体列表中中文字体在中文环境下不显示中文名（比如系统里面有宋体，列表里面显示 SimSun）； WPS 设置段落字体（中文字体）后，工具栏显示的字体为英文名（比如你设置一段文字是宋体，但是标题栏显示的仍然是SimSun） 这两个问题有点像，但是却不是同一个问题（也不只是WPS有问题，而是WPS对字体的需求比较多）：
 第一个问题原先是 论坛用户报告 的（实际上刘老大也报过，不过被自动忽略了😂），论坛用户又报过来以后，大家看用户的报告太详细了，感动得一塌糊涂，顿时解决问题的动力都有了。我也折腾了大半天，不过脑袋里面一直有一个同事的声音：那是字体有问题！我也挺赞同的：盗版的字体，不靠谱很正常……所以，我就考虑能不能给字体做一些别名啥的，比如 SimSun 就叫 宋体……当然了最后就是玩了一下 fontconfig 的配置以后，默默就放弃了。
@@ -57,11 +57,11 @@ WPS 字体列表中中文字体在中文环境下不显示中文名（比如系�
 因为 DDE 并没有设置过多的 fontconfig 配置，所以我相信这不是 DDE 的问题，但是又觉得对于一个文字处理软件来说，如果这么重要的功能都有 BUG，我真不信 WPS 的人还能坐得住，所以就想试一下在 Ubuntu 下 WPS 的这个行为是否正确。刚好年前 ElementryOS 发新版的时候尝鲜装了一个在测试机器上，所以很快切进去下了一个 WPS 安装上，从一个正版的网站上下载了一个盗版的宋体，试了一下，果然踏马的是好的……
 理性的我用事实证明了感性的我是错误的，气氛一度很尴尬。
 更让人尴尬的是，我也不知道这是怎么回事。但是，无巧不成书，就在这种尴尬氛围的笼罩下，我鬼使神差地在 ElementryOS （太长了，下面简称 EOS ）上运行了 fc-match 宋体 这个命令，而且很神奇的发现输出的 simsun.ttf: &#34;宋体&#34; &#34;Regular&#34; 跟 deepin 下同样命令输出的 simsun.ttf: &#34;SimSun&#34; &#34;Regular&#34; 不太一样，这可把我乐坏了——要知道一个稍微复杂点的图形软件，打开 fontconfig 的调试以后，输出就是很可怕的，更别说 WPS！别问我是怎么知道的，回忆起来都是泪。但是现在使用 fc-match 就能重现的问题（我打心底认为这俩是同一个问题），调试起来就比较简单了。">
-  <meta property="og:locale" content="zh">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2019-01-14T18:31:08+08:00">
-    <meta property="article:modified_time" content="2019-01-14T18:31:08+08:00">
+	<meta property="og:locale" content="zh">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2019-01-14T18:31:08+08:00">
+		<meta property="article:modified_time" content="2019-01-14T18:31:08+08:00">
 
 
 
@@ -437,9 +437,9 @@ src/fcdefault.c
 <p>写了个测试程序：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fontconfig/fontconfig.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="k">const</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">FcStrSet</span> <span class="o">*</span><span class="n">langs</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>

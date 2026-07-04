@@ -53,9 +53,9 @@ WARNING: never-assigned local variable &#39;filename&#39; (similar: name, __nr, 
 
 
 
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="输入法消失之谜">
-  <meta name="twitter:description" content="最近不少用户在deepin论坛上报告说搜狗输入法的图标不见了，收到反馈我就心想坏了，我的输入法图标很早前就消失不见了，之前发现这个问题但是没有去跟踪是因为没有看到其他同事出现类似情况，我的电脑平常为了调试用户反馈的bug又经常XJB装软件，觉得是个例。现在收到多人反馈，大概又是什么“更新事故”？
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="输入法消失之谜">
+	<meta name="twitter:description" content="最近不少用户在deepin论坛上报告说搜狗输入法的图标不见了，收到反馈我就心想坏了，我的输入法图标很早前就消失不见了，之前发现这个问题但是没有去跟踪是因为没有看到其他同事出现类似情况，我的电脑平常为了调试用户反馈的bug又经常XJB装软件，觉得是个例。现在收到多人反馈，大概又是什么“更新事故”？
 带着沉重的心情，首先要确定的是这个问题影响的范围：
 15.4.1的ISO是不存在这个问题的； 不用输入法的老外是没有受到影响的； 只有少量论坛用户报告了这个问题，大部分人表示更新到最新也没有这个问题； 还好影响范围还比较小，那么下一步就是找解决办法了：
 想办法绕过？对于这个问题来说好像不太好使； debug找到问题的根本原因； （注：其实用户反馈是集中在这两周的时间甚至更短，如果是其他人的话可能会去排查最近更新了什么包，但是我刚好很早以前遇到了这个问题，受其干扰，所以走了一条冤枉路……）
@@ -75,9 +75,9 @@ WARNING: never-assigned local variable &#39;filename&#39; (similar: name, __nr, 
 这时候考虑sysdig（翻了好长时间bearychat的聊天记录无果，又去请教公司另另外一个大神才找到这个工具），本来准备晚上再跟踪一下，这时候中间又闹了一个 xscreensaver 在deepin上使用无法解锁的问题，引出使用capabilities替换setuid设定的问题，进而引出如果检测二进制需要的capabilities的方法（跳得有点快，略过细节），进而发现bcc里面的opensnoop工具，而且这个工具集在deepin仓库里面有打包：bpfcc-tools。">
 
 <meta property="og:url" content="https://www.hualet.org/posts/shu-ru-fa-xiao-shi-zhi-mi/">
-  <meta property="og:site_name" content="Think in Hualet">
-  <meta property="og:title" content="输入法消失之谜">
-  <meta property="og:description" content="最近不少用户在deepin论坛上报告说搜狗输入法的图标不见了，收到反馈我就心想坏了，我的输入法图标很早前就消失不见了，之前发现这个问题但是没有去跟踪是因为没有看到其他同事出现类似情况，我的电脑平常为了调试用户反馈的bug又经常XJB装软件，觉得是个例。现在收到多人反馈，大概又是什么“更新事故”？
+	<meta property="og:site_name" content="Think in Hualet">
+	<meta property="og:title" content="输入法消失之谜">
+	<meta property="og:description" content="最近不少用户在deepin论坛上报告说搜狗输入法的图标不见了，收到反馈我就心想坏了，我的输入法图标很早前就消失不见了，之前发现这个问题但是没有去跟踪是因为没有看到其他同事出现类似情况，我的电脑平常为了调试用户反馈的bug又经常XJB装软件，觉得是个例。现在收到多人反馈，大概又是什么“更新事故”？
 带着沉重的心情，首先要确定的是这个问题影响的范围：
 15.4.1的ISO是不存在这个问题的； 不用输入法的老外是没有受到影响的； 只有少量论坛用户报告了这个问题，大部分人表示更新到最新也没有这个问题； 还好影响范围还比较小，那么下一步就是找解决办法了：
 想办法绕过？对于这个问题来说好像不太好使； debug找到问题的根本原因； （注：其实用户反馈是集中在这两周的时间甚至更短，如果是其他人的话可能会去排查最近更新了什么包，但是我刚好很早以前遇到了这个问题，受其干扰，所以走了一条冤枉路……）
@@ -95,11 +95,11 @@ $ killall sogou-qimpanel &amp;&amp; strace -e open sogou-qimpanel 打印着打�
 probe syscall.open.return { printf(&#34;%s %s&#34;, filename, execname()) } 运行失败……
 WARNING: never-assigned local variable &#39;filename&#39; (similar: name, __nr, retstr): identifier &#39;filename&#39; at sogou_qimpanel_open.stp:2:20 source: printf(&#34;%s, %s&#34;, filename, execname()) 请教公司另外一大神，大神表示“你装一下kernel的debug包就行了……” 结果，还是不行……坑……
 这时候考虑sysdig（翻了好长时间bearychat的聊天记录无果，又去请教公司另另外一个大神才找到这个工具），本来准备晚上再跟踪一下，这时候中间又闹了一个 xscreensaver 在deepin上使用无法解锁的问题，引出使用capabilities替换setuid设定的问题，进而引出如果检测二进制需要的capabilities的方法（跳得有点快，略过细节），进而发现bcc里面的opensnoop工具，而且这个工具集在deepin仓库里面有打包：bpfcc-tools。">
-  <meta property="og:locale" content="zh">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2017-08-05T21:26:48+08:00">
-    <meta property="article:modified_time" content="2017-08-05T21:26:48+08:00">
+	<meta property="og:locale" content="zh">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2017-08-05T21:26:48+08:00">
+		<meta property="article:modified_time" content="2017-08-05T21:26:48+08:00">
 
 
 

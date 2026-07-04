@@ -2,46 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.hualet.org/categories/</loc>
-    <lastmod>2026-05-24T09:47:47+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/categories/"
-                />
-  </url><url>
     <loc>https://www.hualet.org/posts/</loc>
-    <lastmod>2026-05-24T09:47:47+08:00</lastmod>
-  </url><url>
-    <loc>https://www.hualet.org/tags/</loc>
-    <lastmod>2026-05-24T09:47:47+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/tags/"
-                />
+    <lastmod>2026-07-04T21:51:46+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/</loc>
-    <lastmod>2026-05-24T09:47:47+08:00</lastmod>
+    <lastmod>2026-07-04T21:51:46+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.hualet.org/"
+                />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
                 href="https://www.hualet.org/en/"
                 />
+  </url><url>
+    <loc>https://www.hualet.org/posts/musk_worker/</loc>
+    <lastmod>2026-07-04T21:51:46+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/categories/</loc>
+    <lastmod>2026-05-24T09:47:47+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="https://www.hualet.org/"
+                href="https://www.hualet.org/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.hualet.org/en/categories/"
+                />
+  </url><url>
+    <loc>https://www.hualet.org/tags/</loc>
+    <lastmod>2026-05-24T09:47:47+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.hualet.org/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.hualet.org/en/tags/"
                 />
   </url><url>
     <loc>https://www.hualet.org/tags/%E4%BA%BA%E7%94%9F/</loc>
@@ -257,6 +260,9 @@
     <loc>https://www.hualet.org/posts/add-notify-icon-support-for-freerdp/</loc>
     <lastmod>2018-12-16T14:41:44+08:00</lastmod>
   </url><url>
+    <loc>https://www.hualet.org/posts/thoughts-on-15.8/</loc>
+    <lastmod>2018-11-21T09:07:31+08:00</lastmod>
+  </url><url>
     <loc>https://www.hualet.org/posts/unix-domain-socket-send-fds/</loc>
     <lastmod>2018-10-28T21:08:45+08:00</lastmod>
   </url><url>
@@ -269,7 +275,7 @@
     <loc>https://www.hualet.org/posts/deepin-code-release/</loc>
     <lastmod>2018-09-17T15:23:47+08:00</lastmod>
   </url><url>
-    <loc>https://www.hualet.org/posts/thoughts-on-15/</loc>
+    <loc>https://www.hualet.org/posts/thoughts-on-15.7/</loc>
     <lastmod>2018-09-02T10:27:00+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/blogroll/</loc>
@@ -293,7 +299,7 @@
     <loc>https://www.hualet.org/about/</loc>
     <lastmod>2017-12-14T21:26:12+08:00</lastmod>
   </url><url>
-    <loc>https://www.hualet.org/posts/15/</loc>
+    <loc>https://www.hualet.org/posts/15.5-yan-fa-jing-yan/</loc>
     <lastmod>2017-12-04T21:26:48+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/posts/gei-xiao-cui-de-ji-chu-guan-li-ke/</loc>

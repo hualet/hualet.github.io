@@ -23,58 +23,58 @@
 
 一般情况下，项目目录结构按照下表说明进行创建和管理，对于复杂项目由开发经理按需以此为基础调整项目目录结构：
 
-  
-      
-          目录名
-          说明
-      
-  
-  
-      
-          src/
-          存放项目源代码文件。
-      
-      
-          3rdparty/
-          存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。
-      
-      
-          tests/
-          单元测试存放目录。
-      
-      
-          docs/
-          用于存放帮助手册、man等文件。
-      
-      
-          tools/
-          项目用到的工具和脚本。
-      
-      
-          po/
-          存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。
-      
-      
-          misc/
-          项目需要使用到的数据文件或者不属于前面任一类型的文件。
-      
-      
-          .desktop
-          项目的desktop文件，如有多个可以放在misc目录中。
-      
-      
-          README
-          项目的说明文档，用于说明项目的概要情况。
-      
-      
-          LICENSE
-          项目采用的授权协议。
-      
-      
-          Makefile
-          构建脚本，同类型的还有pro文件CMakeLists.txt文件等。
-      
-  
+	
+			
+					目录名
+					说明
+			
+	
+	
+			
+					src/
+					存放项目源代码文件。
+			
+			
+					3rdparty/
+					存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。
+			
+			
+					tests/
+					单元测试存放目录。
+			
+			
+					docs/
+					用于存放帮助手册、man等文件。
+			
+			
+					tools/
+					项目用到的工具和脚本。
+			
+			
+					po/
+					存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。
+			
+			
+					misc/
+					项目需要使用到的数据文件或者不属于前面任一类型的文件。
+			
+			
+					.desktop
+					项目的desktop文件，如有多个可以放在misc目录中。
+			
+			
+					README
+					项目的说明文档，用于说明项目的概要情况。
+			
+			
+					LICENSE
+					项目采用的授权协议。
+			
+			
+					Makefile
+					构建脚本，同类型的还有pro文件CMakeLists.txt文件等。
+			
+	
 
 
   README
@@ -162,27 +162,27 @@ Qt/C&#43;&#43; 代码风格规范详见：Qt/C&#43;&#43;代码风格指南；">
 
 
 
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="deepin 开发者规范">
-  <meta name="twitter:description" content="为了保证研发项目的规范化，避免不一致造成的效率低下，特在此规范中对项目目录、README、代码风格、版权信息和版本控制等方面进行了一定约束，公司内部及合作项目均需按此规范进行。
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="deepin 开发者规范">
+	<meta name="twitter:description" content="为了保证研发项目的规范化，避免不一致造成的效率低下，特在此规范中对项目目录、README、代码风格、版权信息和版本控制等方面进行了一定约束，公司内部及合作项目均需按此规范进行。
 项目目录 Link to heading 一般情况下，项目目录结构按照下表说明进行创建和管理，对于复杂项目由开发经理按需以此为基础调整项目目录结构：
 目录名 说明 src/ 存放项目源代码文件。 3rdparty/ 存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。 tests/ 单元测试存放目录。 docs/ 用于存放帮助手册、man等文件。 tools/ 项目用到的工具和脚本。 po/ 存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。 misc/ 项目需要使用到的数据文件或者不属于前面任一类型的文件。 .desktop 项目的desktop文件，如有多个可以放在misc目录中。 README 项目的说明文档，用于说明项目的概要情况。 LICENSE 项目采用的授权协议。 Makefile 构建脚本，同类型的还有pro文件CMakeLists.txt文件等。 README Link to heading 每个项目必需包含该README文件，README文件内需包含如下内容：
 项目描述 依赖（包括编译依赖和运行时依赖） 构建和安装 项目目录说明 获取帮助（开发项目要求） 参与开发（开源项目要求） 授权协议说明 参考模板如下：
 # Project Name Project description. ## Dependencies ### Build dependencies - Qt &gt;= 5.6 ### Runtime dependencies - git ## Installation ### Build ​```` $ mkdir build $ cd build $ qmake .. $ make ​```` ### Install ​``` $ sudo make install ​``` 3. Install: ​```` $ sudo make install ​```` ## Getting help Any usage issues can ask for help via * [Gitter](https://gitter.im/orgs/linuxdeepin/rooms) * [IRC channel](https://webchat.freenode.net/?channels=deepin) * [Forum](https://bbs.deepin.org) * [WiKi](https://wiki.deepin.org/) ## Getting involved We encourage you to report issues and contribute changes * [Contribution guide for developers](https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers-en). (English) * [开发者代码贡献指南](https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers) (中文) ## License [Project name] is licensed under [GPLv3](LICENSE). 代码风格 Link to heading Qt/C&#43;&#43; 代码风格规范详见：Qt/C&#43;&#43;代码风格指南；">
 
 <meta property="og:url" content="https://www.hualet.org/posts/dev-conventions/">
-  <meta property="og:site_name" content="Think in Hualet">
-  <meta property="og:title" content="deepin 开发者规范">
-  <meta property="og:description" content="为了保证研发项目的规范化，避免不一致造成的效率低下，特在此规范中对项目目录、README、代码风格、版权信息和版本控制等方面进行了一定约束，公司内部及合作项目均需按此规范进行。
+	<meta property="og:site_name" content="Think in Hualet">
+	<meta property="og:title" content="deepin 开发者规范">
+	<meta property="og:description" content="为了保证研发项目的规范化，避免不一致造成的效率低下，特在此规范中对项目目录、README、代码风格、版权信息和版本控制等方面进行了一定约束，公司内部及合作项目均需按此规范进行。
 项目目录 Link to heading 一般情况下，项目目录结构按照下表说明进行创建和管理，对于复杂项目由开发经理按需以此为基础调整项目目录结构：
 目录名 说明 src/ 存放项目源代码文件。 3rdparty/ 存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。 tests/ 单元测试存放目录。 docs/ 用于存放帮助手册、man等文件。 tools/ 项目用到的工具和脚本。 po/ 存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。 misc/ 项目需要使用到的数据文件或者不属于前面任一类型的文件。 .desktop 项目的desktop文件，如有多个可以放在misc目录中。 README 项目的说明文档，用于说明项目的概要情况。 LICENSE 项目采用的授权协议。 Makefile 构建脚本，同类型的还有pro文件CMakeLists.txt文件等。 README Link to heading 每个项目必需包含该README文件，README文件内需包含如下内容：
 项目描述 依赖（包括编译依赖和运行时依赖） 构建和安装 项目目录说明 获取帮助（开发项目要求） 参与开发（开源项目要求） 授权协议说明 参考模板如下：
 # Project Name Project description. ## Dependencies ### Build dependencies - Qt &gt;= 5.6 ### Runtime dependencies - git ## Installation ### Build ​```` $ mkdir build $ cd build $ qmake .. $ make ​```` ### Install ​``` $ sudo make install ​``` 3. Install: ​```` $ sudo make install ​```` ## Getting help Any usage issues can ask for help via * [Gitter](https://gitter.im/orgs/linuxdeepin/rooms) * [IRC channel](https://webchat.freenode.net/?channels=deepin) * [Forum](https://bbs.deepin.org) * [WiKi](https://wiki.deepin.org/) ## Getting involved We encourage you to report issues and contribute changes * [Contribution guide for developers](https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers-en). (English) * [开发者代码贡献指南](https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers) (中文) ## License [Project name] is licensed under [GPLv3](LICENSE). 代码风格 Link to heading Qt/C&#43;&#43; 代码风格规范详见：Qt/C&#43;&#43;代码风格指南；">
-  <meta property="og:locale" content="zh">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2019-07-30T11:03:54+08:00">
-    <meta property="article:modified_time" content="2019-07-30T11:03:54+08:00">
+	<meta property="og:locale" content="zh">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2019-07-30T11:03:54+08:00">
+		<meta property="article:modified_time" content="2019-07-30T11:03:54+08:00">
 
 
 
@@ -348,58 +348,58 @@ Qt/C&#43;&#43; 代码风格规范详见：Qt/C&#43;&#43;代码风格指南；">
 </h1>
 <p>一般情况下，项目目录结构按照下表说明进行创建和管理，对于复杂项目由开发经理按需以此为基础调整项目目录结构：</p>
 <table>
-  <thead>
-      <tr>
-          <th>目录名</th>
-          <th>说明</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>src/</td>
-          <td>存放项目源代码文件。</td>
-      </tr>
-      <tr>
-          <td>3rdparty/</td>
-          <td>存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。</td>
-      </tr>
-      <tr>
-          <td>tests/</td>
-          <td>单元测试存放目录。</td>
-      </tr>
-      <tr>
-          <td>docs/</td>
-          <td>用于存放帮助手册、man等文件。</td>
-      </tr>
-      <tr>
-          <td>tools/</td>
-          <td>项目用到的工具和脚本。</td>
-      </tr>
-      <tr>
-          <td>po/</td>
-          <td>存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。</td>
-      </tr>
-      <tr>
-          <td>misc/</td>
-          <td>项目需要使用到的数据文件或者不属于前面任一类型的文件。</td>
-      </tr>
-      <tr>
-          <td>.desktop</td>
-          <td>项目的desktop文件，如有多个可以放在misc目录中。</td>
-      </tr>
-      <tr>
-          <td>README</td>
-          <td>项目的说明文档，用于说明项目的概要情况。</td>
-      </tr>
-      <tr>
-          <td>LICENSE</td>
-          <td>项目采用的授权协议。</td>
-      </tr>
-      <tr>
-          <td>Makefile</td>
-          <td>构建脚本，同类型的还有pro文件CMakeLists.txt文件等。</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>目录名</th>
+					<th>说明</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>src/</td>
+					<td>存放项目源代码文件。</td>
+			</tr>
+			<tr>
+					<td>3rdparty/</td>
+					<td>存放本项目引用的第三方项目源代码或者二进制。如非顶级依赖，可以适当调整放入src目录相应的模块中。另外需注意：项目依赖优先使用仓库中已有的包，尽量避免出现包裹第三方项目的情况。</td>
+			</tr>
+			<tr>
+					<td>tests/</td>
+					<td>单元测试存放目录。</td>
+			</tr>
+			<tr>
+					<td>docs/</td>
+					<td>用于存放帮助手册、man等文件。</td>
+			</tr>
+			<tr>
+					<td>tools/</td>
+					<td>项目用到的工具和脚本。</td>
+			</tr>
+			<tr>
+					<td>po/</td>
+					<td>存放项目用到的翻译文件，也可以为translations、i18n等明显可以看出是翻译文件存放目录的名称。</td>
+			</tr>
+			<tr>
+					<td>misc/</td>
+					<td>项目需要使用到的数据文件或者不属于前面任一类型的文件。</td>
+			</tr>
+			<tr>
+					<td>.desktop</td>
+					<td>项目的desktop文件，如有多个可以放在misc目录中。</td>
+			</tr>
+			<tr>
+					<td>README</td>
+					<td>项目的说明文档，用于说明项目的概要情况。</td>
+			</tr>
+			<tr>
+					<td>LICENSE</td>
+					<td>项目采用的授权协议。</td>
+			</tr>
+			<tr>
+					<td>Makefile</td>
+					<td>构建脚本，同类型的还有pro文件CMakeLists.txt文件等。</td>
+			</tr>
+	</tbody>
 </table>
 <h1 id="readme">
   README
@@ -420,23 +420,23 @@ Qt/C&#43;&#43; 代码风格规范详见：Qt/C&#43;&#43;代码风格指南；">
 </ul>
 <p>参考模板如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="gh"># Project Name
-</span></span></span><span class="line"><span class="cl"><span class="gh"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Project description.
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">## Dependencies
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">### Build dependencies
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">-</span> Qt &gt;= 5.6
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">### Runtime dependencies
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">-</span> git 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">## Installation
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">### Build
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">​```<span class="sb">`
 </span></span></span><span class="line"><span class="cl"><span class="sb">$ mkdir build
 </span></span></span><span class="line"><span class="cl"><span class="sb">$ cd build
@@ -457,7 +457,7 @@ Qt/C&#43;&#43; 代码风格规范详见：Qt/C&#43;&#43;代码风格指南；">
 </span></span></span><span class="line"><span class="cl"><span class="sb">​`</span>```
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">## Getting help
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Any usage issues can ask for help via
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">Gitter</span>](<span class="na">https://gitter.im/orgs/linuxdeepin/rooms</span>)
@@ -466,14 +466,14 @@ Qt/C&#43;&#43; 代码风格规范详见：Qt/C&#43;&#43;代码风格指南；">
 </span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">WiKi</span>](<span class="na">https://wiki.deepin.org/</span>)
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">## Getting involved
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">We encourage you to report issues and contribute changes
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">Contribution guide for developers</span>](<span class="na">https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers-en</span>). (English)
 </span></span><span class="line"><span class="cl"><span class="k">*</span> [<span class="nt">开发者代码贡献指南</span>](<span class="na">https://github.com/linuxdeepin/developer-center/wiki/Contribution-Guidelines-for-Developers</span>) (中文)
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">## License
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">[Project name] is licensed under [<span class="nt">GPLv3</span>](<span class="na">LICENSE</span>).
 </span></span></code></pre></div><h1 id="代码风格">
   代码风格

@@ -1,166 +1,171 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Tags on Think in Hualet</title>
-    <link>https://www.hualet.org/tags/</link>
-    <description>Recent content in Tags on Think in Hualet</description>
-    <generator>Hugo</generator>
-    <language>zh</language>
-    <lastBuildDate>Sun, 24 May 2026 09:47:47 +0800</lastBuildDate>
-    <atom:link href="https://www.hualet.org/tags/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>人生</title>
-      <link>https://www.hualet.org/tags/%E4%BA%BA%E7%94%9F/</link>
-      <pubDate>Sun, 24 May 2026 09:47:47 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E4%BA%BA%E7%94%9F/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>思考</title>
-      <link>https://www.hualet.org/tags/%E6%80%9D%E8%80%83/</link>
-      <pubDate>Sun, 24 May 2026 09:47:47 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E6%80%9D%E8%80%83/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Libghostty-Vt</title>
-      <link>https://www.hualet.org/tags/libghostty-vt/</link>
-      <pubDate>Tue, 05 May 2026 22:00:00 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/libghostty-vt/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Qt</title>
-      <link>https://www.hualet.org/tags/qt/</link>
-      <pubDate>Tue, 05 May 2026 22:00:00 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/qt/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>技术</title>
-      <link>https://www.hualet.org/tags/%E6%8A%80%E6%9C%AF/</link>
-      <pubDate>Tue, 05 May 2026 22:00:00 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E6%8A%80%E6%9C%AF/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>终端</title>
-      <link>https://www.hualet.org/tags/%E7%BB%88%E7%AB%AF/</link>
-      <pubDate>Tue, 05 May 2026 22:00:00 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E7%BB%88%E7%AB%AF/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>AI</title>
-      <link>https://www.hualet.org/tags/ai/</link>
-      <pubDate>Fri, 01 May 2026 22:34:23 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/ai/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>随想</title>
-      <link>https://www.hualet.org/tags/%E9%9A%8F%E6%83%B3/</link>
-      <pubDate>Fri, 01 May 2026 22:34:23 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E9%9A%8F%E6%83%B3/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>访谈</title>
-      <link>https://www.hualet.org/tags/%E8%AE%BF%E8%B0%88/</link>
-      <pubDate>Sun, 04 Jan 2026 23:01:22 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E8%AE%BF%E8%B0%88/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>季逸超</title>
-      <link>https://www.hualet.org/tags/%E5%AD%A3%E9%80%B8%E8%B6%85/</link>
-      <pubDate>Sun, 04 Jan 2026 23:01:22 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E5%AD%A3%E9%80%B8%E8%B6%85/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>段永平</title>
-      <link>https://www.hualet.org/tags/%E6%AE%B5%E6%B0%B8%E5%B9%B3/</link>
-      <pubDate>Mon, 29 Dec 2025 19:16:44 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E6%AE%B5%E6%B0%B8%E5%B9%B3/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>管理</title>
-      <link>https://www.hualet.org/tags/%E7%AE%A1%E7%90%86/</link>
-      <pubDate>Mon, 29 Dec 2025 19:16:44 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E7%AE%A1%E7%90%86/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>柯林斯</title>
-      <link>https://www.hualet.org/tags/%E6%9F%AF%E6%9E%97%E6%96%AF/</link>
-      <pubDate>Mon, 29 Dec 2025 19:16:44 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E6%9F%AF%E6%9E%97%E6%96%AF/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>实事求是</title>
-      <link>https://www.hualet.org/tags/%E5%AE%9E%E4%BA%8B%E6%B1%82%E6%98%AF/</link>
-      <pubDate>Wed, 17 Dec 2025 22:39:33 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E5%AE%9E%E4%BA%8B%E6%B1%82%E6%98%AF/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>25</title>
-      <link>https://www.hualet.org/tags/25/</link>
-      <pubDate>Sun, 03 Aug 2025 14:17:04 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/25/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>网络</title>
-      <link>https://www.hualet.org/tags/%E7%BD%91%E7%BB%9C/</link>
-      <pubDate>Sun, 03 Aug 2025 14:17:04 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E7%BD%91%E7%BB%9C/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Anker</title>
-      <link>https://www.hualet.org/tags/anker/</link>
-      <pubDate>Sun, 27 Oct 2024 07:29:05 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/anker/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>StevenYang</title>
-      <link>https://www.hualet.org/tags/stevenyang/</link>
-      <pubDate>Sun, 27 Oct 2024 07:29:05 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/stevenyang/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>小lin说</title>
-      <link>https://www.hualet.org/tags/%E5%B0%8Flin%E8%AF%B4/</link>
-      <pubDate>Sun, 27 Oct 2024 07:29:05 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E5%B0%8Flin%E8%AF%B4/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>阳萌</title>
-      <link>https://www.hualet.org/tags/%E9%98%B3%E8%90%8C/</link>
-      <pubDate>Sun, 27 Oct 2024 07:29:05 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E9%98%B3%E8%90%8C/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>马斯克</title>
-      <link>https://www.hualet.org/tags/%E9%A9%AC%E6%96%AF%E5%85%8B/</link>
-      <pubDate>Mon, 24 Jun 2024 23:12:09 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E9%A9%AC%E6%96%AF%E5%85%8B/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>人物传记</title>
-      <link>https://www.hualet.org/tags/%E4%BA%BA%E7%89%A9%E4%BC%A0%E8%AE%B0/</link>
-      <pubDate>Mon, 24 Jun 2024 23:12:09 +0800</pubDate>
-      <guid>https://www.hualet.org/tags/%E4%BA%BA%E7%89%A9%E4%BC%A0%E8%AE%B0/</guid>
-      <description></description>
-    </item>
-  </channel>
+	<channel>
+		<title>Tags on Think in Hualet</title>
+		<link>https://www.hualet.org/tags/</link>
+		<description>Recent content in Tags on Think in Hualet</description>
+		<generator>Hugo</generator>
+		<language>zh</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 24 May 2026 09:47:47 +0800</lastBuildDate>
+		
+			<atom:link href="https://www.hualet.org/tags/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>人生</title>
+				<link>https://www.hualet.org/tags/%E4%BA%BA%E7%94%9F/</link>
+				<pubDate>Sun, 24 May 2026 09:47:47 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E4%BA%BA%E7%94%9F/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>思考</title>
+				<link>https://www.hualet.org/tags/%E6%80%9D%E8%80%83/</link>
+				<pubDate>Sun, 24 May 2026 09:47:47 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E6%80%9D%E8%80%83/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Libghostty-Vt</title>
+				<link>https://www.hualet.org/tags/libghostty-vt/</link>
+				<pubDate>Tue, 05 May 2026 22:00:00 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/libghostty-vt/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Qt</title>
+				<link>https://www.hualet.org/tags/qt/</link>
+				<pubDate>Tue, 05 May 2026 22:00:00 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/qt/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>技术</title>
+				<link>https://www.hualet.org/tags/%E6%8A%80%E6%9C%AF/</link>
+				<pubDate>Tue, 05 May 2026 22:00:00 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E6%8A%80%E6%9C%AF/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>终端</title>
+				<link>https://www.hualet.org/tags/%E7%BB%88%E7%AB%AF/</link>
+				<pubDate>Tue, 05 May 2026 22:00:00 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E7%BB%88%E7%AB%AF/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>AI</title>
+				<link>https://www.hualet.org/tags/ai/</link>
+				<pubDate>Fri, 01 May 2026 22:34:23 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/ai/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>随想</title>
+				<link>https://www.hualet.org/tags/%E9%9A%8F%E6%83%B3/</link>
+				<pubDate>Fri, 01 May 2026 22:34:23 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E9%9A%8F%E6%83%B3/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>访谈</title>
+				<link>https://www.hualet.org/tags/%E8%AE%BF%E8%B0%88/</link>
+				<pubDate>Sun, 04 Jan 2026 23:01:22 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E8%AE%BF%E8%B0%88/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>季逸超</title>
+				<link>https://www.hualet.org/tags/%E5%AD%A3%E9%80%B8%E8%B6%85/</link>
+				<pubDate>Sun, 04 Jan 2026 23:01:22 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E5%AD%A3%E9%80%B8%E8%B6%85/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>段永平</title>
+				<link>https://www.hualet.org/tags/%E6%AE%B5%E6%B0%B8%E5%B9%B3/</link>
+				<pubDate>Mon, 29 Dec 2025 19:16:44 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E6%AE%B5%E6%B0%B8%E5%B9%B3/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>管理</title>
+				<link>https://www.hualet.org/tags/%E7%AE%A1%E7%90%86/</link>
+				<pubDate>Mon, 29 Dec 2025 19:16:44 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E7%AE%A1%E7%90%86/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>柯林斯</title>
+				<link>https://www.hualet.org/tags/%E6%9F%AF%E6%9E%97%E6%96%AF/</link>
+				<pubDate>Mon, 29 Dec 2025 19:16:44 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E6%9F%AF%E6%9E%97%E6%96%AF/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>实事求是</title>
+				<link>https://www.hualet.org/tags/%E5%AE%9E%E4%BA%8B%E6%B1%82%E6%98%AF/</link>
+				<pubDate>Wed, 17 Dec 2025 22:39:33 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E5%AE%9E%E4%BA%8B%E6%B1%82%E6%98%AF/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>25</title>
+				<link>https://www.hualet.org/tags/25/</link>
+				<pubDate>Sun, 03 Aug 2025 14:17:04 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/25/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>网络</title>
+				<link>https://www.hualet.org/tags/%E7%BD%91%E7%BB%9C/</link>
+				<pubDate>Sun, 03 Aug 2025 14:17:04 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E7%BD%91%E7%BB%9C/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Anker</title>
+				<link>https://www.hualet.org/tags/anker/</link>
+				<pubDate>Sun, 27 Oct 2024 07:29:05 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/anker/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>StevenYang</title>
+				<link>https://www.hualet.org/tags/stevenyang/</link>
+				<pubDate>Sun, 27 Oct 2024 07:29:05 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/stevenyang/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>小lin说</title>
+				<link>https://www.hualet.org/tags/%E5%B0%8Flin%E8%AF%B4/</link>
+				<pubDate>Sun, 27 Oct 2024 07:29:05 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E5%B0%8Flin%E8%AF%B4/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>阳萌</title>
+				<link>https://www.hualet.org/tags/%E9%98%B3%E8%90%8C/</link>
+				<pubDate>Sun, 27 Oct 2024 07:29:05 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E9%98%B3%E8%90%8C/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>马斯克</title>
+				<link>https://www.hualet.org/tags/%E9%A9%AC%E6%96%AF%E5%85%8B/</link>
+				<pubDate>Mon, 24 Jun 2024 23:12:09 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E9%A9%AC%E6%96%AF%E5%85%8B/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>人物传记</title>
+				<link>https://www.hualet.org/tags/%E4%BA%BA%E7%89%A9%E4%BC%A0%E8%AE%B0/</link>
+				<pubDate>Mon, 24 Jun 2024 23:12:09 +0800</pubDate>
+				<guid>https://www.hualet.org/tags/%E4%BA%BA%E7%89%A9%E4%BC%A0%E8%AE%B0/</guid>
+				<description></description>
+			</item>
+	</channel>
 </rss>
