@@ -258,7 +258,8 @@
 RUNTIME_PM_ON_BAT=off
 </code></pre><p>果然有效，基本未再复现待机睡死。</p>
 <blockquote>
-<p>注：该方案过于激进，<strong>适合个人兜底，不宜主线默认</strong>，后续仍需结合驱动/固件继续收敛问题面。</p>
+<p>注：该方案过于激进，<strong>适合个人兜底，不宜主线默认</strong>，后续仍需结合驱动/固件继续收敛问题面。
+貌似配置文件应该新建在 <code>/usr/share/deepin-power-control/configs</code> 下面，而不是传统的 <code>/etc/tlp.d/</code>。</p>
 </blockquote>
 <hr>
 <h3 id="02-网络不稳定问题">
