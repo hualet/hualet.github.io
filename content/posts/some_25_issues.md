@@ -53,6 +53,7 @@ RUNTIME_PM_ON_BAT=off
 果然有效，基本未再复现待机睡死。
 
 > 注：该方案过于激进，**适合个人兜底，不宜主线默认**，后续仍需结合驱动/固件继续收敛问题面。
+> 貌似配置文件应该新建在 `/usr/share/deepin-power-control/configs` 下面，而不是传统的 `/etc/tlp.d/`。 
 
 ------
 
