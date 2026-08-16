@@ -1,7 +1,7 @@
 baseURL = "https://www.hualet.org"
 title = "Think in Hualet"
 theme = "hugo-coder"
-languageCode = "zh"
+locale = "zh"
 defaultContentLanguage = "zh"
 pagination.pagerSize = 15
 enableEmoji = true
@@ -175,7 +175,7 @@ rel = "alternate"
 type = "application/rss+xml"
 
 [languages.en]
-languageName = ":uk:"
+label = ":uk:"
 
 [[languages.en.menu.main]]
 name = "Blog"
@@ -199,7 +199,7 @@ url = "about/"
 
 
 [languages.zh]
-languageName = ":cn:"
+label = ":cn:"
 
 [languages.zh.params]
 title = "我思故我在"
