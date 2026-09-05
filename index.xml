@@ -14,11 +14,11 @@
 		
 			<atom:link href="https://www.hualet.org/index.xml" rel="self" type="application/rss+xml" />
 			<item>
-				<title>Learning TPM</title>
+				<title>跟 Kimi 一起实战学习 TPM</title>
 				<link>https://www.hualet.org/posts/learning-tpm/</link>
 				<pubDate>Sat, 05 Sep 2026 19:55:00 +0800</pubDate>
 				<guid>https://www.hualet.org/posts/learning-tpm/</guid>
-				<description>&lt;p&gt;今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&amp;quot;搞破坏&amp;quot;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。&lt;/p&gt;&#xA;&lt;p&gt;怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：&lt;a href=&#34;https://hualet.org/tpm_study/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;《TPM 入门实战》&lt;/a&gt;（源码在 &lt;a href=&#34;https://github.com/hualet/tpm_study&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GitHub&lt;/a&gt;）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。&lt;/p&gt;</description>
+				<description>&lt;p&gt;一直说要系统学习一下 TPM，自己也上手试试所谓可信计算是怎么玩儿的。&lt;/p&gt;&#xA;&lt;p&gt;今天下午终于得空，零碎时间跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&amp;quot;搞破坏&amp;quot;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。&lt;/p&gt;&#xA;&lt;p&gt;怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：&lt;a href=&#34;https://hualet.org/tpm_study/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;《TPM 入门实战》&lt;/a&gt;（源码在 &lt;a href=&#34;https://github.com/hualet/tpm_study&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GitHub&lt;/a&gt;）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。&lt;/p&gt;</description>
 			</item>
 			<item>
 				<title>阅读《AI Agents in Depth》有感</title>

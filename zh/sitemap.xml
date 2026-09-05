@@ -2,9 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.hualet.org/posts/learning-tpm/</loc>
-    <lastmod>2026-09-05T19:55:00+08:00</lastmod>
-  </url><url>
     <loc>https://www.hualet.org/posts/</loc>
     <lastmod>2026-09-05T19:55:00+08:00</lastmod>
   </url><url>
@@ -20,6 +17,9 @@
                 hreflang="en"
                 href="https://www.hualet.org/en/"
                 />
+  </url><url>
+    <loc>https://www.hualet.org/posts/learning-tpm/</loc>
+    <lastmod>2026-09-05T19:55:00+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/tags/ai/</loc>
     <lastmod>2026-08-16T23:38:32+08:00</lastmod>
