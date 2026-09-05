@@ -3,7 +3,7 @@
 
 <head>
   <title>
-  和 AI 一起学 TPM 的一下午 · Think in Hualet
+  Learning TPM · Think in Hualet
 </title>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,38 +13,22 @@
 
 
 <meta name="author" content="Hualet Wang">
-<meta name="description" content="TPM 这个东西我惦记很久了。做系统开发的，经常听人提起可信启动、BitLocker、远程证明这些词，但一直没真正搞懂过：TPM 芯片里到底装了什么？PCR 是什么？它们是怎么串起来保证&quot;系统没被篡改&quot;的？书架上那本讲 TCG 规范的书翻几次睡几次。
-今天下午用零碎时间，和 Kimi 一起把这块啃下来了。过程值得记录一下，因为我觉得这次的学习方式本身比知识点更有意思。
-
-  学习方式：概念 &#43; 实验，交替进行
-  
-    
-    Link to heading
-  
-
-Kimi 没有扔给我一堆概念定义，而是设计了一条&quot;概念铺垫 → 上手实验 → 回头看概念&quot;的路线。比如讲 PCR（平台配置寄存器），核心就是一个公式：新值 = Hash(旧值 || 新的度量)。光听这个没什么感觉，但接着它就让我在终端里亲手 extend 一个 PCR，然后用 sha256sum 手工复算 TPM 芯片里的值——两个值对上的那一刻，&ldquo;不可逆、顺序敏感、历史不可伪造&quot;这三个性质就不用背了。
-后面的实验也是这个路数：把秘密封存（Seal）到 PCR 状态上，然后故意 extend 一下 PCR 模拟&quot;启动过程被篡改&rdquo;，看着解封命令报 policy check failed；把固件的启动度量日志一笔笔重放，和 TPM 里的真实 PCR 值逐个比对——发现 PCR 9 和 11 对不上，顺着查下去才明白固件日志的边界在 ExitBootServices，而这正好解释了 systemd 为什么偏爱 PCR 11。每个&quot;对不上&quot;和报错都是真知识，这在纯看书的时候是得不到的。
-安全方面也不用担心：实验环境是一台 KVM 虚拟机加 swtpm（软件模拟的 TPM 2.0），玩坏了快照回滚，随便造。最后的大实验是把 LUKS 全盘加密绑到 TPM 上实现开机自动解锁——就是 BitLocker 的 Linux 版，过程中还顺手把 Omarchy 的 initramfs 配置摸了一遍。">
+<meta name="description" content="今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&quot;搞破坏&quot;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。
+怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：《TPM 入门实战》（源码在 GitHub）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。">
 <meta name="keywords" content="blog,developer,personal">
 
 
 
 	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="和 AI 一起学 TPM 的一下午">
-	<meta name="twitter:description" content="TPM 这个东西我惦记很久了。做系统开发的，经常听人提起可信启动、BitLocker、远程证明这些词，但一直没真正搞懂过：TPM 芯片里到底装了什么？PCR 是什么？它们是怎么串起来保证&#34;系统没被篡改&#34;的？书架上那本讲 TCG 规范的书翻几次睡几次。
-今天下午用零碎时间，和 Kimi 一起把这块啃下来了。过程值得记录一下，因为我觉得这次的学习方式本身比知识点更有意思。
-学习方式：概念 &#43; 实验，交替进行 Link to heading Kimi 没有扔给我一堆概念定义，而是设计了一条&#34;概念铺垫 → 上手实验 → 回头看概念&#34;的路线。比如讲 PCR（平台配置寄存器），核心就是一个公式：新值 = Hash(旧值 || 新的度量)。光听这个没什么感觉，但接着它就让我在终端里亲手 extend 一个 PCR，然后用 sha256sum 手工复算 TPM 芯片里的值——两个值对上的那一刻，“不可逆、顺序敏感、历史不可伪造&#34;这三个性质就不用背了。
-后面的实验也是这个路数：把秘密封存（Seal）到 PCR 状态上，然后故意 extend 一下 PCR 模拟&#34;启动过程被篡改”，看着解封命令报 policy check failed；把固件的启动度量日志一笔笔重放，和 TPM 里的真实 PCR 值逐个比对——发现 PCR 9 和 11 对不上，顺着查下去才明白固件日志的边界在 ExitBootServices，而这正好解释了 systemd 为什么偏爱 PCR 11。每个&#34;对不上&#34;和报错都是真知识，这在纯看书的时候是得不到的。
-安全方面也不用担心：实验环境是一台 KVM 虚拟机加 swtpm（软件模拟的 TPM 2.0），玩坏了快照回滚，随便造。最后的大实验是把 LUKS 全盘加密绑到 TPM 上实现开机自动解锁——就是 BitLocker 的 Linux 版，过程中还顺手把 Omarchy 的 initramfs 配置摸了一遍。">
+	<meta name="twitter:title" content="Learning TPM">
+	<meta name="twitter:description" content="今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&#34;搞破坏&#34;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。
+怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：《TPM 入门实战》（源码在 GitHub）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。">
 
 <meta property="og:url" content="https://www.hualet.org/posts/learning-tpm/">
 	<meta property="og:site_name" content="Think in Hualet">
-	<meta property="og:title" content="和 AI 一起学 TPM 的一下午">
-	<meta property="og:description" content="TPM 这个东西我惦记很久了。做系统开发的，经常听人提起可信启动、BitLocker、远程证明这些词，但一直没真正搞懂过：TPM 芯片里到底装了什么？PCR 是什么？它们是怎么串起来保证&#34;系统没被篡改&#34;的？书架上那本讲 TCG 规范的书翻几次睡几次。
-今天下午用零碎时间，和 Kimi 一起把这块啃下来了。过程值得记录一下，因为我觉得这次的学习方式本身比知识点更有意思。
-学习方式：概念 &#43; 实验，交替进行 Link to heading Kimi 没有扔给我一堆概念定义，而是设计了一条&#34;概念铺垫 → 上手实验 → 回头看概念&#34;的路线。比如讲 PCR（平台配置寄存器），核心就是一个公式：新值 = Hash(旧值 || 新的度量)。光听这个没什么感觉，但接着它就让我在终端里亲手 extend 一个 PCR，然后用 sha256sum 手工复算 TPM 芯片里的值——两个值对上的那一刻，“不可逆、顺序敏感、历史不可伪造&#34;这三个性质就不用背了。
-后面的实验也是这个路数：把秘密封存（Seal）到 PCR 状态上，然后故意 extend 一下 PCR 模拟&#34;启动过程被篡改”，看着解封命令报 policy check failed；把固件的启动度量日志一笔笔重放，和 TPM 里的真实 PCR 值逐个比对——发现 PCR 9 和 11 对不上，顺着查下去才明白固件日志的边界在 ExitBootServices，而这正好解释了 systemd 为什么偏爱 PCR 11。每个&#34;对不上&#34;和报错都是真知识，这在纯看书的时候是得不到的。
-安全方面也不用担心：实验环境是一台 KVM 虚拟机加 swtpm（软件模拟的 TPM 2.0），玩坏了快照回滚，随便造。最后的大实验是把 LUKS 全盘加密绑到 TPM 上实现开机自动解锁——就是 BitLocker 的 Linux 版，过程中还顺手把 Omarchy 的 initramfs 配置摸了一遍。">
+	<meta property="og:title" content="Learning TPM">
+	<meta property="og:description" content="今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&#34;搞破坏&#34;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。
+怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：《TPM 入门实战》（源码在 GitHub）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。">
 	<meta property="og:locale" content="zh">
 	<meta property="og:type" content="article">
 		<meta property="article:section" content="posts">
@@ -184,7 +168,7 @@ Kimi 没有扔给我一堆概念定义，而是设计了一条&quot;概念铺垫
         <div class="post-title">
           <h1 class="title">
             <a class="title-link" href="https://www.hualet.org/posts/learning-tpm/">
-              和 AI 一起学 TPM 的一下午
+              Learning TPM
             </a>
           </h1>
         </div>
@@ -209,38 +193,8 @@ Kimi 没有扔给我一堆概念定义，而是设计了一条&quot;概念铺垫
 
       <div class="post-content">
         
-        <p>TPM 这个东西我惦记很久了。做系统开发的，经常听人提起可信启动、BitLocker、远程证明这些词，但一直没真正搞懂过：TPM 芯片里到底装了什么？PCR 是什么？它们是怎么串起来保证&quot;系统没被篡改&quot;的？书架上那本讲 TCG 规范的书翻几次睡几次。</p>
-<p>今天下午用零碎时间，和 Kimi 一起把这块啃下来了。过程值得记录一下，因为我觉得这次的学习方式本身比知识点更有意思。</p>
-<h2 id="学习方式概念--实验交替进行">
-  学习方式：概念 + 实验，交替进行
-  <a class="heading-link" href="#%e5%ad%a6%e4%b9%a0%e6%96%b9%e5%bc%8f%e6%a6%82%e5%bf%b5--%e5%ae%9e%e9%aa%8c%e4%ba%a4%e6%9b%bf%e8%bf%9b%e8%a1%8c">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h2>
-<p>Kimi 没有扔给我一堆概念定义，而是设计了一条&quot;概念铺垫 → 上手实验 → 回头看概念&quot;的路线。比如讲 PCR（平台配置寄存器），核心就是一个公式：<code>新值 = Hash(旧值 || 新的度量)</code>。光听这个没什么感觉，但接着它就让我在终端里亲手 extend 一个 PCR，然后用 <code>sha256sum</code> 手工复算 TPM 芯片里的值——两个值对上的那一刻，&ldquo;不可逆、顺序敏感、历史不可伪造&quot;这三个性质就不用背了。</p>
-<p>后面的实验也是这个路数：把秘密封存（Seal）到 PCR 状态上，然后故意 extend 一下 PCR 模拟&quot;启动过程被篡改&rdquo;，看着解封命令报 <code>policy check failed</code>；把固件的启动度量日志一笔笔重放，和 TPM 里的真实 PCR 值逐个比对——发现 PCR 9 和 11 对不上，顺着查下去才明白固件日志的边界在 ExitBootServices，而这正好解释了 systemd 为什么偏爱 PCR 11。每个&quot;对不上&quot;和报错都是真知识，这在纯看书的时候是得不到的。</p>
-<p>安全方面也不用担心：实验环境是一台 KVM 虚拟机加 swtpm（软件模拟的 TPM 2.0），玩坏了快照回滚，随便造。最后的大实验是把 LUKS 全盘加密绑到 TPM 上实现开机自动解锁——就是 BitLocker 的 Linux 版，过程中还顺手把 Omarchy 的 initramfs 配置摸了一遍。</p>
-<h2 id="沉淀一本小书">
-  沉淀：一本小书
-  <a class="heading-link" href="#%e6%b2%89%e6%b7%80%e4%b8%80%e6%9c%ac%e5%b0%8f%e4%b9%a6">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h2>
-<p>学完之后我意识到，这些内容如果不记下来，三个月后我肯定又只记得&quot;TPM 很神奇&quot;四个字。于是基于这一下午的完整学习记录，让 Kimi 把它整理生成了一本小书：</p>
-<p><strong><a href="https://hualet.org/tpm_study/"  class="external-link" target="_blank" rel="noopener">《TPM 入门实战》</a></strong></p>
-<p>书的结构就是我们实际走过的路：概念篇打地基，实战篇四个层层递进的实验（每条命令都是真实跑过的），进阶篇讲授权策略、Evil Maid 攻击、IMA，附录里有踩坑实录和命令速查。用 mdBook 生成，GitHub Actions 自动部署到 GitHub Pages，源码在 <a href="https://github.com/hualet/tpm_study"  class="external-link" target="_blank" rel="noopener">hualet/tpm_study</a>。</p>
-<p>写这本书主要为了自己以后翻看，但如果你也对 TPM/可信启动感兴趣却一直没找到合适的入门材料，欢迎一起学，有错误也欢迎提 issue 指正。本站顶部菜单也加了入口。</p>
-<h2 id="一点感想">
-  一点感想
-  <a class="heading-link" href="#%e4%b8%80%e7%82%b9%e6%84%9f%e6%83%b3">
-    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
-    <span class="sr-only">Link to heading</span>
-  </a>
-</h2>
-<p>这次体验让我对&quot;AI 辅助学习&quot;有了更具体的认识。它最有价值的不是&quot;问什么答什么&quot;，而是可以帮你设计一条动手的路线，并且在你踩坑的时候（比如我把 <code>heredoc</code> 和 <code>sudo -S</code> 的标准输入搞冲突导致配置静默没写入）能立刻定位原因、讲清楚教训。学习 TPM 这种又硬又冷门的知识，有个随时能陪你做实验、答疑问的搭档，效率高太多了。</p>
-<p>当然，书里难免有 AI 生成带来的细节错误，我会逐步校对。如果你发现了，也请告诉我。</p>
+        <p>今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&quot;搞破坏&quot;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。</p>
+<p>怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：<a href="https://hualet.org/tpm_study/"  class="external-link" target="_blank" rel="noopener">《TPM 入门实战》</a>（源码在 <a href="https://github.com/hualet/tpm_study"  class="external-link" target="_blank" rel="noopener">GitHub</a>）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。</p>
 
       </div>
 
