@@ -197,6 +197,11 @@ name = "About"
 weight = 3
 url = "about/"
 
+[[languages.en.menu.main]]
+name = "TPM Book"
+weight = 4
+url = "https://hualet.org/tpm_study/"
+
 
 [languages.zh]
 label = ":cn:"
@@ -224,3 +229,8 @@ url = "blogroll/"
 name = "关于"
 weight = 3
 url = "about/"
+
+[[languages.zh.menu.main]]
+name = "TPM 实战"
+weight = 4
+url = "https://hualet.org/tpm_study/"

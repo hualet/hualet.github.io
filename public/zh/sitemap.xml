@@ -2,6 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://www.hualet.org/posts/</loc>
+    <lastmod>2026-09-05T19:55:00+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/</loc>
+    <lastmod>2026-09-05T19:55:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.hualet.org/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.hualet.org/en/"
+                />
+  </url><url>
+    <loc>https://www.hualet.org/posts/learning-tpm/</loc>
+    <lastmod>2026-09-05T19:55:00+08:00</lastmod>
+  </url><url>
     <loc>https://www.hualet.org/tags/ai/</loc>
     <lastmod>2026-08-16T23:38:32+08:00</lastmod>
   </url><url>
@@ -18,9 +37,6 @@
                 href="https://www.hualet.org/en/categories/"
                 />
   </url><url>
-    <loc>https://www.hualet.org/posts/</loc>
-    <lastmod>2026-08-16T23:38:32+08:00</lastmod>
-  </url><url>
     <loc>https://www.hualet.org/tags/</loc>
     <lastmod>2026-08-16T23:38:32+08:00</lastmod>
     <xhtml:link
@@ -32,19 +48,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://www.hualet.org/en/tags/"
-                />
-  </url><url>
-    <loc>https://www.hualet.org/</loc>
-    <lastmod>2026-08-16T23:38:32+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/"
                 />
   </url><url>
     <loc>https://www.hualet.org/categories/%E8%AF%BB%E4%B9%A6/</loc>
@@ -347,13 +350,13 @@
     <loc>https://www.hualet.org/series/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/series/"
+                hreflang="en"
+                href="https://www.hualet.org/en/series/"
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/series/"
+                hreflang="zh"
+                href="https://www.hualet.org/series/"
                 />
   </url>
 </urlset>
