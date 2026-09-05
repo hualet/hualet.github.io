@@ -14,11 +14,11 @@
 		
 			<atom:link href="https://www.hualet.org/posts/index.xml" rel="self" type="application/rss+xml" />
 			<item>
-				<title>和 AI 一起学 TPM 的一下午</title>
+				<title>Learning TPM</title>
 				<link>https://www.hualet.org/posts/learning-tpm/</link>
 				<pubDate>Sat, 05 Sep 2026 19:55:00 +0800</pubDate>
 				<guid>https://www.hualet.org/posts/learning-tpm/</guid>
-				<description>&lt;p&gt;TPM 这个东西我惦记很久了。做系统开发的，经常听人提起可信启动、BitLocker、远程证明这些词，但一直没真正搞懂过：TPM 芯片里到底装了什么？PCR 是什么？它们是怎么串起来保证&amp;quot;系统没被篡改&amp;quot;的？书架上那本讲 TCG 规范的书翻几次睡几次。&lt;/p&gt;&#xA;&lt;p&gt;今天下午用零碎时间，和 Kimi 一起把这块啃下来了。过程值得记录一下，因为我觉得这次的学习方式本身比知识点更有意思。&lt;/p&gt;&#xA;&lt;h2 id=&#34;学习方式概念--实验交替进行&#34;&gt;&#xA;  学习方式：概念 + 实验，交替进行&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#%e5%ad%a6%e4%b9%a0%e6%96%b9%e5%bc%8f%e6%a6%82%e5%bf%b5--%e5%ae%9e%e9%aa%8c%e4%ba%a4%e6%9b%bf%e8%bf%9b%e8%a1%8c&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;Kimi 没有扔给我一堆概念定义，而是设计了一条&amp;quot;概念铺垫 → 上手实验 → 回头看概念&amp;quot;的路线。比如讲 PCR（平台配置寄存器），核心就是一个公式：&lt;code&gt;新值 = Hash(旧值 || 新的度量)&lt;/code&gt;。光听这个没什么感觉，但接着它就让我在终端里亲手 extend 一个 PCR，然后用 &lt;code&gt;sha256sum&lt;/code&gt; 手工复算 TPM 芯片里的值——两个值对上的那一刻，&amp;ldquo;不可逆、顺序敏感、历史不可伪造&amp;quot;这三个性质就不用背了。&lt;/p&gt;&#xA;&lt;p&gt;后面的实验也是这个路数：把秘密封存（Seal）到 PCR 状态上，然后故意 extend 一下 PCR 模拟&amp;quot;启动过程被篡改&amp;rdquo;，看着解封命令报 &lt;code&gt;policy check failed&lt;/code&gt;；把固件的启动度量日志一笔笔重放，和 TPM 里的真实 PCR 值逐个比对——发现 PCR 9 和 11 对不上，顺着查下去才明白固件日志的边界在 ExitBootServices，而这正好解释了 systemd 为什么偏爱 PCR 11。每个&amp;quot;对不上&amp;quot;和报错都是真知识，这在纯看书的时候是得不到的。&lt;/p&gt;&#xA;&lt;p&gt;安全方面也不用担心：实验环境是一台 KVM 虚拟机加 swtpm（软件模拟的 TPM 2.0），玩坏了快照回滚，随便造。最后的大实验是把 LUKS 全盘加密绑到 TPM 上实现开机自动解锁——就是 BitLocker 的 Linux 版，过程中还顺手把 Omarchy 的 initramfs 配置摸了一遍。&lt;/p&gt;</description>
+				<description>&lt;p&gt;今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&amp;quot;搞破坏&amp;quot;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。&lt;/p&gt;&#xA;&lt;p&gt;怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：&lt;a href=&#34;https://hualet.org/tpm_study/&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;《TPM 入门实战》&lt;/a&gt;（源码在 &lt;a href=&#34;https://github.com/hualet/tpm_study&#34;  class=&#34;external-link&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GitHub&lt;/a&gt;）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。&lt;/p&gt;</description>
 			</item>
 			<item>
 				<title>阅读《AI Agents in Depth》有感</title>
