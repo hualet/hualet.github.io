@@ -198,7 +198,7 @@ weight = 3
 url = "about/"
 
 [[languages.en.menu.main]]
-name = "TPM Book"
+name = "Learning TPM"
 weight = 4
 url = "https://hualet.org/tpm_study/"
 
@@ -231,6 +231,6 @@ weight = 3
 url = "about/"
 
 [[languages.zh.menu.main]]
-name = "TPM 实战"
+name = "TPM 入门实战"
 weight = 4
 url = "https://hualet.org/tpm_study/"
