@@ -3,7 +3,7 @@
 
 <head>
   <title>
-  Learning TPM · Think in Hualet
+  跟 Kimi 一起实战学习 TPM · Think in Hualet
 </title>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,21 +13,24 @@
 
 
 <meta name="author" content="Hualet Wang">
-<meta name="description" content="今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&quot;搞破坏&quot;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。
+<meta name="description" content="一直说要系统学习一下 TPM，自己也上手试试所谓可信计算是怎么玩儿的。
+今天下午终于得空，零碎时间跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&quot;搞破坏&quot;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。
 怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：《TPM 入门实战》（源码在 GitHub）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。">
 <meta name="keywords" content="blog,developer,personal">
 
 
 
 	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="Learning TPM">
-	<meta name="twitter:description" content="今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&#34;搞破坏&#34;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。
+	<meta name="twitter:title" content="跟 Kimi 一起实战学习 TPM">
+	<meta name="twitter:description" content="一直说要系统学习一下 TPM，自己也上手试试所谓可信计算是怎么玩儿的。
+今天下午终于得空，零碎时间跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&#34;搞破坏&#34;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。
 怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：《TPM 入门实战》（源码在 GitHub）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。">
 
 <meta property="og:url" content="https://www.hualet.org/posts/learning-tpm/">
 	<meta property="og:site_name" content="Think in Hualet">
-	<meta property="og:title" content="Learning TPM">
-	<meta property="og:description" content="今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&#34;搞破坏&#34;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。
+	<meta property="og:title" content="跟 Kimi 一起实战学习 TPM">
+	<meta property="og:description" content="一直说要系统学习一下 TPM，自己也上手试试所谓可信计算是怎么玩儿的。
+今天下午终于得空，零碎时间跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&#34;搞破坏&#34;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。
 怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：《TPM 入门实战》（源码在 GitHub）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。">
 	<meta property="og:locale" content="zh">
 	<meta property="og:type" content="article">
@@ -131,7 +134,7 @@
             </li>
           
             <li class="navigation-item">
-              <a class="navigation-link " href="https://hualet.org/tpm_study/">TPM 实战</a>
+              <a class="navigation-link " href="https://hualet.org/tpm_study/">TPM 入门实战</a>
             </li>
           
         
@@ -168,7 +171,7 @@
         <div class="post-title">
           <h1 class="title">
             <a class="title-link" href="https://www.hualet.org/posts/learning-tpm/">
-              Learning TPM
+              跟 Kimi 一起实战学习 TPM
             </a>
           </h1>
         </div>
@@ -193,7 +196,8 @@
 
       <div class="post-content">
         
-        <p>今天下午摸鱼，跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&quot;搞破坏&quot;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。</p>
+        <p>一直说要系统学习一下 TPM，自己也上手试试所谓可信计算是怎么玩儿的。</p>
+<p>今天下午终于得空，零碎时间跟 Kimi 学了一下午 TPM。它设计的路子挺对我胃口：先简单讲讲概念，然后马上让我在虚拟机里动手——亲手 extend 一下 PCR、把秘密封进 TPM 再故意&quot;搞破坏&quot;看着它解不开，比啃十遍规范都管用。最后还真把 LUKS 全盘加密绑到 TPM 上了，开机不用输密码，舒服。</p>
 <p>怕过阵子就忘干净，顺手让它把这一下午的过程整理成了一本小书：<a href="https://hualet.org/tpm_study/"  class="external-link" target="_blank" rel="noopener">《TPM 入门实战》</a>（源码在 <a href="https://github.com/hualet/tpm_study"  class="external-link" target="_blank" rel="noopener">GitHub</a>）。主要是给以后的自己翻的，有兴趣的朋友也欢迎看看、挑挑错。顶部菜单加了入口。</p>
 
       </div>
