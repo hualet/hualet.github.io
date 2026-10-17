@@ -2,30 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.hualet.org/posts/</loc>
-    <lastmod>2026-09-05T19:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://www.hualet.org/</loc>
-    <lastmod>2026-09-05T19:55:00+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/"
-                />
-  </url><url>
-    <loc>https://www.hualet.org/posts/learning-tpm/</loc>
-    <lastmod>2026-09-05T19:55:00+08:00</lastmod>
-  </url><url>
     <loc>https://www.hualet.org/tags/ai/</loc>
-    <lastmod>2026-08-16T23:38:32+08:00</lastmod>
+    <lastmod>2026-10-17T09:40:00+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/posts/ai_native_org/</loc>
+    <lastmod>2026-10-17T09:40:00+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/categories/</loc>
-    <lastmod>2026-08-16T23:38:32+08:00</lastmod>
+    <lastmod>2026-10-17T09:40:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
@@ -37,8 +21,11 @@
                 href="https://www.hualet.org/en/categories/"
                 />
   </url><url>
+    <loc>https://www.hualet.org/posts/</loc>
+    <lastmod>2026-10-17T09:40:00+08:00</lastmod>
+  </url><url>
     <loc>https://www.hualet.org/tags/</loc>
-    <lastmod>2026-08-16T23:38:32+08:00</lastmod>
+    <lastmod>2026-10-17T09:40:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
@@ -49,6 +36,28 @@
                 hreflang="en"
                 href="https://www.hualet.org/en/tags/"
                 />
+  </url><url>
+    <loc>https://www.hualet.org/</loc>
+    <lastmod>2026-10-17T09:40:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="https://www.hualet.org/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://www.hualet.org/en/"
+                />
+  </url><url>
+    <loc>https://www.hualet.org/categories/%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2026-10-17T09:40:00+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/tags/%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2026-10-17T09:40:00+08:00</lastmod>
+  </url><url>
+    <loc>https://www.hualet.org/posts/learning-tpm/</loc>
+    <lastmod>2026-09-05T19:55:00+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/categories/%E8%AF%BB%E4%B9%A6/</loc>
     <lastmod>2026-08-16T23:38:32+08:00</lastmod>
@@ -114,12 +123,6 @@
     <lastmod>2025-12-29T19:16:44+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/tags/%E6%AE%B5%E6%B0%B8%E5%B9%B3/</loc>
-    <lastmod>2025-12-29T19:16:44+08:00</lastmod>
-  </url><url>
-    <loc>https://www.hualet.org/categories/%E7%AE%A1%E7%90%86/</loc>
-    <lastmod>2025-12-29T19:16:44+08:00</lastmod>
-  </url><url>
-    <loc>https://www.hualet.org/tags/%E7%AE%A1%E7%90%86/</loc>
     <lastmod>2025-12-29T19:16:44+08:00</lastmod>
   </url><url>
     <loc>https://www.hualet.org/tags/%E6%9F%AF%E6%9E%97%E6%96%AF/</loc>
@@ -338,13 +341,13 @@
     <loc>https://www.hualet.org/authors/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
-                href="https://www.hualet.org/en/authors/"
+                hreflang="zh"
+                href="https://www.hualet.org/authors/"
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="zh"
-                href="https://www.hualet.org/authors/"
+                hreflang="en"
+                href="https://www.hualet.org/en/authors/"
                 />
   </url><url>
     <loc>https://www.hualet.org/series/</loc>
