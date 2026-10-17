@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <title>
+  AI原生组织建设有感 · Think in Hualet
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Hualet Wang">
+<meta name="description" content="这段时间在团队里推 AI 提效，初衷说起来很朴素，甚至有点俗：想让研发效率高一点，团队精悍一点。
+一开始我也以为，这事就是给大家配好工具、开个分享会、再喊几句“大家多用用”。后来发现没那么简单。
+“效率更高”和“更精悍”听着像一回事，其实是两回事。前者是同样的人干得更快，配工具、教用法就能看到效果；后者是用更少的人、更扁的结构干同样甚至更多的活——这就不是工具的事了，得动流程、动分工、动协作方式，每一样都会碰到人。
+很多团队都容易停在前者：工具配上了，周报里多了几句“使用 AI 辅助完成”，然后组织该是什么样还是什么样。
+所以想趁着记忆还热乎，把这段时间的经验和坑捋一捋。不敢说是方法论，算是一份阶段性的复盘吧。
+
+  先把结论放这儿
+  
+    
+    Link to heading
+  
+
+怕大家看到一半就去刷短视频了，先把结论放前面：
+人的工作，正在从“自己干活”，变成“给 AI 搭台子，让它把活干好”。
+产品不再写一份给人读的需求文档，而是和研发一起，跟 agent 共创一份能直接执行的 spec；测试不再一条条写用例，而是去搭自动化流程；研发也不光写功能，还得给软件配一套 harness。大家的产出，都在悄悄往“基础设施”那边挪。
+围绕这个判断，我拆成了五件事：流程、边界、动力、度量、治理。下面挨个唠。
+
+  流程：别让 agent 走人的老路
+  
+    
+    Link to heading
+  
+
+这条我体会最深：别拿给人设计的流程去要求 agent。
+仔细想想，很多流程之所以存在，是因为人贵、人会累、人会犯错、人和人之间交接会丢信息。于是有了层层评审、详细文档、排期对齐会……这些东西放在过去都合情合理。但现在不少活交给 agent 以后是能干的，前提都变了，还守着老流程，就有点像给新买的电动车配了个马鞭。
+举两个例子。
+需求。以前产品要写一份很明确的需求文档，研发拿到手先读三遍，再找产品对一遍，最后实现出来还是“我要的不是这个”。现在产品可以和研发一起，借助 superpowers 这样的工作流共创 spec，边聊边成形，成形以后直接驱动 agent 干活。需求文档从一个“交接物”，变成了产品、研发、agent 三方共用的工作底稿。
+测试。以前测试的主要产出是一条条测试用例，现在重心更多会放在建设自动化流程上。用例 AI 能写，但让这些用例持续、稳定地跑起来的那套流程，才值得测试同学花大力气。
+一句话总结：交接的东西变成了共享的上下文，流程节点自然就少了。
+
+  边界：研发，测试的活你也得摸一摸
+  
+    
+    Link to heading
+  
+
+第二件事：职能的边界感得打破。
+最典型的就是自动化测试。研发借助 AI 自己写不少自动化测试，把交付效率提上去，而不是两手一摊：“等测试团队自动化能力上来了再说吧。”放在以前这叫越界，放在现在，AI 把跨职能的门槛拉低了，一个人能罩住的范围变大了，干等反而是最贵的选择。">
+<meta name="keywords" content="blog,developer,personal">
+
+
+
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="AI原生组织建设有感">
+	<meta name="twitter:description" content="这段时间在团队里推 AI 提效，初衷说起来很朴素，甚至有点俗：想让研发效率高一点，团队精悍一点。
+一开始我也以为，这事就是给大家配好工具、开个分享会、再喊几句“大家多用用”。后来发现没那么简单。
+“效率更高”和“更精悍”听着像一回事，其实是两回事。前者是同样的人干得更快，配工具、教用法就能看到效果；后者是用更少的人、更扁的结构干同样甚至更多的活——这就不是工具的事了，得动流程、动分工、动协作方式，每一样都会碰到人。
+很多团队都容易停在前者：工具配上了，周报里多了几句“使用 AI 辅助完成”，然后组织该是什么样还是什么样。
+所以想趁着记忆还热乎，把这段时间的经验和坑捋一捋。不敢说是方法论，算是一份阶段性的复盘吧。
+先把结论放这儿 Link to heading 怕大家看到一半就去刷短视频了，先把结论放前面：
+人的工作，正在从“自己干活”，变成“给 AI 搭台子，让它把活干好”。
+产品不再写一份给人读的需求文档，而是和研发一起，跟 agent 共创一份能直接执行的 spec；测试不再一条条写用例，而是去搭自动化流程；研发也不光写功能，还得给软件配一套 harness。大家的产出，都在悄悄往“基础设施”那边挪。
+围绕这个判断，我拆成了五件事：流程、边界、动力、度量、治理。下面挨个唠。
+流程：别让 agent 走人的老路 Link to heading 这条我体会最深：别拿给人设计的流程去要求 agent。
+仔细想想，很多流程之所以存在，是因为人贵、人会累、人会犯错、人和人之间交接会丢信息。于是有了层层评审、详细文档、排期对齐会……这些东西放在过去都合情合理。但现在不少活交给 agent 以后是能干的，前提都变了，还守着老流程，就有点像给新买的电动车配了个马鞭。
+举两个例子。
+需求。以前产品要写一份很明确的需求文档，研发拿到手先读三遍，再找产品对一遍，最后实现出来还是“我要的不是这个”。现在产品可以和研发一起，借助 superpowers 这样的工作流共创 spec，边聊边成形，成形以后直接驱动 agent 干活。需求文档从一个“交接物”，变成了产品、研发、agent 三方共用的工作底稿。
+测试。以前测试的主要产出是一条条测试用例，现在重心更多会放在建设自动化流程上。用例 AI 能写，但让这些用例持续、稳定地跑起来的那套流程，才值得测试同学花大力气。
+一句话总结：交接的东西变成了共享的上下文，流程节点自然就少了。
+边界：研发，测试的活你也得摸一摸 Link to heading 第二件事：职能的边界感得打破。
+最典型的就是自动化测试。研发借助 AI 自己写不少自动化测试，把交付效率提上去，而不是两手一摊：“等测试团队自动化能力上来了再说吧。”放在以前这叫越界，放在现在，AI 把跨职能的门槛拉低了，一个人能罩住的范围变大了，干等反而是最贵的选择。">
+
+<meta property="og:url" content="https://www.hualet.org/posts/ai_native_org/">
+	<meta property="og:site_name" content="Think in Hualet">
+	<meta property="og:title" content="AI原生组织建设有感">
+	<meta property="og:description" content="这段时间在团队里推 AI 提效，初衷说起来很朴素，甚至有点俗：想让研发效率高一点，团队精悍一点。
+一开始我也以为，这事就是给大家配好工具、开个分享会、再喊几句“大家多用用”。后来发现没那么简单。
+“效率更高”和“更精悍”听着像一回事，其实是两回事。前者是同样的人干得更快，配工具、教用法就能看到效果；后者是用更少的人、更扁的结构干同样甚至更多的活——这就不是工具的事了，得动流程、动分工、动协作方式，每一样都会碰到人。
+很多团队都容易停在前者：工具配上了，周报里多了几句“使用 AI 辅助完成”，然后组织该是什么样还是什么样。
+所以想趁着记忆还热乎，把这段时间的经验和坑捋一捋。不敢说是方法论，算是一份阶段性的复盘吧。
+先把结论放这儿 Link to heading 怕大家看到一半就去刷短视频了，先把结论放前面：
+人的工作，正在从“自己干活”，变成“给 AI 搭台子，让它把活干好”。
+产品不再写一份给人读的需求文档，而是和研发一起，跟 agent 共创一份能直接执行的 spec；测试不再一条条写用例，而是去搭自动化流程；研发也不光写功能，还得给软件配一套 harness。大家的产出，都在悄悄往“基础设施”那边挪。
+围绕这个判断，我拆成了五件事：流程、边界、动力、度量、治理。下面挨个唠。
+流程：别让 agent 走人的老路 Link to heading 这条我体会最深：别拿给人设计的流程去要求 agent。
+仔细想想，很多流程之所以存在，是因为人贵、人会累、人会犯错、人和人之间交接会丢信息。于是有了层层评审、详细文档、排期对齐会……这些东西放在过去都合情合理。但现在不少活交给 agent 以后是能干的，前提都变了，还守着老流程，就有点像给新买的电动车配了个马鞭。
+举两个例子。
+需求。以前产品要写一份很明确的需求文档，研发拿到手先读三遍，再找产品对一遍，最后实现出来还是“我要的不是这个”。现在产品可以和研发一起，借助 superpowers 这样的工作流共创 spec，边聊边成形，成形以后直接驱动 agent 干活。需求文档从一个“交接物”，变成了产品、研发、agent 三方共用的工作底稿。
+测试。以前测试的主要产出是一条条测试用例，现在重心更多会放在建设自动化流程上。用例 AI 能写，但让这些用例持续、稳定地跑起来的那套流程，才值得测试同学花大力气。
+一句话总结：交接的东西变成了共享的上下文，流程节点自然就少了。
+边界：研发，测试的活你也得摸一摸 Link to heading 第二件事：职能的边界感得打破。
+最典型的就是自动化测试。研发借助 AI 自己写不少自动化测试，把交付效率提上去，而不是两手一摊：“等测试团队自动化能力上来了再说吧。”放在以前这叫越界，放在现在，AI 把跨职能的门槛拉低了，一个人能罩住的范围变大了，干等反而是最贵的选择。">
+	<meta property="og:locale" content="zh">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-10-17T09:40:00+08:00">
+		<meta property="article:modified_time" content="2026-10-17T09:40:00+08:00">
+		<meta property="article:tag" content="AI">
+		<meta property="article:tag" content="管理">
+
+
+
+
+<link rel="canonical" href="https://www.hualet.org/posts/ai_native_org/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.min.7763f8bc6341ecf82378e867c285e1549abb063a899be313ccd25dbfcd24fa7d.css" integrity="sha256-d2P4vGNB7PgjeOhnwoXhVJq7BjqJm&#43;MTzNJdv80k&#43;n0=" crossorigin="anonymous" media="screen" />
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.min.ad48f476275974885bdc03d5251e3cdbe1678c54a63ff772376b0ed2adc468dd.css" integrity="sha256-rUj0didZdIhb3APVJR482&#43;FnjFSmP/dyN2sO0q3EaN0=" crossorigin="anonymous" media="screen" />
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="https://www.hualet.org/">
+      Think in Hualet
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/blogroll/">友链</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">关于</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="https://hualet.org/tpm_study/">TPM 入门实战</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            
+          
+            
+              
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                
+              
+              <li class="navigation-item">
+                <a href="/en/">🇬🇧</a>
+              </li>
+            
+          
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://www.hualet.org/posts/ai_native_org/">
+              AI原生组织建设有感
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2026-10-17T09:40:00&#43;08:00">
+                十月 17, 2026
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa-solid fa-folder" aria-hidden="true"></i>
+    <a href="/categories/%E7%AE%A1%E7%90%86/">管理</a></div>
+
+          <div class="tags">
+  <i class="fa-solid fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/ai/">AI</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E7%AE%A1%E7%90%86/">管理</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <p>这段时间在团队里推 AI 提效，初衷说起来很朴素，甚至有点俗：想让研发效率高一点，团队精悍一点。</p>
+<p>一开始我也以为，这事就是给大家配好工具、开个分享会、再喊几句“大家多用用”。后来发现没那么简单。</p>
+<p>“效率更高”和“更精悍”听着像一回事，其实是两回事。前者是同样的人干得更快，配工具、教用法就能看到效果；后者是用更少的人、更扁的结构干同样甚至更多的活——这就不是工具的事了，得动流程、动分工、动协作方式，每一样都会碰到人。</p>
+<p>很多团队都容易停在前者：工具配上了，周报里多了几句“使用 AI 辅助完成”，然后组织该是什么样还是什么样。</p>
+<p>所以想趁着记忆还热乎，把这段时间的经验和坑捋一捋。不敢说是方法论，算是一份阶段性的复盘吧。</p>
+<h2 id="先把结论放这儿">
+  先把结论放这儿
+  <a class="heading-link" href="#%e5%85%88%e6%8a%8a%e7%bb%93%e8%ae%ba%e6%94%be%e8%bf%99%e5%84%bf">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>怕大家看到一半就去刷短视频了，先把结论放前面：</p>
+<p><strong>人的工作，正在从“自己干活”，变成“给 AI 搭台子，让它把活干好”</strong>。</p>
+<p>产品不再写一份给人读的需求文档，而是和研发一起，跟 agent 共创一份能直接执行的 spec；测试不再一条条写用例，而是去搭自动化流程；研发也不光写功能，还得给软件配一套 harness。大家的产出，都在悄悄往“基础设施”那边挪。</p>
+<p>围绕这个判断，我拆成了五件事：流程、边界、动力、度量、治理。下面挨个唠。</p>
+<h2 id="流程别让-agent-走人的老路">
+  流程：别让 agent 走人的老路
+  <a class="heading-link" href="#%e6%b5%81%e7%a8%8b%e5%88%ab%e8%ae%a9-agent-%e8%b5%b0%e4%ba%ba%e7%9a%84%e8%80%81%e8%b7%af">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>这条我体会最深：<strong>别拿给人设计的流程去要求 agent</strong>。</p>
+<p>仔细想想，很多流程之所以存在，是因为人贵、人会累、人会犯错、人和人之间交接会丢信息。于是有了层层评审、详细文档、排期对齐会……这些东西放在过去都合情合理。但现在不少活交给 agent 以后是能干的，前提都变了，还守着老流程，就有点像给新买的电动车配了个马鞭。</p>
+<p>举两个例子。</p>
+<p><strong>需求</strong>。以前产品要写一份很明确的需求文档，研发拿到手先读三遍，再找产品对一遍，最后实现出来还是“我要的不是这个”。现在产品可以和研发一起，借助 superpowers 这样的工作流共创 spec，边聊边成形，成形以后直接驱动 agent 干活。需求文档从一个“交接物”，变成了产品、研发、agent 三方共用的工作底稿。</p>
+<p><strong>测试</strong>。以前测试的主要产出是一条条测试用例，现在重心更多会放在建设自动化流程上。用例 AI 能写，但让这些用例持续、稳定地跑起来的那套流程，才值得测试同学花大力气。</p>
+<p>一句话总结：<strong>交接的东西变成了共享的上下文，流程节点自然就少了</strong>。</p>
+<h2 id="边界研发测试的活你也得摸一摸">
+  边界：研发，测试的活你也得摸一摸
+  <a class="heading-link" href="#%e8%be%b9%e7%95%8c%e7%a0%94%e5%8f%91%e6%b5%8b%e8%af%95%e7%9a%84%e6%b4%bb%e4%bd%a0%e4%b9%9f%e5%be%97%e6%91%b8%e4%b8%80%e6%91%b8">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>第二件事：<strong>职能的边界感得打破</strong>。</p>
+<p>最典型的就是自动化测试。研发借助 AI 自己写不少自动化测试，把交付效率提上去，而不是两手一摊：“等测试团队自动化能力上来了再说吧。”放在以前这叫越界，放在现在，AI 把跨职能的门槛拉低了，一个人能罩住的范围变大了，干等反而是最贵的选择。</p>
+<p>再往前走一步，研发要做的其实是<strong>围绕软件打造 harness</strong>：让软件能被 agent 自己构建、自己跑、自己验证。没有 harness 的 agent，就像一个闭着眼睛写代码的实习生——写是写得飞快，写对没写对，全凭缘分。</p>
+<p>那测试同学会不会没活干？恰恰相反。测试的精力可以从原来的正向测试，慢慢转到用户场景测试、反向测试这些更考验判断力的地方。背后的分工原则其实很简单：<strong>机器能验证的交给 harness，需要判断力和用户视角的留给人</strong>。这比争论“这活到底归研发还是归测试”要有建设性多了。</p>
+<h2 id="动力忙到没空提效是个真问题">
+  动力：忙到没空提效，是个真问题
+  <a class="heading-link" href="#%e5%8a%a8%e5%8a%9b%e5%bf%99%e5%88%b0%e6%b2%a1%e7%a9%ba%e6%8f%90%e6%95%88%e6%98%af%e4%b8%aa%e7%9c%9f%e9%97%ae%e9%a2%98">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>第三件事说的是人，也是最难的部分。</p>
+<p>有个很扎心的现实：<strong>团队越忙，越没人有动力去用 AI 提效</strong>。听着很矛盾，但完全可以理解——手上的需求下周就要交，这时候让人停下来学一套新玩法，短期看就是在给自己加活。再配上几句经典台词，“AI 干不了我们这种活”“等工具成熟了再说”，推进就很容易停留在开会的 PPT 上。</p>
+<p>我们的办法是：<strong>先拉出一支先行军，用结果说话</strong>。道理讲一百遍，不如隔壁组真的用 agent 把一批活干完了。真实的结果摆在那里，很多借口自己就不好意思再出来了。</p>
+<p>先行军怎么来？我们没有拍脑袋指定，而是每次有新的 AI 技术出来，先在全团队铺开推广，然后看谁更积极、谁推得更好，再把他们挑出来重点关注、重点投入。说白了就是赛马。跑出来的先行军积极性天然更高；而且每来一波新技术就重新赛一轮，谁也别想躺在功劳簿上。</p>
+<p>还有一环容易被忽略：<strong>先行军的成果得能流回去</strong>。他们攒下的 skill、SOP，要有机制推给其他团队，不然就会变成头部团队一路狂奔、其他团队原地看戏。先行军的价值不只是证明“能做到”，更是把“怎么做到”打包好，让别人拿去就能用。</p>
+<h2 id="度量提交量涨了不代表真变强了">
+  度量：提交量涨了，不代表真变强了
+  <a class="heading-link" href="#%e5%ba%a6%e9%87%8f%e6%8f%90%e4%ba%a4%e9%87%8f%e6%b6%a8%e4%ba%86%e4%b8%8d%e4%bb%a3%e8%a1%a8%e7%9c%9f%e5%8f%98%e5%bc%ba%e4%ba%86">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>第四件事：<strong>推 AI 提效本身也是个工程，进展得能量出来</strong>。不然每次汇报都只能说“大家用得挺积极的”，这话我自己听着都心虚。</p>
+<p>最顺手的指标当然是代码提交、BUG 修复、需求实现这些。但它们跟需求节奏、人员变动关系太大，这个月提交量涨了，可能只是因为需求多了。所以它们只适合当观测指标。我们最后用的是三层：</p>
+<ol>
+<li><strong>观测指标</strong>：代码提交、BUG 修复、需求实现等，看看大盘和趋势。</li>
+<li><strong>基础设施指标</strong>：skill、MCP、SOP 建了多少、覆盖了多少业务，看组织能力有没有在攒。</li>
+<li><strong>北极星指标</strong>：自动化一次性成功率——agent 能不能一次就把事独立干成。</li>
+</ol>
+<p>为什么北极星是它？因为它一个数字就能照出好几件事：spec 写得清不清楚、上下文给得够不够、harness 能不能验证、工具顺不顺手。它上去了，才说明人真的可以少操心了。</p>
+<p>落地上，我们借助 multica 这类平台，<strong>按 issue 的粒度统计成功率</strong>，再一点点往上优化。这里有两点小心得：</p>
+<ul>
+<li>不同类型、不同难度的 issue，成功率能差出十万八千里，最好分开统计，不然整体数字一波动，你都不知道是变强了还是这个月的活变简单了。</li>
+<li>更关键的是<strong>给失败的 issue 做归因</strong>：是平台与环境的问题、spec 没写清、上下文不够、harness 验证不了、skill 或工具有坑，还是模型能力真到头了？哪类失败多，就说明该补哪块基础设施。这样北极星和基础设施指标就串成了一个闭环。</li>
+</ul>
+<p>老实说，我们的归因现在还挺散的，分类也还在调。不过也正是在归因的时候，挖出了下面这几个坑。</p>
+<h2 id="治理那些年我们踩过的坑">
+  治理：那些年我们踩过的坑
+  <a class="heading-link" href="#%e6%b2%bb%e7%90%86%e9%82%a3%e4%ba%9b%e5%b9%b4%e6%88%91%e4%bb%ac%e8%b8%a9%e8%bf%87%e7%9a%84%e5%9d%91">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>第五件事是从归因里挖出来的。回头一看，这几个坑有个共同点：<strong>锅都不在 AI 本身，而在 AI 干活的环境没管好</strong>。</p>
+<p><strong>坑一：地基在晃</strong>。multica 这类平台迭代很快，版本更新一勤，BUG 也跟着来，agent 执行就开始飘，任务成片失败。然后大家开始怀疑人生：是模型不行了？还是 spec 写崩了？查了半天，原来是平台的锅。教训是：当大量任务都跑在一个平台上时，它就已经是生产环境了，不能再当成随手升级尝鲜的小工具。版本锁定、灰度升级、升级前拿一批基准 issue 跑跑回归，这些老规矩一个都不能少。另外，平台导致的失败一定要单独归类，别让它污染了北极星指标。</p>
+<p><strong>坑二：界面问题，光看代码看不出来</strong>。我们有不少界面类的软件，修一个界面 BUG，agent 只从代码层面改、从代码层面 review，改完了自信满满，一跑起来——按钮还是歪的。这时候就得引入多模态模型，让 agent 除了读代码，还能直接上手操作界面、亲眼看看效果。说到底，这还是 harness 的事：对界面软件来说，harness 得做到“看得见、点得动”。</p>
+<p><strong>坑三：skill 不能随手往里塞</strong>。skill 和 MCP 用起来很爽，装一个就多一项本事，于是就容易乱引入，结果某一块业务的失败率直接起飞。skill 会实实在在地改变 agent 的行为，本质上跟引入第三方依赖没区别，必须规范化：适用范围要写清楚，引入前在基准任务上验一验，要有版本、有负责人，能按 skill 维度看失败率，出事了能快速定位和回滚。</p>
+<p>这里跟前面的先行军机制有点拧巴：先行军要的是自由折腾，生产环境要的是严格准入。我们的思路是分成<strong>试验区</strong>和<strong>生产区</strong>两层——先行军在试验区随便玩，玩出效果了，再按流程搬进生产区。</p>
+<h2 id="写在最后">
+  写在最后
+  <a class="heading-link" href="#%e5%86%99%e5%9c%a8%e6%9c%80%e5%90%8e">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>五件事串起来看：流程要为 agent 重新设计，边界要为端到端负责而打破，动力靠先行军和赛马来点燃，进展靠分层指标和失败归因来衡量，AI 干活的环境要像生产系统一样被认真对待。说来说去，还是开头那句话——人的价值，越来越体现在给 AI 搭一个靠谱的台子上。</p>
+<p>当然，这些都是阶段性的认识，还有好几个问题我们自己也没想明白：测试、产品这些角色转型以后，人该怎么培养、怎么评价？基础的活越来越多交给 AI，新人从哪儿练手、积累经验？失败归因怎么做得更系统，让北极星指标真的能“看得懂”？</p>
+<p>如果你也在团队里推 AI 提效，欢迎来交流。你多分享一个坑，大家就能少摔一跤。</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+        <div class="comments">
+    <script>
+  
+    let getTheme = window.localStorage && window.localStorage.getItem("colorscheme");
+  
+    getTheme = getTheme == null ? 'preferred_color_scheme' : getTheme;
+    
+    let s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    s.setAttribute('data-repo', 'hualet\/hualet.github.io');
+    s.setAttribute('data-repo-id', 'MDEwOlJlcG9zaXRvcnkxNzk0MTk4Ng==');
+    s.setAttribute('data-category', 'Announcements');
+    s.setAttribute('data-category-id', 'DIC_kwDOARHF4s4C_iEM');
+    s.setAttribute('data-mapping', 'pathname');
+    s.setAttribute('data-term', '');
+    s.setAttribute('data-strict', '0');
+    s.setAttribute('data-reactions-enabled', '1');
+    s.setAttribute('data-emit-metadata', '0');
+    s.setAttribute('data-input-position', 'bottom');
+    s.setAttribute('data-theme', getTheme);
+    s.setAttribute('data-lang', 'zh-CN');
+    s.setAttribute('data-loading', 'lazy');
+    s.setAttribute('crossorigin', 'anonymous');
+    s.setAttribute('async', '');
+    document.querySelector('div.comments').innerHTML = '';
+    document.querySelector('div.comments').appendChild(s);
+  
+    </script>
+    </div>
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2026
+     Hualet Wang 
+    ·
+    
+     <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.min.6ae284be93d2d19dad1f02b0039508d9aab3180a12a06dcc71b0b0ef7825a317.js" integrity="sha256-auKEvpPS0Z2tHwKwA5UI2aqzGAoSoG3McbCw73gloxc="></script>
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6FNRR2W3Z7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6FNRR2W3Z7');
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
