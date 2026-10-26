@@ -2,7 +2,7 @@
 draft = false
 date = 2026-08-16T23:38:32+08:00
 title = "阅读《AI Agents in Depth》有感"
-description = ""
+description = "读完李博杰《AI Agents in Depth》后的几点感悟：书里补上了评估、多模态和持续进化这些教程很少系统讲的下半场。作者也对照季逸超和李博杰的路径，写自己为什么觉得先动手再读书，认知才会从了解概念变成对答案。"
 slug = ""
 authors = []
 tags = ["AI", "读书"]

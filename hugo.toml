@@ -21,10 +21,12 @@ unsafe = true # Allow HTML in md files
 [params]
 author = "Hualet Wang"
 # license = '<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA-4.0</a>'
-description = "Hualet's personal website"
+description = "Hualet 的个人博客：Linux / 开源、工程实践与团队管理随笔"
 keywords = "blog,developer,personal"
 info = ["Developer", "OSSer", "A Father"]
 avatarURL = "img/avatar_clean.jpg"
+# Default Open Graph / Twitter image (Hugo internal templates). File lives in static/.
+images = ["img/avatar_clean.jpg"]
 #gravatar = "john.doe@example.com"
 dateFormat = "January 2, 2006"
 since = 2019
@@ -170,7 +172,7 @@ url = "https://medium.com/@hualet"
 name = "RSS"
 icon = "fa-solid fa-rss fa-2x"
 weight = 6
-url = "https://hualet.org/index.xml"
+url = "https://www.hualet.org/index.xml"
 rel = "alternate"
 type = "application/rss+xml"
 
@@ -208,6 +210,7 @@ label = ":cn:"
 
 [languages.zh.params]
 title = "我思故我在"
+description = "Hualet 的个人博客：Linux / 开源、工程实践与团队管理随笔"
 info = ["开发者", "开源爱好者", "一位慈祥的老父亲"]
 
 [[languages.zh.menu.main]]

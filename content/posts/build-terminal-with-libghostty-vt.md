@@ -2,7 +2,7 @@
 draft = false
 date = 2026-05-05T22:00:00+08:00
 title = "从零开始写一个终端模拟器：基于 libghostty-vt 的极简实现与进阶之路"
-description = ""
+description = "做新版 deepin-terminal 时，终端看着简单，底层缺口却一个接一个。这篇笔记先分清 Shell、PTY、终端模拟器和 VT 序列各自干什么，再顺着键盘到屏幕的数据流说明 libghostty-vt 如何接过转义序列解析和状态维护，界面与伪终端仍留给宿主程序。"
 slug = ""
 authors = []
 tags = ["终端", "libghostty-vt", "Qt", "技术"]

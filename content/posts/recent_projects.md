@@ -2,7 +2,7 @@
 draft = false
 date = 2026-05-01T22:34:23+08:00
 title = "最近 vibe coding 的几个小项目"
-description = ""
+description = "春节后 Coding Agent 又强了一截，作者用它陆续做了几个小项目：deepin 任务栏天气插件、分析 DBus 流量的 DBusLens、绕过腾讯邮箱搜索问题的命令行工具，以及基于 libghostty-vt 的 deepin-terminal。文中记下从把代码丢给模型做原型，到补测试和 harness 的体会。"
 slug = ""
 authors = []
 tags = ["AI","随想"]
