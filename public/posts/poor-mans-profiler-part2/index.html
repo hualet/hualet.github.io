@@ -42,7 +42,8 @@
 
 
 
-	<meta name="twitter:card" content="summary">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="https://www.hualet.org/img/avatar_clean.jpg">
 	<meta name="twitter:title" content="自制 Profiler 第二部分——调用栈回溯">
 	<meta name="twitter:description" content="书接上篇，我们现在已经能在其他程序中执行我们自己的代码，并且也做到了以固定的频率去执行采样代码（我们的printf），但是如何采样还是一个问题，这篇文章会就这这个问题继续探讨接下去我们面临的挑战——调用栈回溯。
 为什么要获取函数调用栈？一方面是因为profiler除了要分析程序存在的性能问题，即函数执行热点以外，还需要帮助我们可怜的程序员找到问题的原因，这时候能提供问题函数的堆栈信息就非常必要了；另一方面，我们上一篇文章其实说了，是为了通过堆栈信息尽量还原程序的执行过程：试想一个程序执行的过程是 main-&gt;funca-&gt;funcb-&gt;funcc，我们第一次采样 main-&gt;funca，第二次采样 main-&gt;funca-&gt;funcb-&gt;funcc，假如我们没有堆栈信息，我们只会统计一次 funca 和一次funcc，但是这并不能反应事实，相反，我们有堆栈信息的话，就会把 funca 、funcb 和 funcc 各计数一次，更能反应实际的执行过程。
@@ -69,6 +70,7 @@
 		<meta property="article:section" content="posts">
 		<meta property="article:published_time" content="2018-05-14T14:19:37+08:00">
 		<meta property="article:modified_time" content="2018-05-14T14:19:37+08:00">
+		<meta property="og:image" content="https://www.hualet.org/img/avatar_clean.jpg">
 
 
 
