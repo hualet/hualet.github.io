@@ -33,7 +33,8 @@ done;
 
 
 
-	<meta name="twitter:card" content="summary">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="https://www.hualet.org/img/avatar_clean.jpg">
 	<meta name="twitter:title" content="给 Doxygen 生成的文档中 Qt 的引用添加链接">
 	<meta name="twitter:description" content="额……这个标题怎么改读着都不怎么顺口，不过不用在意这些细节，问题不大 :)
 上篇文章提到了 如何给DTK添加文档 ，给同事讲的时候有同事提出来最好能自动给对 Qt 的引用加上链接，我当时拍胸脯说文档里面 Qt 的类和方法随便引用，到时候一定让生成的文档可以链接到 Qt 的文档上。其实，到啥时候我也说不准……所以，还是研究了一下，翻了半天的 Stack Overflow 和 其他一些资料才搞清楚要怎么做到，这里记录一下。
@@ -60,6 +61,7 @@ for i in core svg xmlpatterns; do curl -fsSLO &#34;https://doc.qt.io/qt-5/qt$i.t
 		<meta property="article:section" content="posts">
 		<meta property="article:published_time" content="2018-09-28T16:42:40+08:00">
 		<meta property="article:modified_time" content="2018-09-28T16:42:40+08:00">
+		<meta property="og:image" content="https://www.hualet.org/img/avatar_clean.jpg">
 
 
 

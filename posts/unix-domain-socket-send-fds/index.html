@@ -174,7 +174,8 @@ int main(int argc, char const *argv[])
 
 
 
-	<meta name="twitter:card" content="summary">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="https://www.hualet.org/img/avatar_clean.jpg">
 	<meta name="twitter:title" content="通过 Unix Domain Socket 传递文件描述符">
 	<meta name="twitter:description" content="Unix Domain Socket 是 Unix 系统下重要的本地进程间通信（IPC）机制之一，在 DDE、GNOME、KDE 等 Linux 桌面环境中常见的进程间通信方式 DBus 有一种实现方式就是基于 Unix Domain Socket 做的。虽然一直知道它的大名，也一直知道 Unix Domain Socket 可以用来传递文件描述符，但是碍于以前经验和眼界不足，加上没有深入去了解，完全不知道能传递文件描述符是多么强大的能力和必要性。
 首先，我想着文件描述符不就是一个数字么，哪个 IPC 不能传递数字呢？完全没有思考到文件描述符是只在进程范围内有效，同样一个文件描述符放在不同的进程完全就不是一回事儿。这时候你肯定想，既然传递文件描述符这么麻烦，为啥非要传递文件描述符呢，使用文件名不也是一样的么？那么恭喜你，你也有更我一样在践行陶渊明老前辈看事物“不求甚解”的作风。传递文件描述符还是有它的必要性的，一方面，文件描述符代表的不只是一个文件，它还包含了文件打开的状态，比如 seek 的位置等，有点进程之于可执行程序的意思，拿到文件描述符也就拿到了这些动态的信息；另一方面，文件描述符不只对应于本地文件，它为了一众可读写对象提供了统一的读写接口，包含什么呢？本地文件、（匿名）管道、标准输入输出、甚至于 Socket 本身等……可以让你完全不关心文件描述符背后的实现是什么而方便实现自己的逻辑代码。
@@ -195,6 +196,7 @@ int main(int argc, char const *argv[])
 		<meta property="article:section" content="posts">
 		<meta property="article:published_time" content="2018-10-28T21:08:45+08:00">
 		<meta property="article:modified_time" content="2018-10-28T21:08:45+08:00">
+		<meta property="og:image" content="https://www.hualet.org/img/avatar_clean.jpg">
 
 
 
